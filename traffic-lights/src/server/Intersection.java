@@ -8,9 +8,12 @@ public class Intersection implements Runnable{
     private String name;
     private String ID;
 
+    /**
+     *
+     */
     public void run(){
 
     }
 
-}
+}//End of class Intersection
 

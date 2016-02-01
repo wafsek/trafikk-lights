@@ -1,10 +1,11 @@
 package server;
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
- * The class that handles all the basic socket related chores; accepting incoming connections etc.
+ * The class that handles all the basic socket related chores.
  * Created by Baljit Singh Sarai on 01.02.16.
  * @author Baljit Sarai
  */
@@ -12,6 +13,7 @@ public class TrafficServer {
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
     private ClientHandler clientHandler;
+    protected static  ArrayList<Client> clientArrayList  = new ArrayList<>();
 
 
     /**
@@ -32,6 +34,13 @@ public class TrafficServer {
     public void start() {
         clientHandler = new ClientHandler(this.serverSocket);
         clientHandler.run(); //Starts accepting incoming connections.
+
+    }
+
+    /**
+     * Shutdowns the server.
+     */
+    public void shutdown(){
 
     }
 

@@ -4,14 +4,22 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.AbstractList;
 
 /**
+ * This class primarily accepts incoming connections and deals with them appropriately.
  * Created by Baljit Singh Sarai on 01.02.16.
  * @author Baljit Sarai
  */
 public class ClientHandler implements Runnable {
 
     private ServerSocket serverSocket;
+
+
+    /**
+     *
+     * @param serverSocket SocketServer Object
+     */
     public ClientHandler(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
     }
@@ -42,4 +50,4 @@ public class ClientHandler implements Runnable {
         }
     }
 
-}
+}//End of class ClientHandler
