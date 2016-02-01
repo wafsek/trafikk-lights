@@ -11,6 +11,7 @@ import java.io.*;
 public class TrafficServer {
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
+    private ClientHandler clientHandler;
 
 
     /**
@@ -26,27 +27,16 @@ public class TrafficServer {
 
 
     /**
-     * Starts the main server and start accepting incoming connetions
+     * Starts the main server.
      */
     public void start() {
-        while(true)
-        {
-            try
-            {
-                System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
-                Socket clientSocket = serverSocket.accept();
-                //This is where i intent to write code to handle the incoming connections- Baljit Sarai
+        clientHandler = new ClientHandler(this.serverSocket);
+        clientHandler.run(); //Starts accepting incoming connections.
 
-            }catch(SocketTimeoutException s)
-            {
-                System.out.println("Socket timed out!");
-                break;
-            }catch(IOException e)
-            {
-                e.printStackTrace();
-                break;
-            }
-        }
+    }
+
+    public void startAcceptingConnections(){
+
     }
 
 
