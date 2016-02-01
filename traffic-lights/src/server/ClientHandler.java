@@ -9,9 +9,9 @@ import java.util.AbstractList;
 /**
  * This class primarily accepts incoming connections and deals with them appropriately.
  * Created by Baljit Singh Sarai on 01.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
-public class ClientHandler implements Runnable {
+public class ClientHandler extends Thread {
 
     private ServerSocket serverSocket;
 

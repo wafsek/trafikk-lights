@@ -3,7 +3,7 @@ import server.TrafficServer;
 
 /**
  * Created by Baljit Singh Sarai on 01.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
 public class Main {
 

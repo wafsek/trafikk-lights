@@ -7,13 +7,16 @@ import java.util.ArrayList;
 /**
  * The class that handles all the basic socket related chores.
  * Created by Baljit Singh Sarai on 01.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
 public class TrafficServer {
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
-    private ClientHandler clientHandler;
+    //private ClientHandler clientHandler;
     protected static  ArrayList<Client> clientArrayList  = new ArrayList<>();
+    //private Terminal terminal;
+    private Thread clientHandler;
+    private Thread terminal;
 
 
     /**
@@ -33,7 +36,10 @@ public class TrafficServer {
      */
     public void start() {
         clientHandler = new ClientHandler(this.serverSocket);
-        clientHandler.run(); //Starts accepting incoming connections.
+        clientHandler.start(); //Starts accepting incoming connections.
+        System.out.println("This did not happen");
+        terminal = new Terminal();
+        terminal.start();
 
     }
 
