@@ -12,5 +12,6 @@ public class Main {
         TrafficServer server = TrafficServer.getInstance();
         server.start();
         System.out.println("Hello Kim");
+        System.out.println("Hei Adiran");
     }
 }
