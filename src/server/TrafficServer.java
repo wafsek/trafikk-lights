@@ -40,7 +40,6 @@ public class TrafficServer {
         System.out.println("This did not happen");
         terminal = new Terminal();
         terminal.start();
-
     }
 
     /**
