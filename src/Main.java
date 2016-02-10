@@ -11,5 +11,6 @@ public class Main {
         System.out.println("Welcome to the traffic light program");
         TrafficServer server = TrafficServer.getInstance();
         server.start();
+        System.out.println("Hello Kim");
     }
 }
