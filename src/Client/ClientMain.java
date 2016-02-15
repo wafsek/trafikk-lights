@@ -1,7 +1,8 @@
 package Client;
 
 /**
- * Created by wafsek on 15.02.16.
+ * Created by Baljit Singh Sarai on 15.02.16.
+ * @author Baljit Sarai
  */
 public class ClientMain {
 

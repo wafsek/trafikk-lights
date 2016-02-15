@@ -39,7 +39,7 @@ public class ClientHandler extends Thread {
      */
     public void run(){
 
-        while(true)
+        while(!this.isInterrupted())
         {
             try
             {
@@ -47,8 +47,6 @@ public class ClientHandler extends Thread {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected from: "+clientSocket.getInetAddress());
                 validatingService.execute(new ValidateConnections(clientSocket));
-
-
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");
