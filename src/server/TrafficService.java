@@ -8,7 +8,7 @@ package server;
 
 
 /**
- * 
+ *
  */
 public class TrafficService {
 
