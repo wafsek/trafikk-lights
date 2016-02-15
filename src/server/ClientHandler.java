@@ -1,5 +1,9 @@
 package server;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,6 +18,8 @@ import java.util.AbstractList;
 public class ClientHandler extends Thread {
 
     private ServerSocket serverSocket;
+    private DataOutputStream out;
+    private DataInputStream in;
 
 
     /**
@@ -36,6 +42,8 @@ public class ClientHandler extends Thread {
             {
                 System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
                 Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected from: "+clientSocket.getInetAddress());
+                this.handshakeProtocol(clientSocket);
 
 
             }catch(SocketTimeoutException s)
@@ -56,6 +64,20 @@ public class ClientHandler extends Thread {
      *
      */
     public void handshakeProtocol(Socket socket){
+        String o;
+        try{
+            System.out.println("waiting for msg");
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
+            System.out.println("msssssssssssssssss");
+            o = in.readUTF();
+            System.out.println("message recived");
+            System.out.println(o);
+            out.writeUTF("bca");
+            System.out.println(in.readUTF());
+        }catch (IOException io ){
+            System.out.println("Somthing went wrong");
+        }
 
         //This is where i intent to write code to handle the incoming connections- Baljit Sarai.
     }

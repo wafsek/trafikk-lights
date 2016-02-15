@@ -6,12 +6,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * Created by Adrian on 15/02/2016.
  */
 public class ClientSocket {
-
+    Scanner scanner = new Scanner(System.in);
     String handshake = "abc";
     String expected = "bca";
     String secondHandShake = "Connect plz";
@@ -40,10 +41,18 @@ public class ClientSocket {
      * Hand shake protocol
      */
     public void handShake() {
+        String i = "";
         try {
-            dos.writeBytes(handshake);
-            if(ios.readUTF().equals(expected)) {
-                dos.writeBytes(secondHandShake);
+
+                System.out.println("type the msg");
+                i = scanner.next();
+                dos.writeUTF(i);
+                i = ios.readUTF();
+                //System.out.println();
+
+
+            if(i.equals(expected)) {
+                dos.writeUTF(secondHandShake);
             }
         } catch(IOException ioe) {
             System.out.println("Could not send message: " + handshake);
