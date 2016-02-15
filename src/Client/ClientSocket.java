@@ -1,8 +1,5 @@
 package Client;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import org.omg.CosNaming.NamingContextPackage.NotFoundReason;
-
 import javax.activity.InvalidActivityException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,7 +16,7 @@ public class ClientSocket {
     private String handshake = "abc";
     private String expected = "bca";
     private String secondHandShake = "Connect plz";
-    private DataInputStream ios;
+    private DataInputStream dis ;
     private Socket socket;
     private DataOutputStream dos;
 
@@ -33,7 +30,7 @@ public class ClientSocket {
         try {
             socket = new Socket(host, portNumber);
             dos = new DataOutputStream(socket.getOutputStream());
-            ios = new DataInputStream(socket.getInputStream());
+            dis = new DataInputStream(socket.getInputStream());
         } catch(IOException ioe) {
             System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].");
         }
@@ -47,7 +44,7 @@ public class ClientSocket {
         try {
             String i = scanner.next();
             dos.writeUTF(i);
-            i = ios.readUTF();
+            i = dis.readUTF();
             if(i.equals(expected)) {
                 dos.writeUTF(secondHandShake);
             } else {
