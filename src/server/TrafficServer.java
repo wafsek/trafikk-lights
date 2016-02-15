@@ -13,8 +13,10 @@ public class TrafficServer {
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
     //private ClientHandler clientHandler;
-    protected static  ArrayList<Client> clientArrayList  = new ArrayList<>();
+    //protected static  ArrayList<Client> clientArrayList  = new ArrayList<>();
     //private Terminal terminal;
+
+    private ServiceQueue trafficService;
     private Thread clientHandler;
     private Thread terminal;
 
@@ -40,6 +42,8 @@ public class TrafficServer {
         System.out.println("This did not happen");
         terminal = new Terminal();
         terminal.start();
+        trafficService = new ServiceQueue(1);
+
     }
 
     /**
