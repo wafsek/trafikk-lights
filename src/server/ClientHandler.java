@@ -36,7 +36,7 @@ public class ClientHandler extends Thread {
             {
                 System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
                 Socket clientSocket = serverSocket.accept();
-                //This is where i intent to write code to handle the incoming connections- Baljit Sarai
+
 
             }catch(SocketTimeoutException s)
             {
@@ -48,6 +48,23 @@ public class ClientHandler extends Thread {
                 break;
             }
         }
+    }
+
+
+    /**
+     *Handshake protocol
+     *
+     */
+    public void handshakeProtocol(Socket socket){
+
+        //This is where i intent to write code to handle the incoming connections- Baljit Sarai.
+    }
+
+    /**
+     * This method close and deletes the socket and do the cleaning job.
+     */
+    public void closeSocket(){
+
     }
 
 }//End of class ClientHandler

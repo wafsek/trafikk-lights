@@ -40,7 +40,6 @@ public class TrafficServer {
         System.out.println("This did not happen");
         terminal = new Terminal();
         terminal.start();
-
     }
 
     /**
@@ -66,7 +65,6 @@ public class TrafficServer {
             }catch (IOException e){
                 System.out.println("Could not create the server instance");
             }
-
         }
         return trafficServer;
     }
