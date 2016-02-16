@@ -1,4 +1,6 @@
 package server;
+import com.sun.istack.internal.Nullable;
+
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 public class TrafficServer{
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
-    protected ArrayList<Client> clientArrayList  = new ArrayList<>();
+    public ArrayList<Client> clientArrayList  = new ArrayList<Client>();
     private int roundRobinTimeout;
     private ArrayList<Socket> socketArrayList = new ArrayList<Socket>();
     private ServiceQueue trafficService;
@@ -48,7 +50,8 @@ public class TrafficServer{
      *
      */
     public void serverForever() {
-        String message;
+        String message = null;
+        trafficService = new ServiceQueue(2);
         while (!stoped) {
             try {
                 Thread.sleep(this.roundRobinTimeout);
@@ -57,8 +60,11 @@ public class TrafficServer{
             }
             for(Client client: this.clientArrayList){
                 try{
-
-                    client.getDataInputStream().readUTF();
+                    message = client.getDataInputStream().readUTF();
+                    //message = null;d
+                    if(message != null){
+                        trafficService.execute(new ServiceTask(client.getSocket(),message));
+                    }
                 }catch (IOException ioe){
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for

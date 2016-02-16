@@ -1,14 +1,26 @@
 package server;
 
+import java.net.Socket;
+
 /**
  * Created by Baljit Sarai on 15.02.16.
  * @author Baljit Sarai
  */
 public class ServiceTask implements Runnable{
 
+
+    private Socket socket;
+    private String message;
+    public ServiceTask(Socket socket,String message){
+        this.socket = socket;
+        this.message = message;
+    }
+
     @Override
     public void run() {
-        //This is the method that is going to go thro all the connections in
-        // the validate "bucket" and send the pending signal
+        System.out.println(socket.getInetAddress()+"Said: "+message);
+        //This is the method that is going to handle the incoming signal
+        // from a given socket/Client .
+        // I have not yet decided yet whether to send in the client to htis object or socket is enough.
     }
 }

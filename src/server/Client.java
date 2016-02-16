@@ -27,7 +27,9 @@ public class Client {
         }
     }
 
-
+    public Socket getSocket(){
+        return this.socket;
+    }
     public String getName() {
         return name;
     }

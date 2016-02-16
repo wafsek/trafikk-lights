@@ -46,7 +46,21 @@ public class ClientHandler extends Thread {
                 System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected from: "+clientSocket.getInetAddress());
-                validatingService.execute(new ValidateConnections(clientSocket));
+
+
+                ////////////////////////////////////////
+                //The code written between these comment lines
+                // should be removed later. very important.
+                //It bypasses the security and is only going to be used
+                // in the developing time.
+                TrafficServer.getInstance().clientArrayList.add(new Client(clientSocket));
+
+
+
+                ///////////////////////////////////////
+
+
+                //validatingService.execute(new ValidateConnections(clientSocket));
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");
