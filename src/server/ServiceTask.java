@@ -16,6 +16,9 @@ public class ServiceTask implements Runnable{
         this.message = message;
     }
 
+    /**
+     * This method contains the actual task that needs to be done.
+     */
     @Override
     public void run() {
         System.out.println(socket.getInetAddress()+"Said: "+message);

@@ -72,7 +72,7 @@ public class ClientSocket {
         String input;
         while(true) {
             input=scanner.next();
-            System.out.println(handle(input));
+            handle(input);
         }
     }
 
@@ -81,8 +81,8 @@ public class ClientSocket {
      * @param s
      * @return an appropriate String to the input.
      */
-    private String handle(String s) {
-        switch (s) {
+    private void handle(String s) {
+        /*switch (s) {
             case ("exit") : {
                 try{
                     if(socket != null) socket.close();
@@ -93,6 +93,11 @@ public class ClientSocket {
                 System.exit(0);
             }
             default: return "Unsupported command!";
+        }*/
+        try {
+            dos.writeUTF(s);
+        } catch(IOException ioe) {
+            System.out.println("Could not send: "+s);
         }
     }
 

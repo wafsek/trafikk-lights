@@ -47,7 +47,7 @@ public class TrafficServer{
     }
 
     /**
-     *
+     * Waits, Collect all the incoming messages and give them to a ServiceQueue type.
      */
     public void serverForever() {
         String message = null;
