@@ -20,6 +20,8 @@ public class ClientHandler extends Thread {
     private ServerSocket serverSocket;
     private DataOutputStream out;
     private DataInputStream in;
+    private ServiceQueue validatingService;
+
 
 
     /**
@@ -28,6 +30,7 @@ public class ClientHandler extends Thread {
      */
     public ClientHandler(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
+        this.validatingService = new ServiceQueue(1);
     }
 
 
@@ -36,16 +39,14 @@ public class ClientHandler extends Thread {
      */
     public void run(){
 
-        while(true)
+        while(!this.isInterrupted())
         {
             try
             {
                 System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected from: "+clientSocket.getInetAddress());
-                this.handshakeProtocol(clientSocket);
-
-
+                validatingService.execute(new ValidateConnections(clientSocket));
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");
@@ -59,28 +60,7 @@ public class ClientHandler extends Thread {
     }
 
 
-    /**
-     *Handshake protocol
-     *
-     */
-    public void handshakeProtocol(Socket socket){
-        String o;
-        try{
-            System.out.println("waiting for msg");
-            out = new DataOutputStream(socket.getOutputStream());
-            in = new DataInputStream(socket.getInputStream());
-            System.out.println("msssssssssssssssss");
-            o = in.readUTF();
-            System.out.println("message recived");
-            System.out.println(o);
-            out.writeUTF("bca");
-            System.out.println(in.readUTF());
-        }catch (IOException io ){
-            System.out.println("Somthing went wrong");
-        }
 
-        //This is where i intent to write code to handle the incoming connections- Baljit Sarai.
-    }
 
     /**
      * This method close and deletes the socket and do the cleaning job.

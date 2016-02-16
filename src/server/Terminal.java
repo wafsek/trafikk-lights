@@ -15,7 +15,11 @@ public class Terminal extends Thread {
         while (true) {
 
             input = scanner.next();
+            if(input.equals("start"))   {
+
+            }
             System.out.println(input);
         }
+
     }
 }
