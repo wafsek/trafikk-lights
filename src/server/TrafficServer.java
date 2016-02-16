@@ -44,6 +44,7 @@ public class TrafficServer{
         clientHandler = new ClientHandler(this.serverSocket);
         clientHandler.start(); //Starts accepting incoming connections.
         trafficService = new ServiceQueue(1);
+        this.serverForever();
     }
 
     /**
@@ -61,6 +62,7 @@ public class TrafficServer{
             for(Client client: this.clientArrayList){
                 try{
                     message = client.getDataInputStream().readUTF();
+                    //System.out.println(message);
                     //message = null;d
                     if(message != null){
                         trafficService.execute(new ServiceTask(client.getSocket(),message));
