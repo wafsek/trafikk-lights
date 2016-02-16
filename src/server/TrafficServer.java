@@ -4,6 +4,8 @@ import com.sun.istack.internal.Nullable;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 public class TrafficServer{
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
-    public ArrayList<Client> clientArrayList  = new ArrayList<Client>();
+    public List<Client> clientArrayList  = new CopyOnWriteArrayList<Client>();
     private int roundRobinTimeout;
     private ArrayList<Socket> socketArrayList = new ArrayList<Socket>();
     private ServiceQueue trafficService;
@@ -51,22 +53,24 @@ public class TrafficServer{
      * Waits, Collect all the incoming messages and give them to a ServiceQueue type.
      */
     public void serverForever() {
-        String message = null;
+        String message;
         trafficService = new ServiceQueue(2);
+        //List<Client> =
         while (!stoped) {
             try {
                 Thread.sleep(this.roundRobinTimeout);
             } catch (InterruptedException ie) {
                 //This should be handled properly --Sarai:P
             }
+
             for(Client client: this.clientArrayList){
                 try{
                     message = client.getDataInputStream().readUTF();
-                    //System.out.println(message);
-                    //message = null;d
-                    if(message != null){
-                        trafficService.execute(new ServiceTask(client.getSocket(),message));
-                    }
+                    System.out.println(message);
+                    //if(message != null || message == ""){
+                        System.out.println("stj");
+                        //trafficService.execute(new ServiceTask(client.getSocket(),(String)message));
+                    //}
                 }catch (IOException ioe){
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for

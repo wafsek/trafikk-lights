@@ -42,7 +42,7 @@ public class ClientSocket {
      */
     public void handShake() {
         try {
-            String i = scanner.next();
+            String i = scanner.nextLine();
             dos.writeUTF(i);
             i = dis.readUTF();
             if(i.equals(expected)) {
