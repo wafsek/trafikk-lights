@@ -1,9 +1,6 @@
 package server;
-import com.sun.istack.internal.Nullable;
-
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,15 +11,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Baljit Singh Sarai
  */
 public class TrafficServer{
+    //The Constants
+    private final int BUFFERSIZE = 20;
+    private final int LOOPBACKTIME = 10000;
+
+    //Variables
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
     public List<Client> clientArrayList  = new CopyOnWriteArrayList<Client>();
-    private int roundRobinTimeout;
-    private ArrayList<Socket> socketArrayList = new ArrayList<Socket>();
     private ServiceQueue trafficService;
     private ServiceQueue socketTerminator;
     private Thread clientHandler;
-
     private boolean stoped  = false;
 
 
@@ -34,8 +33,8 @@ public class TrafficServer{
     private TrafficServer(int port) throws IOException
     {
         serverSocket = new ServerSocket(port);
-        this.roundRobinTimeout = 2000;
-        //serverSocket.setSoTimeout(10000);
+        trafficService = new ServiceQueue(2);
+        //serverSocket.setSoTimeout(100);
     }
 
 
@@ -51,32 +50,32 @@ public class TrafficServer{
 
     /**
      * Waits, Collect all the incoming messages and give them to a ServiceQueue type.
+     * IMPORTANT! This This method assumes the a char is one byte. This might not always be
+     * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
-        String message;
         trafficService = new ServiceQueue(2);
-        //List<Client> =
+        byte[] contents = new byte[20];
         while (!stoped) {
+
             try {
-                Thread.sleep(this.roundRobinTimeout);
+                Thread.sleep(this.LOOPBACKTIME);
             } catch (InterruptedException ie) {
                 //This should be handled properly --Sarai:P
             }
-
+            System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
-                    message = client.getDataInputStream().readUTF();
-                    System.out.println(message);
-                    //if(message != null || message == ""){
-                        System.out.println("stj");
-                        //trafficService.execute(new ServiceTask(client.getSocket(),(String)message));
-                    //}
+                    if( client.getDataInputStream().available()> 0){
+                        trafficService.execute(new ServiceTask(client
+                        ));
+                    }
                 }catch (IOException ioe){
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for
                     // closing the socket properly as this could risk the server. :) --Sarai
                 }
-            }
+            }System.out.println("TACK");
         }
     }
 
@@ -87,7 +86,6 @@ public class TrafficServer{
     public void shutdown(){
 
     }
-
 
     /**
      * The method is used to restrain this class to a singleton.

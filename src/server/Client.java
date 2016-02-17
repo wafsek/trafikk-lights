@@ -1,8 +1,6 @@
 package server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -15,13 +13,27 @@ public class Client {
     private DataInputStream in;
     private DataOutputStream out;
     private String name;
+    private BufferedInputStream bufferedInputStream;
+    private BufferedReader bufferedReader;
 
 
     public Client(Socket socket){
         this.socket = socket;
         try{
+
+            /*PrintWriter out =
+                    new PrintWriter(socket.getOutputStream(), true);
+            this.bufferedReader =
+                    new BufferedReader(
+                            new InputStreamReader(socket.getInputStream()));
+            BufferedReader stdIn =
+                    new BufferedReader(
+                            new InputStreamReader(System.in));
+
+            */
             this.out = new DataOutputStream(this.socket.getOutputStream());
             this.in = new DataInputStream(this.socket.getInputStream());
+            this.bufferedInputStream = new BufferedInputStream(in);
         }catch (IOException ioe){
             System.out.println("Could not creat the out/input streams");
         }
@@ -38,6 +50,13 @@ public class Client {
         this.name = name;
     }
 
+    public BufferedInputStream bufferedInputStream(){
+        return this.bufferedInputStream;
+    }
+
+    public BufferedReader getBufferedReader(){
+        return this.bufferedReader;
+    }
     public DataInputStream getDataInputStream(){
         return in;
     }

@@ -1,5 +1,7 @@
 package server;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -8,12 +10,13 @@ import java.net.Socket;
  */
 public class ServiceTask implements Runnable{
 
-
+    private Client client;
     private Socket socket;
     private String message;
-    public ServiceTask(Socket socket,String message){
-        this.socket = socket;
-        this.message = message;
+    private DataInputStream dataInputStream;
+    public ServiceTask(Client client){
+        this.client = client;
+        this.dataInputStream = client.getDataInputStream();
     }
 
     /**
@@ -21,9 +24,24 @@ public class ServiceTask implements Runnable{
      */
     @Override
     public void run() {
-        System.out.println(socket.getInetAddress()+"Said: "+message);
-        //This is the method that is going to handle the incoming signal
-        // from a given socket/Client .
-        // I have not yet decided yet whether to send in the client to htis object or socket is enough.
+        byte[] contents = new byte[16];
+        int avaiableData;
+        char[] message = new char[18];
+        try {
+            avaiableData = this.dataInputStream.available();
+            this.dataInputStream.read(contents, 0, avaiableData);
+            System.out.print(client.getSocket().getInetAddress() + " Said: ");
+            for (int i = 2; i < contents.length; i++){
+                if(contents[i] == 0){
+                    continue;
+                }
+                System.out.print((char) contents[i]);}
+            System.out.println();
+            //This is the method that is going to handle the incoming signal
+            // from a given socket/Client .
+            // I have not yet decided yet whether to send in the client to htis object or socket is enough.
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
     }
 }
