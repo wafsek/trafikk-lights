@@ -13,7 +13,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TrafficServer{
     //The Constants
     private final int BUFFERSIZE = 20;
-    private final int LOOPBACKTIME = 1000;
+    private final int LOOPBACKTIME = 500;
+    private final int SERVICESWORKERS = 2;
+    private final int TERMINATORS = 1;
 
     //Variables
     private ServerSocket serverSocket ;
@@ -33,7 +35,6 @@ public class TrafficServer{
     private TrafficServer(int port) throws IOException
     {
         serverSocket = new ServerSocket(port);
-        trafficService = new ServiceQueue(2);
         //serverSocket.setSoTimeout(100);
     }
 
@@ -44,7 +45,6 @@ public class TrafficServer{
     public void start() {
         clientHandler = new ClientHandler(this.serverSocket);
         clientHandler.start(); //Starts accepting incoming connections.
-        trafficService = new ServiceQueue(1);
         this.serverForever();
     }
 
@@ -55,21 +55,21 @@ public class TrafficServer{
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
-        trafficService = new ServiceQueue(2);
-        socketTerminator = new ServiceQueue(1);
+        trafficService = new ServiceQueue(SERVICESWORKERS);
+        socketTerminator = new ServiceQueue(TERMINATORS);
         while (!stopped) {
-            System.out.println(this.clientArrayList.size());
+            //System.out.println(this.clientArrayList.size());
             try {
-                Thread.sleep(this.LOOPBACKTIME);
+                Thread.sleep(LOOPBACKTIME);
             } catch (InterruptedException ie) {
                 //This should be handled properly --Sarai:P
             }
-            System.out.println("TICK");
+            //System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
                     client.getDataOutputStream().writeUTF("T");
                     if( client.getDataInputStream().available()> 0){
-                        trafficService.execute(new ServiceTask(client
+                        trafficService.execute(new ServiceTask(client,BUFFERSIZE
                         ));
                     }
                 }catch (IOException ioe){
@@ -79,7 +79,7 @@ public class TrafficServer{
                     // i have made above as the server must go on and can not wait for
                     // closing the socket properly as this could risk the server. :) --Sarai
                 }
-            }System.out.println("TACK");
+            }//System.out.println("TACK");
         }
     }
 

@@ -11,10 +11,10 @@ import java.net.Socket;
 public class ServiceTask implements Runnable{
 
     private Client client;
-    private Socket socket;
-    private String message;
     private DataInputStream dataInputStream;
-    public ServiceTask(Client client){
+    private int buffersize;
+    public ServiceTask(Client client,int buffersize){
+        this.buffersize = buffersize;
         this.client = client;
         this.dataInputStream = client.getDataInputStream();
     }
@@ -24,12 +24,11 @@ public class ServiceTask implements Runnable{
      */
     @Override
     public void run() {
-        byte[] contents = new byte[16];
-        int avaiableData;
-        char[] message = new char[18];
+        byte[] contents = new byte[this.buffersize];
+        int availableData;
         try {
-            avaiableData = this.dataInputStream.available();
-            this.dataInputStream.read(contents, 0, avaiableData);
+            availableData = this.dataInputStream.available();
+            this.dataInputStream.read(contents, 0, availableData);
             System.out.print(client.getSocket().getInetAddress() + " Said: ");
             for (int i = 2; i < contents.length; i++){
                 if(contents[i] == 0){
