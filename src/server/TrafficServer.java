@@ -12,10 +12,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class TrafficServer{
     //The Constants
-    private final int BUFFERSIZE = 20;
-    private final int LOOPBACKTIME = 500;
-    private final int SERVICESWORKERS = 2;
-    private final int TERMINATORS = 1;
+    private final int BUFFERSIZE = Config.getBufferSize();
+    private final int LOOPBACKTIME = Config.getLoopbackTime();
+    private final int SERVICESWORKERS = Config.getServiceWorkers();
+    private final int TERMINATORS = Config.getTerminators();
 
     //Variables
     private ServerSocket serverSocket ;

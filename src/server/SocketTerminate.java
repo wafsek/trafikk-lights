@@ -2,7 +2,7 @@ package server;
 
 /**
  * Created by Baljit Singh Sarai on 17.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
 
 import java.io.IOException;
@@ -29,6 +29,15 @@ public class SocketTerminate implements Runnable {
 
     @Override
     public void run() {
-            TrafficServer.getInstance().clientArrayList.remove(client);
+            try{
+                client.getSocket().close();
+            }catch (IOException ioe){
+                //Nothing to do here really. We were about to kill it
+                // anyway
+            }
+            finally {
+                //I am not sure about this but removing the whole client object anyway.
+                TrafficServer.getInstance().clientArrayList.remove(client);
+            }
     }
 }
