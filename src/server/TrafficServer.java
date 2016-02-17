@@ -85,10 +85,34 @@ public class TrafficServer{
 
 
     /**
-     * Shutdowns the server.
+     * Attempts a clean shutdown. Terminates finally
      */
     public void shutdown(){
+        System.out.println("Initiating Shutdown");
+        System.out.println("Closing all the connections...");
+        //Close all the sockets and then remove the clients they belong to.
+        for(Client client: clientArrayList){
+            try{
+                client.getSocket().close();
+            }catch (IOException ioe){
 
+            }
+            clientArrayList.add(client);
+        }
+
+        this.trafficService = null;
+        this.socketTerminator = null;
+
+        System.out.println("Closing socket");
+        try{
+            this.serverSocket.close();
+            System.exit(0);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+        finally{
+            System.exit(-1);
+        }
     }
 
     /**

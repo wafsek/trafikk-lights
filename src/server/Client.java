@@ -5,7 +5,7 @@ import java.net.Socket;
 
 /**
  * Created by Baljit Sarai on 15.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
 public class Client {
     private Socket socket;

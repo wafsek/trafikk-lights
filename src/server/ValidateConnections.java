@@ -7,8 +7,8 @@ import java.net.Socket;
 
 /**
  * This class will contain the task of validating the handshake of the newly incomming connection
- * Created by Baljit Sarai on 15.02.16.
- * @author Baljit Sarai
+ * Created by Baljit Singh Sarai on 15.02.16.
+ * @author Baljit Singh Sarai
  */
 
 
