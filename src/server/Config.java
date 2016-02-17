@@ -2,7 +2,7 @@ package server;
 
 /**
  * Created by Baljit Singh Sarai on 17.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
 
 import java.io.IOException;

@@ -2,7 +2,7 @@ package Client;
 
 /**
  * Created by Baljit Singh Sarai on 15.02.16.
- * @author Baljit Sarai
+ * @author Baljit Singh Sarai
  */
 public class ClientMain {
 

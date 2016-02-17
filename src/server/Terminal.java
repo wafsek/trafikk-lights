@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -9,17 +10,21 @@ import java.util.Scanner;
 public class Terminal extends Thread {
     Scanner scanner;
     String input;
+
+
     public void run(){
         scanner = new Scanner(System.in);
         System.out.println("The Terminal window Traffic Light System v1.0");
         while (true) {
-
             input = scanner.next();
-            if(input.equals("start"))   {
-
+            switch (input) {
+                case ("shutdown"): {
+                    TrafficServer.getInstance().shutdown();
+                    System.exit(0);
+                }
+                default:
+                    System.out.println("Unsupported command!");
             }
-            System.out.println(input);
         }
-
     }
 }
