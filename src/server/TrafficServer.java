@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TrafficServer{
     //The Constants
     private final int BUFFERSIZE = 20;
-    private final int LOOPBACKTIME = 10000;
+    private final int LOOPBACKTIME = 1000;
 
     //Variables
     private ServerSocket serverSocket ;
@@ -22,11 +22,11 @@ public class TrafficServer{
     private ServiceQueue trafficService;
     private ServiceQueue socketTerminator;
     private Thread clientHandler;
-    private boolean stoped  = false;
+    private boolean stopped = false;
 
 
     /**
-     *
+     * Creats a TrafficServer and set sets the following parameters.
      * @param port port-number
      * @throws IOException Input/output Exception
      */
@@ -49,15 +49,16 @@ public class TrafficServer{
     }
 
     /**
-     * Waits, Collect all the incoming messages and give them to a ServiceQueue type.
+     * Loops thro all the clients. If it finds any data on anyone of them it creates a task
+     * and gives it to a ServiceQueue type. If it finds a broken socket, its deletes it form the list.
      * IMPORTANT! This This method assumes the a char is one byte. This might not always be
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
         trafficService = new ServiceQueue(2);
-        byte[] contents = new byte[20];
-        while (!stoped) {
-
+        socketTerminator = new ServiceQueue(1);
+        while (!stopped) {
+            System.out.println(this.clientArrayList.size());
             try {
                 Thread.sleep(this.LOOPBACKTIME);
             } catch (InterruptedException ie) {
@@ -66,11 +67,14 @@ public class TrafficServer{
             System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
+                    client.getDataOutputStream().writeUTF("T");
                     if( client.getDataInputStream().available()> 0){
                         trafficService.execute(new ServiceTask(client
                         ));
                     }
                 }catch (IOException ioe){
+                    System.out.println("Something on this socket is not right :)");
+                    socketTerminator.execute(new SocketTerminate(client,ioe));
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for
                     // closing the socket properly as this could risk the server. :) --Sarai
@@ -101,5 +105,6 @@ public class TrafficServer{
         }
         return trafficServer;
     }
+
 }//End of class TrafficServer
 

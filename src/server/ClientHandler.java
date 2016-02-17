@@ -54,7 +54,7 @@ public class ClientHandler extends Thread {
                 //It bypasses the security and is only going to be used
                 // in the developing time.
                 TrafficServer.getInstance().clientArrayList.add(new Client(clientSocket));
-                System.out.println(TrafficServer.getInstance().clientArrayList.size());
+                //System.out.println(TrafficServer.getInstance().clientArrayList.size());
 
 
                 ///////////////////////////////////////

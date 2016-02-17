@@ -8,67 +8,63 @@ import java.net.Socket;
  * @author Baljit Sarai
  */
 public class Client {
-
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
     private String name;
-    private BufferedInputStream bufferedInputStream;
-    private BufferedReader bufferedReader;
 
-
+    /**
+     *  Creats a new Client given the following parameters.
+     * @param socket -Socket object.
+     */
     public Client(Socket socket){
         this.socket = socket;
         try{
-
-            /*PrintWriter out =
-                    new PrintWriter(socket.getOutputStream(), true);
-            this.bufferedReader =
-                    new BufferedReader(
-                            new InputStreamReader(socket.getInputStream()));
-            BufferedReader stdIn =
-                    new BufferedReader(
-                            new InputStreamReader(System.in));
-
-            */
             this.out = new DataOutputStream(this.socket.getOutputStream());
             this.in = new DataInputStream(this.socket.getInputStream());
-            this.bufferedInputStream = new BufferedInputStream(in);
         }catch (IOException ioe){
-            System.out.println("Could not creat the out/input streams");
+            System.out.println("Could not create the out/input streams");
         }
     }
 
+
+    /**
+     * Returns the socket {@link java.net.Socket}
+     * @return socket -Socket object
+     */
     public Socket getSocket(){
         return this.socket;
     }
+
+    /**
+     * Returns the name of this client
+     * @return name -String object.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of this client.
+     * @param name -String object.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    public BufferedInputStream bufferedInputStream(){
-        return this.bufferedInputStream;
+    /**
+     * Returns the DataOutStream field.
+     * @return out -DataOutputStream object.
+     */
+    public DataOutputStream getDataOutputStream(){
+        return out;
     }
 
-    public BufferedReader getBufferedReader(){
-        return this.bufferedReader;
-    }
+    /**
+     * Returns the DataOutStream field.
+     * @return out -DataOutputStream object.
+     */
     public DataInputStream getDataInputStream(){
         return in;
     }
-
-    public String getMessage(){
-        String message = null;
-        try{
-            message = in.readUTF();
-        }catch (IOException ioe){
-            //Must handle this at some time
-        }
-        return message;
-    }
-
 }
