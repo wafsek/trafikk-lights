@@ -16,34 +16,61 @@ import javafx.stage.Stage;
  */
 public class ServerGUI extends Application {
 
+    private ActionListener actionListener;
     private ScrollPane terminalwindow, clientlist;
     private Scene scene;
+    private TextArea redValue,yellowValue,greenValue;
     private RadioButton red, yellow, green;
     private ToggleGroup colourGroup;
-    private VBox left,nameoption,coloroption, slideroption;
+    private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
-    public ServerGUI(){
+
+    public ServerGUI(/*ActionListener actionListener*/){
+       // this.actionListener = actionListener;
         Label redname = new Label("RED");
+        redname.setPadding(new Insets(20,0,35,0));
         Label yellowname = new Label("YELLOW");
         Label greenname = new Label("GREEN");
+        greenname.setPadding(new Insets(35,0,0,0));
 
         colourGroup = new ToggleGroup();
         red = new RadioButton();
         red.setToggleGroup(colourGroup);
+        red.setPadding(new Insets(20,0,35,0));
+        red.setOnAction(e-> redRadioButtonAction());
         yellow = new RadioButton();
         yellow.setToggleGroup(colourGroup);
+        yellow.setOnAction(e->yellowRadioButtonAction());
         green = new RadioButton();
         green.setToggleGroup(colourGroup);
+        green.setPadding(new Insets(35,0,0,0));
+        green.setOnAction(e->greenRadioButtonAction());
 
-        redslider = new Slider();
-        redslider.setPadding(new Insets(5,0,5,0));
+        redslider = new Slider(0,100,50);
+        redslider.setPadding(new Insets(24,0,40,0));
+        redslider.setOnMouseDragged(e->redSliderAction());
+        redslider.setPrefSize(900,0);
 
-        yellowslider = new Slider();
-        yellowslider.setPadding(new Insets(0,0,5,0));
+        redValue = new TextArea();
+        redValue.setPrefSize(1,1);
+        redValue.setText(String.format("%.0f",redslider.getValue()));
 
-        greenslider = new Slider();
+        yellowslider = new Slider(0,100,50);
+        yellowslider.setPadding(new Insets(0,0,45,0));
+        yellowslider.setOnMouseDragged(e->yellowSliderAction());
+
+        yellowValue = new TextArea();
+        yellowValue.setPrefSize(1,1);
+        yellowValue.setText(String.format("%.0f",yellowslider.getValue()));
+
+        greenslider = new Slider(0,100,50);
         greenslider.setPadding(new Insets(0,0,0,0));
+        greenslider.setOnMouseDragged(e->greenSliderAction());
+
+        greenValue = new TextArea();
+        greenValue.setPrefSize(1,1);
+        greenValue.setText(String.format("%.0f",greenslider.getValue()));
 
 
         terminalwindow = new ScrollPane();
@@ -52,6 +79,7 @@ public class ServerGUI extends Application {
         clientlist.setPrefSize(300,800);
 
       /*  GridPane gpane = new GridPane();*/
+        valueoption = new VBox();
         nameoption = new VBox();
         coloroption = new VBox();
         left = new VBox();
@@ -61,12 +89,11 @@ public class ServerGUI extends Application {
         BorderPane bpane = new BorderPane();
 
 
-
-
         nameoption.getChildren().addAll(redname,yellowname,greenname);
         coloroption.getChildren().addAll(red,yellow,green);
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
-        lightoption.getChildren().addAll(nameoption,coloroption,slideroption);
+        valueoption.getChildren().addAll(redValue,yellowValue,greenValue);
+        lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
         left.getChildren().addAll(lightoption,terminalwindow);
 
         bpane.setPrefSize(1000,1000);
@@ -93,5 +120,41 @@ public class ServerGUI extends Application {
     }
     public static void main(String[] args){
         launch(args);
+    }
+// RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
+    public Slider getRedSlider(){
+        return redslider;
+    }
+    public Slider getYellowslider(){
+        return yellowslider;
+    }
+    public Slider getGreenslider() {
+        return greenslider;
+    }
+    // RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
+    //DIFFERENT METHODS ON DIFFERNT ACTIONS-------------------------------------------------------
+
+    //RADIOBUTTONACTIONS
+    public void redRadioButtonAction(){
+        //DO SOMETHING WITH THE RED RADIO BUTTON
+    }
+    public void yellowRadioButtonAction(){
+        //DO SOMETHING WITH THE yellow RADIO BUTTON
+    }
+    public void greenRadioButtonAction(){
+        //DO SOMETHING WITH THE green RADIO BUTTON
+    }
+    //SLIDERACTIONS
+    public void redSliderAction(){
+        redValue.setText(String.format("%.0f",redslider.getValue()));
+        System.out.println(redslider.getValue());
+    }
+    public void yellowSliderAction(){
+        yellowValue.setText(String.format("%.0f",yellowslider.getValue()));
+        System.out.println(yellowslider.getValue());
+    }
+    public void greenSliderAction(){
+        greenValue.setText(String.format("%.0f",greenslider.getValue()));
+        System.out.println(greenslider.getValue());
     }
 }
