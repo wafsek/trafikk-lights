@@ -12,8 +12,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.geometry.*;
 import javafx.util.Duration;
-
-import java.sql.Time;
+import javafx.event.*;
 
 /**
  * Created by at_p9_000 on 16.02.2016.
@@ -24,6 +23,7 @@ public class ClientGUI2 extends Application{
     Circle rodSirkel = new Circle(150, 60, 40);
     Circle gulSirkel = new Circle(150, 60, 40);
     Circle gronnSirkel = new Circle(150, 60, 40);
+    SequentialTransition sqt;
     Stage vindu;
     Scene scene;
 
@@ -35,6 +35,9 @@ public class ClientGUI2 extends Application{
         StackPane trafikklys = new StackPane();
         Rectangle rektangel = new Rectangle(125, 300, 125, 300);
         Button stoppKnapp = new Button("Stopp");
+        stoppKnapp.setOnAction((ActionEvent event) -> stopp());
+
+
         VBox stopp = new VBox(5);
         stopp.getChildren().add(stoppKnapp);
         stopp.setAlignment(Pos.CENTER);
@@ -82,67 +85,74 @@ public class ClientGUI2 extends Application{
 
 
 
-    public void animasjon() {
 
-        Timeline timeline;
+    public void stopp(){
 
-        timeline = new Timeline(new KeyFrame(
-                    Duration.seconds(4),
-                    ae -> {
-                        gulSirkel.setFill(Color.GREY);
-                        rodSirkel.setFill(Color.GREY);
-                        gronnSirkel.setFill(Color.GREEN);
+        sqt.stop();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+            rodSirkel.setFill(Color.GREY);
+            gronnSirkel.setFill(Color.GREY);
+            gulSirkel.setFill(Color.YELLOW);
+        }));
 
-                        Timeline timeline1 = new Timeline(new KeyFrame(
-                                Duration.seconds(1),
-                                e -> {
-                                    rodSirkel.setFill(Color.GREY);
-                                    gronnSirkel.setFill(Color.GREY);
-                                    gulSirkel.setFill(Color.YELLOW);
+        Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+            rodSirkel.setFill(Color.GREY);
+            gronnSirkel.setFill(Color.GREY);
+            gulSirkel.setFill(Color.GREY);
+        }));
 
-                                    Timeline timeline2 = new Timeline(new KeyFrame(
-                                            Duration.seconds(3),
-                                            a -> {
-                                                gronnSirkel.setFill(Color.GREY);
-                                                gulSirkel.setFill(Color.GREY);
-                                                rodSirkel.setFill(Color.RED);
+        SequentialTransition sqt = new SequentialTransition(timeline, timeline1);
 
-
-
-                                                Timeline timeline3 = new Timeline(new KeyFrame(
-                                                        Duration.seconds(1),
-                                                        ai -> {
-                                                            gronnSirkel.setFill(Color.GREY);
-                                                            gulSirkel.setFill(Color.YELLOW);
-                                                            rodSirkel.setFill(Color.GREY);
-
-                                                        }
-                                                ));
-
-
-
-                                                timeline3.play();
-                                            }
-                                    ));
-
-                                    timeline2.play();
-
-                                }
-                        ));
-
-                        timeline1.play();
-
-                    }
-         ));
-
-
-        timeline.setCycleCount(timeline.INDEFINITE);
-        timeline.setAutoReverse(true);
-        timeline.play();
+        sqt.setCycleCount(sqt.INDEFINITE);
+        sqt.play();
 
     }
 
+    public void animasjon() {
 
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(2000),
+                a -> {
+                    gulSirkel.setFill(Color.GREY);
+                    rodSirkel.setFill(Color.GREY);
+                    gronnSirkel.setFill(Color.GREEN);
+
+                }));
+
+        Timeline timeline1 = new Timeline(new KeyFrame(
+                Duration.millis(2000),
+                e -> {
+                    gulSirkel.setFill(Color.YELLOW);
+                    rodSirkel.setFill(Color.GREY);
+                    gronnSirkel.setFill(Color.GREY);
+
+                }));
+
+        Timeline timeline2 = new Timeline(new KeyFrame(
+                Duration.millis(2000),
+                ai -> {
+                    gulSirkel.setFill(Color.GREY);
+                    rodSirkel.setFill(Color.RED);
+                    gronnSirkel.setFill(Color.GREY);
+
+                }));
+
+        Timeline timeline3 = new Timeline(new KeyFrame(
+                Duration.millis(2000),
+                ie -> {
+                    gulSirkel.setFill(Color.YELLOW);
+                    rodSirkel.setFill(Color.RED);
+                    gronnSirkel.setFill(Color.GREY);
+
+                }));
+
+
+
+
+        sqt = new SequentialTransition(timeline, timeline1, timeline2, timeline3);
+        sqt.setCycleCount(sqt.INDEFINITE);
+        sqt.play();
+}
 
 
     public static void main(String[] args){
