@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Baljit Singh Sarai on 01.02.16.
  * @author Baljit Singh Sarai
  */
-public class TrafficServer{
+public class TrafficServer extends Thread{
     //The Constants
     private final int BUFFERSIZE = Config.getBufferSize();
     private final int LOOPBACKTIME = Config.getLoopbackTime();
@@ -38,6 +38,9 @@ public class TrafficServer{
         //serverSocket.setSoTimeout(100);
     }
 
+    public void run(){
+        this.start();
+    }
 
     /**
      * Starts the main server.
