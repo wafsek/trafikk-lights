@@ -50,7 +50,6 @@ public class ValidateConnections implements Runnable{
         }catch (IOException io ){
             System.out.println("Something went wrong");
         }
-
         //This is where i intent to write code to handle the incoming connections- Baljit Sarai.
     }
 }

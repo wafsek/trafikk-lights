@@ -29,7 +29,7 @@ public class Client {
 
 
     /**
-     * Returns the socket {@link java.net.Socket}
+     * Returns the socket {@link Socket}
      * @return socket -Socket object
      */
     public Socket getSocket(){
@@ -37,7 +37,7 @@ public class Client {
     }
 
     /**
-     * Returns the name of this client
+     * Returns the name of this client {@link String}
      * @return name -String object.
      */
     public String getName() {

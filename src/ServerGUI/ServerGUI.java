@@ -10,68 +10,68 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import server.TrafficServer;
+
+import java.io.IOException;
+
 
 /**
  * Created by kim on 15.02.2016.
  */
-public class ServerGUI extends Application {
+public class ServerGUI extends Thread{
 
-    private ActionListener actionListener;
     private ScrollPane terminalwindow, clientlist;
     private Scene scene;
-    private TextArea redValue,yellowValue,greenValue;
+    private Stage stage;
+    private Label redLabel,yellowLabel,greenLabel;
     private RadioButton red, yellow, green;
     private ToggleGroup colourGroup;
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
+    private Button startServer;
 
-    public ServerGUI(/*ActionListener actionListener*/){
-       // this.actionListener = actionListener;
+    public ServerGUI(Stage stage){
+        this.stage = stage;
         Label redname = new Label("RED");
-        redname.setPadding(new Insets(20,0,35,0));
+
         Label yellowname = new Label("YELLOW");
         Label greenname = new Label("GREEN");
-        greenname.setPadding(new Insets(35,0,0,0));
+
 
         colourGroup = new ToggleGroup();
         red = new RadioButton();
         red.setToggleGroup(colourGroup);
-        red.setPadding(new Insets(20,0,35,0));
+
         red.setOnAction(e-> redRadioButtonAction());
         yellow = new RadioButton();
         yellow.setToggleGroup(colourGroup);
         yellow.setOnAction(e->yellowRadioButtonAction());
         green = new RadioButton();
         green.setToggleGroup(colourGroup);
-        green.setPadding(new Insets(35,0,0,0));
+
         green.setOnAction(e->greenRadioButtonAction());
 
         redslider = new Slider(0,100,50);
-        redslider.setPadding(new Insets(24,0,40,0));
+
         redslider.setOnMouseDragged(e->redSliderAction());
         redslider.setPrefSize(900,0);
 
-        redValue = new TextArea();
-        redValue.setPrefSize(1,1);
-        redValue.setText(String.format("%.0f",redslider.getValue()));
+        redLabel = new Label(String.format("%.0f",redslider.getValue()));
+        redLabel.setPrefSize(50,0);
 
         yellowslider = new Slider(0,100,50);
-        yellowslider.setPadding(new Insets(0,0,45,0));
+
         yellowslider.setOnMouseDragged(e->yellowSliderAction());
 
-        yellowValue = new TextArea();
-        yellowValue.setPrefSize(1,1);
-        yellowValue.setText(String.format("%.0f",yellowslider.getValue()));
+        yellowLabel = new Label(String.format("%.0f",redslider.getValue()));
+
 
         greenslider = new Slider(0,100,50);
-        greenslider.setPadding(new Insets(0,0,0,0));
+
         greenslider.setOnMouseDragged(e->greenSliderAction());
 
-        greenValue = new TextArea();
-        greenValue.setPrefSize(1,1);
-        greenValue.setText(String.format("%.0f",greenslider.getValue()));
-
+        greenLabel = new Label(String.format("%.0f",redslider.getValue()));
 
         terminalwindow = new ScrollPane();
         terminalwindow.setPrefSize(1000,300);
@@ -86,15 +86,19 @@ public class ServerGUI extends Application {
         slideroption = new VBox();
         lightoption = new HBox();
 
+        //Start knapp
+        startServer = new Button();
+        startServer.setOnAction(e -> startServer());
+
         BorderPane bpane = new BorderPane();
 
 
         nameoption.getChildren().addAll(redname,yellowname,greenname);
         coloroption.getChildren().addAll(red,yellow,green);
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
-        valueoption.getChildren().addAll(redValue,yellowValue,greenValue);
+        valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow);
+        left.getChildren().addAll(lightoption,terminalwindow,startServer);
 
         bpane.setPrefSize(1000,1000);
 
@@ -102,25 +106,18 @@ public class ServerGUI extends Application {
         bpane.setRight(clientlist);
 
         scene = new Scene(bpane,1300,900);
+        stage.setTitle("Server");
+        stage.setScene(scene);
 
-     /*   gpane.setPrefSize(1000,1000);
-     //   gpane.setAlignment(Pos.CENTER);
-
-
-        gpane.add(left, 0, 0);
-        gpane.add(clientlist, 1,0);
-
-        scene = new Scene(gpane, 1300, 900);*/
 
     }
-    public void start(Stage primaryStage){
-        primaryStage.setTitle("Server");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void run(){
+        stage.show();
     }
-    public static void main(String[] args){
+
+ /*   public static void main(String[] args){
         launch(args);
-    }
+    }*/
 // RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
     public Slider getRedSlider(){
         return redslider;
@@ -146,15 +143,20 @@ public class ServerGUI extends Application {
     }
     //SLIDERACTIONS
     public void redSliderAction(){
-        redValue.setText(String.format("%.0f",redslider.getValue()));
+        redLabel.setText(String.format("%.0f",redslider.getValue()));
         System.out.println(redslider.getValue());
     }
     public void yellowSliderAction(){
-        yellowValue.setText(String.format("%.0f",yellowslider.getValue()));
+        yellowLabel.setText(String.format("%.0f",yellowslider.getValue()));
         System.out.println(yellowslider.getValue());
     }
     public void greenSliderAction(){
-        greenValue.setText(String.format("%.0f",greenslider.getValue()));
+        greenLabel.setText(String.format("%.0f",greenslider.getValue()));
         System.out.println(greenslider.getValue());
+    }
+    //START/LAGE SERVER METODE
+    public void startServer(){
+        Thread trafficServer = TrafficServer.getInstance();
+        trafficServer.start();
     }
 }
