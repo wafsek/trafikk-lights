@@ -36,7 +36,8 @@ public class ServerGUI{
     private Slider redslider, yellowslider, greenslider;
     private Button startServer,stopServer,refreshClientList;
     private TrafficController trafficController;
-    private ObservableList clientObservableList;
+    private static final int SCENE_WIDTH = 1300;
+    private static final int SCENE_HEIGTH = 900;
 
 
     public ServerGUI(TrafficController trafficController, Stage stage){
@@ -125,7 +126,7 @@ public class ServerGUI{
         bpane.setLeft(left);
         bpane.setRight(clientlist);
 
-        scene = new Scene(bpane,1300,900);
+        scene = new Scene(bpane,SCENE_WIDTH,SCENE_HEIGTH);
         stage.setTitle("Server");
         stage.setScene(scene);
 
