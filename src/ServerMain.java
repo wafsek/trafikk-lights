@@ -1,8 +1,10 @@
 import ServerGUI.ServerGUI;
+import com.sun.org.apache.xml.internal.utils.ThreadControllerWrapper;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import server.Terminal;
+import server.TrafficController;
 import server.TrafficServer;
 
 /**
@@ -20,9 +22,11 @@ public class ServerMain extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Welcome to the traffic light program");
-        terminal = new Terminal();
+        TrafficController trafficController = new TrafficController();
+        trafficController.start(primaryStage);
+        /*terminal = new Terminal();
         terminal.start();
         Thread serverGUI = new ServerGUI(primaryStage);
-        serverGUI.run();
+        serverGUI.run();*/
     }
 }

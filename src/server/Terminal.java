@@ -19,7 +19,7 @@ public class Terminal extends Thread {
             input = scanner.next();
             switch (input) {
                 case ("shutdown"): {
-                    TrafficServer.getInstance().shutdown();
+                    //TrafficServer.getInstance().shutdown();
                     System.exit(0);
                 }
                 default:

@@ -1,6 +1,7 @@
 package ServerGUI;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import server.TrafficController;
 import server.TrafficServer;
 
 import java.io.IOException;
@@ -18,9 +20,10 @@ import java.io.IOException;
 /**
  * Created by kim on 15.02.2016.
  */
-public class ServerGUI extends Thread{
+public class ServerGUI{
 
-    private ScrollPane terminalwindow, clientlist;
+    private ScrollPane terminalwindow;
+    private TableView clientlist;
     private Scene scene;
     private Stage stage;
     private Label redLabel,yellowLabel,greenLabel;
@@ -29,9 +32,14 @@ public class ServerGUI extends Thread{
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
-    private Button startServer;
+    private Button startServer,stopServer;
+    private TrafficController trafficController;
+    private ObservableList clientObservableList;
 
-    public ServerGUI(Stage stage){
+
+    public ServerGUI(TrafficController trafficController, Stage stage){
+        this.trafficController = trafficController;
+        this.refreshClientlist();
         this.stage = stage;
         Label redname = new Label("RED");
 
@@ -75,7 +83,7 @@ public class ServerGUI extends Thread{
 
         terminalwindow = new ScrollPane();
         terminalwindow.setPrefSize(1000,300);
-        clientlist = new ScrollPane();
+        clientlist = new TableView(clientObservableList);
         clientlist.setPrefSize(300,800);
 
       /*  GridPane gpane = new GridPane();*/
@@ -89,6 +97,8 @@ public class ServerGUI extends Thread{
         //Start knapp
         startServer = new Button();
         startServer.setOnAction(e -> startServer());
+        stopServer = new Button();
+        stopServer.setOnAction(e-> shutdownServer());
 
         BorderPane bpane = new BorderPane();
 
@@ -98,7 +108,7 @@ public class ServerGUI extends Thread{
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow,startServer);
+        left.getChildren().addAll(lightoption,terminalwindow,startServer,stopServer);
 
         bpane.setPrefSize(1000,1000);
 
@@ -154,9 +164,17 @@ public class ServerGUI extends Thread{
         greenLabel.setText(String.format("%.0f",greenslider.getValue()));
         System.out.println(greenslider.getValue());
     }
+
     //START/LAGE SERVER METODE
     public void startServer(){
-        Thread trafficServer = TrafficServer.getInstance();
-        trafficServer.start();
+        this.trafficController.startServer();
+    }
+
+    public void shutdownServer(){
+        this.trafficController.shutdownServer();
+    }
+
+    public void refreshClientlist(){
+        this.clientObservableList = this.trafficController.getClientObervableList();
     }
 }

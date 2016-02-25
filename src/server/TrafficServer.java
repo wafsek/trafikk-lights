@@ -38,15 +38,15 @@ public class TrafficServer extends Thread{
         //serverSocket.setSoTimeout(100);
     }
 
-    public void run(){
-        this.start();
-    }
+
 
     /**
      * Starts the main server.
      */
-    public void start() {
-        clientHandler = new ClientHandler(this.serverSocket);
+    public void run() {
+
+        this.clientArrayList.add(new Client(new Socket()));
+        clientHandler = new ClientHandler(this,this.serverSocket);
         clientHandler.start(); //Starts accepting incoming connections.
         this.serverForever();
     }
@@ -77,7 +77,7 @@ public class TrafficServer extends Thread{
                     }
                 }catch (IOException ioe){
                     System.out.println("Something on this socket is not right :)");
-                    socketTerminator.execute(new SocketTerminate(client,ioe));
+                    socketTerminator.execute(new SocketTerminate(this,client,ioe));
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for
                     // closing the socket properly as this could risk the server. :) --Sarai

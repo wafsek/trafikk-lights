@@ -21,14 +21,15 @@ public class ClientHandler extends Thread {
     private DataOutputStream out;
     private DataInputStream in;
     private ServiceQueue validatingService;
-
+    private TrafficServer trafficServer;
 
 
     /**
      *
      * @param serverSocket SocketServer Object
      */
-    public ClientHandler(ServerSocket serverSocket){
+    public ClientHandler(TrafficServer trafficServer,ServerSocket serverSocket){
+        this.trafficServer = trafficServer;
         this.serverSocket = serverSocket;
         this.validatingService = new ServiceQueue(1);
     }
@@ -53,7 +54,7 @@ public class ClientHandler extends Thread {
                 // should be removed later. very important.
                 //It bypasses the security and is only going to be used
                 // in the developing time.
-                TrafficServer.getInstance().clientArrayList.add(new Client(clientSocket));
+                trafficServer.clientArrayList.add(new Client(clientSocket));
                 //System.out.println(TrafficServer.getInstance().clientArrayList.size());
 
 

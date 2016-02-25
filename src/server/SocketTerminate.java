@@ -15,14 +15,15 @@ public class SocketTerminate implements Runnable {
 
     private Client client;
     private IOException ioException;
-
+    private TrafficServer trafficServer;
 
     /**
      * Creates a SocketTerminator with the following parameters.
      * @param client
      * @param ioe
      */
-    public SocketTerminate(Client client,IOException ioe){
+    public SocketTerminate(TrafficServer trafficServer,Client client,IOException ioe){
+        this.trafficServer = trafficServer;
         this.client = client;
         this.ioException = ioe;
     }
@@ -37,7 +38,7 @@ public class SocketTerminate implements Runnable {
             }
             finally {
                 //I am not sure about this but removing the whole client object anyway.
-                TrafficServer.getInstance().clientArrayList.remove(client);
+                this.trafficServer.clientArrayList.remove(client);
             }
     }
 }
