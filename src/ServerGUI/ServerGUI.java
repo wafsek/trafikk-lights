@@ -53,6 +53,7 @@ public class ServerGUI extends Application {
         redslider.setPrefSize(900,0);
 
         redLabel = new Label(String.format("%.0f",redslider.getValue()));
+        redLabel.setPrefSize(50,0);
 
         yellowslider = new Slider(0,100,50);
 
