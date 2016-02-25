@@ -17,7 +17,7 @@ import javafx.event.*;
 /**
  * Created by at_p9_000 on 16.02.2016.
  */
-public class ClientGUI2 extends Application{
+public class ClientGUI2 extends Application {
 
     GridPane layout = new GridPane();
     Circle rodSirkel = new Circle(150, 60, 40);
@@ -28,8 +28,13 @@ public class ClientGUI2 extends Application{
     Scene scene;
 
 
+    Timeline[] tidslinje = new Timeline[4];
+    Duration[] duration = new Duration[4];
 
-    public void start(Stage primaryStage){
+    final Duration DEFAULTTIME = Duration.millis(2000);
+
+
+    public void start(Stage primaryStage) {
         vindu = primaryStage;
         //Konstruerer trafikklyset
         StackPane trafikklys = new StackPane();
@@ -79,23 +84,22 @@ public class ClientGUI2 extends Application{
         vindu.setScene(scene);
         vindu.show();
 
+        duration[0] = duration[1] = duration[2] = duration[3] = DEFAULTTIME;
 
         animasjon();
     }
 
 
-
-
-    public void stopp(){
+    public void stopp() {
 
         sqt.stop();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
             rodSirkel.setFill(Color.GREY);
             gronnSirkel.setFill(Color.GREY);
             gulSirkel.setFill(Color.YELLOW);
         }));
 
-        Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+        Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(500), e -> {
             rodSirkel.setFill(Color.GREY);
             gronnSirkel.setFill(Color.GREY);
             gulSirkel.setFill(Color.GREY);
@@ -110,8 +114,9 @@ public class ClientGUI2 extends Application{
 
     public void animasjon() {
 
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(2000),
+
+        tidslinje[0] = new Timeline(new KeyFrame(
+                duration[0],
                 a -> {
                     gulSirkel.setFill(Color.GREY);
                     rodSirkel.setFill(Color.GREY);
@@ -119,8 +124,8 @@ public class ClientGUI2 extends Application{
 
                 }));
 
-        Timeline timeline1 = new Timeline(new KeyFrame(
-                Duration.millis(2000),
+        tidslinje[1] = new Timeline(new KeyFrame(
+                duration[1],
                 e -> {
                     gulSirkel.setFill(Color.YELLOW);
                     rodSirkel.setFill(Color.GREY);
@@ -128,8 +133,8 @@ public class ClientGUI2 extends Application{
 
                 }));
 
-        Timeline timeline2 = new Timeline(new KeyFrame(
-                Duration.millis(2000),
+        tidslinje[2] = new Timeline(new KeyFrame(
+                duration[2],
                 ai -> {
                     gulSirkel.setFill(Color.GREY);
                     rodSirkel.setFill(Color.RED);
@@ -137,8 +142,8 @@ public class ClientGUI2 extends Application{
 
                 }));
 
-        Timeline timeline3 = new Timeline(new KeyFrame(
-                Duration.millis(2000),
+        tidslinje[3] = new Timeline(new KeyFrame(
+                duration[3],
                 ie -> {
                     gulSirkel.setFill(Color.YELLOW);
                     rodSirkel.setFill(Color.RED);
@@ -147,15 +152,23 @@ public class ClientGUI2 extends Application{
                 }));
 
 
-
-
-        sqt = new SequentialTransition(timeline, timeline1, timeline2, timeline3);
+        sqt = new SequentialTransition(tidslinje[0], tidslinje[1], tidslinje[2], tidslinje[3]);
         sqt.setCycleCount(sqt.INDEFINITE);
         sqt.play();
-}
+    }
 
+    public void setDuration(int a, double b) {
 
-    public static void main(String[] args){
+        duration[a] = Duration.millis(b);
+
+    }
+
+    public Duration getDuration(int a){
+
+        return duration[a];
+    }
+
+    public static void main(String[] args) {
         launch(args);
     }
 }
