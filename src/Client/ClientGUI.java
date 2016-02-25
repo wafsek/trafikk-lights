@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -31,22 +33,28 @@ public class ClientGUI {
     private Button stop, connect;
     private ClientController clientController;
     private TextField handshakeField, hostField, portField;
-
-
-    Timeline[] timelines = new Timeline[4];
+    private boolean hasSequence, isConnected;
+    private Timeline[] idleTimeLine, runningTimeLine;
     Duration[] duration = new Duration[4];
 
     final Duration DEFAULTTIME = Duration.millis(2000);
 
 
     public ClientGUI(Stage stage, ClientController clientController) {
+        hasSequence = false;
+        isConnected = false;
         this.clientController = clientController;
         this.stage = stage;
+
+        duration[0] = duration[1] = duration[2] = duration[3] = DEFAULTTIME;
+
+        setIdleTimeLine();
+        setRunningTimeLine();
         //Konstruerer trafikklyset
         StackPane trafikklys = new StackPane();
         Rectangle rektangel = new Rectangle(125, 300, 125, 300);
         stop = new Button("Stop");
-        stop.setOnAction(e -> idle());
+        stop.setOnAction(e -> tryStart());
         connect = new Button("Connect");
 
         hostField = new TextField();
@@ -120,37 +128,54 @@ public class ClientGUI {
     public void start() {
 
         stage.show();
-        duration[0] = duration[1] = duration[2] = duration[3] = DEFAULTTIME;
-        animation();
+        idle();
     }
 
+    public void tryStart() {
+        if(!hasSequence) {
+            idle();
+            hasSequence = !hasSequence;
+            System.out.println("ran idle "+hasSequence);
+        } else {
+            animation();
+            hasSequence = !hasSequence;
+            System.out.println("ran animation "+hasSequence);
+        }
+    }
 
-    public void idle() {
-
-        sqt.stop();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
+    private void setIdleTimeLine() {
+        idleTimeLine = new Timeline[2];
+        idleTimeLine[0] = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
             redLight.setFill(Color.GREY);
             greenLight.setFill(Color.GREY);
             yellowLight.setFill(Color.YELLOW);
         }));
 
-        Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(500), e -> {
+        idleTimeLine[1] = new Timeline(new KeyFrame(Duration.millis(1500), e -> {
             redLight.setFill(Color.GREY);
             greenLight.setFill(Color.GREY);
             yellowLight.setFill(Color.GREY);
         }));
-
-        SequentialTransition sqt = new SequentialTransition(timeline, timeline1);
-
-        sqt.setCycleCount(sqt.INDEFINITE);
-        sqt.play();
-
     }
 
-    public void animation() {
+    public void idle() {
 
+        if(sqt != null) {
+            sqt.stop();
+        }
+        try {
+            sqt.getChildren().clear();
+            sqt.getChildren().addAll(idleTimeLine[0], idleTimeLine[1]);
+        } catch (NullPointerException npe) {
+            sqt = new SequentialTransition(idleTimeLine[0], idleTimeLine[1]);
+        }
+        sqt.setCycleCount(sqt.INDEFINITE);
+        sqt.play();
+    }
 
-        timelines[0] = new Timeline(new KeyFrame(
+    private void setRunningTimeLine() {
+        runningTimeLine = new Timeline[4];
+        runningTimeLine[0] = new Timeline(new KeyFrame(
                 duration[0],
                 a -> {
                     yellowLight.setFill(Color.GREY);
@@ -159,7 +184,7 @@ public class ClientGUI {
 
                 }));
 
-        timelines[1] = new Timeline(new KeyFrame(
+        runningTimeLine[1] = new Timeline(new KeyFrame(
                 duration[1],
                 e -> {
                     yellowLight.setFill(Color.YELLOW);
@@ -168,7 +193,7 @@ public class ClientGUI {
 
                 }));
 
-        timelines[2] = new Timeline(new KeyFrame(
+        runningTimeLine[2] = new Timeline(new KeyFrame(
                 duration[2],
                 ai -> {
                     yellowLight.setFill(Color.GREY);
@@ -177,7 +202,7 @@ public class ClientGUI {
 
                 }));
 
-        timelines[3] = new Timeline(new KeyFrame(
+        runningTimeLine[3] = new Timeline(new KeyFrame(
                 duration[3],
                 ie -> {
                     yellowLight.setFill(Color.YELLOW);
@@ -185,14 +210,18 @@ public class ClientGUI {
                     greenLight.setFill(Color.GREY);
 
                 }));
+    }
 
+    public void animation() {
 
-        sqt = new SequentialTransition(timelines[0], timelines[1], timelines[2], timelines[3]);
+        sqt.stop();
+        sqt.getChildren().clear();
+        sqt.getChildren().addAll(runningTimeLine[0], runningTimeLine[1], runningTimeLine[2], runningTimeLine[3]);
         sqt.setCycleCount(sqt.INDEFINITE);
         sqt.play();
     }
 
-    public void setDuration(int a, double b) {
+    public void setSequence(int a, double b) {
         duration[a] = Duration.millis(b);
     }
 
