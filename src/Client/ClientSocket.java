@@ -1,6 +1,5 @@
 package Client;
 
-import javax.activity.InvalidActivityException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 /**
  * Created by Adrian on 15/02/2016.
  */
-public class ClientSocket {
+public class ClientSocket extends Thread{
 
     private Scanner scanner = new Scanner(System.in);
     private String handshake = "abc";
@@ -19,29 +18,34 @@ public class ClientSocket {
     private DataInputStream dis ;
     private Socket socket;
     private DataOutputStream dos;
+    private String host;
+    private int portNumber;
 
 
     /**
      * Initializes the client socket
-     * @param host
-     * @param portNumber
      */
-    public ClientSocket(String host, int portNumber) {
+    public ClientSocket() {
+
+    }
+
+    public void connect(String host, int portNumber) {
         try {
-            socket = new Socket(host, portNumber);
+            this.host = host;
+            this.portNumber = portNumber;
+            socket = new Socket(this.host, this.portNumber);
             dos = new DataOutputStream(socket.getOutputStream());
             dis = new DataInputStream(socket.getInputStream());
         } catch(IOException ioe) {
             System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].");
         }
-        start();
     }
 
     /**
      * Hand shake protocol
      */
-    public void handShake() {
-        try {
+    public void handShake(String handshake) {
+        /*try {
             String i = scanner.nextLine();
             dos.writeUTF(i);
             i = dis.readUTF();
@@ -52,7 +56,8 @@ public class ClientSocket {
             }
         } catch(IOException ioe) {
             System.out.println("Could not send message: " + handshake);
-        }
+        }*/
+        System.out.println("Handshake tried.");
     }
 
     /**
@@ -68,12 +73,16 @@ public class ClientSocket {
     /**
      * Initializes running loop
      */
-    private void start() {
+    private void startSocket() {
         String input;
         while(true) {
             input=scanner.next();
             handle(input);
         }
+    }
+
+    public void run() {
+        this.startSocket();
     }
 
     /**
