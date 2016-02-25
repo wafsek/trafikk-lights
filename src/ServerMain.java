@@ -24,7 +24,5 @@ public class ServerMain extends Application{
         terminal.start();
         Thread serverGUI = new ServerGUI(primaryStage);
         serverGUI.run();
-        TrafficServer server = TrafficServer.getInstance();
-        server.start();
     }
 }

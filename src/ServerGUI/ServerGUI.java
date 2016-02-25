@@ -12,6 +12,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import server.TrafficServer;
 
+import java.io.IOException;
+
 
 /**
  * Created by kim on 15.02.2016.
@@ -154,6 +156,7 @@ public class ServerGUI extends Thread{
     }
     //START/LAGE SERVER METODE
     public void startServer(){
-        
+        Thread trafficServer = TrafficServer.getInstance();
+        trafficServer.start();
     }
 }
