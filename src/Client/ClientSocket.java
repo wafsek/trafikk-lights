@@ -44,21 +44,22 @@ public class ClientSocket extends Thread{
     /**
      * Hand shake protocol
      */
-    public void handShake(String handshake) {
-        /*try {
+    /* boolean handShake(String handshake) {
+        try {
             String i = scanner.nextLine();
             dos.writeUTF(i);
             i = dis.readUTF();
             if(i.equals(expected)) {
                 dos.writeUTF(secondHandShake);
+                return true;
             } else {
                 throw new InvalidActivityException(i + " is an invalid command!");
             }
         } catch(IOException ioe) {
             System.out.println("Could not send message: " + handshake);
-        }*/
-        System.out.println("Handshake tried.");
-    }
+        }
+
+    }/*
 
     /**
      * Sets the new light routine for the controller

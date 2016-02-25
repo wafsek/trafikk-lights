@@ -58,7 +58,9 @@ public class ClientGUI {
         handshakeField = new TextField();
         handshakeField.setPromptText("Connection Command");
         connect.setOnAction(e -> {
-            clientController.requestConnection(handshakeField.getText().trim());
+            clientController.requestConnection(handshakeField.getText().trim(),
+                    hostField.getText().trim(),
+                    Integer.parseInt(portField.getText().trim()));
             clearFields();
         });
 

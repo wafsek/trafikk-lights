@@ -13,14 +13,12 @@ public class ClientController {
     public ClientController(Stage primaryStage, String host, int portNumber) {
         clientSocket = new ClientSocket();
         clientSocket.start();
-        System.out.println("dsafasdf");
         clientGUI = new ClientGUI(primaryStage, this);
     }
 
-    public void requestConnection(String handshake) {
+    public void requestConnection(String handshake, String host, int portNumber) {
         if(this.clientSocket instanceof ClientSocket){
-
-            ((ClientSocket)this.clientSocket).handShake(handshake);
+            ((ClientSocket)this.clientSocket).connect(host, portNumber);
         }
     }
 
