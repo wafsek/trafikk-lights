@@ -45,7 +45,7 @@ public class TrafficServer extends Thread{
      */
     public void run() {
 
-        this.clientArrayList.add(new Client(new Socket()));
+        //this.clientArrayList.add(new Client(new Socket()));
         clientHandler = new ClientHandler(this,this.serverSocket);
         clientHandler.start(); //Starts accepting incoming connections.
         this.serverForever();

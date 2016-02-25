@@ -6,11 +6,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import server.Client;
 import server.TrafficController;
 import server.TrafficServer;
 
@@ -23,7 +25,7 @@ import java.io.IOException;
 public class ServerGUI{
 
     private ScrollPane terminalwindow;
-    private TableView clientlist;
+    private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
     private Label redLabel,yellowLabel,greenLabel;
@@ -32,14 +34,14 @@ public class ServerGUI{
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
-    private Button startServer,stopServer;
+    private Button startServer,stopServer,refreshClientList;
     private TrafficController trafficController;
     private ObservableList clientObservableList;
 
 
     public ServerGUI(TrafficController trafficController, Stage stage){
         this.trafficController = trafficController;
-        this.refreshClientlist();
+
         this.stage = stage;
         Label redname = new Label("RED");
 
@@ -83,9 +85,16 @@ public class ServerGUI{
 
         terminalwindow = new ScrollPane();
         terminalwindow.setPrefSize(1000,300);
-        clientlist = new TableView(clientObservableList);
-        clientlist.setPrefSize(300,800);
 
+        clientlist = new TableView();
+
+        TableColumn clientName = new TableColumn("Client Name");
+        clientName.setCellValueFactory(new PropertyValueFactory<Client,String>("name"));
+
+        clientlist.getColumns().addAll(clientName);
+        clientlist.getSelectionModel().cellSelectionEnabledProperty();
+        clientlist.setPrefSize(300,800);
+        this.refreshClientlist();
       /*  GridPane gpane = new GridPane();*/
         valueoption = new VBox();
         nameoption = new VBox();
@@ -99,7 +108,8 @@ public class ServerGUI{
         startServer.setOnAction(e -> startServer());
         stopServer = new Button();
         stopServer.setOnAction(e-> shutdownServer());
-
+        refreshClientList = new Button();
+        refreshClientList.setOnAction(e-> this.refreshClientlist());
         BorderPane bpane = new BorderPane();
 
 
@@ -108,7 +118,7 @@ public class ServerGUI{
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow,startServer,stopServer);
+        left.getChildren().addAll(lightoption,terminalwindow,startServer,stopServer,refreshClientList);
 
         bpane.setPrefSize(1000,1000);
 
@@ -175,6 +185,13 @@ public class ServerGUI{
     }
 
     public void refreshClientlist(){
-        this.clientObservableList = this.trafficController.getClientObervableList();
+
+        System.out.println("refresh");
+
+
+        clientlist.getSelectionModel().clearSelection();
+
+        clientlist.setItems(this.trafficController.getClientObervableList());
+        System.out.println(this.trafficController.getClientObervableList());
     }
 }

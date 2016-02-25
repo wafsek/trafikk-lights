@@ -18,6 +18,7 @@ public class Client {
      * @param socket -Socket object.
      */
     public Client(Socket socket){
+        this.name = "anonymous";
         this.socket = socket;
         try{
             this.out = new DataOutputStream(this.socket.getOutputStream());
