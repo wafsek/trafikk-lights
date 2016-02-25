@@ -1,6 +1,7 @@
 package Client;
 
 import javafx.stage.Stage;
+import server.Terminal;
 
 /**
  * Created by Adrian on 25/02/2016.

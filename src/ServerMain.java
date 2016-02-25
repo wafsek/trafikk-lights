@@ -24,9 +24,8 @@ public class ServerMain extends Application{
         System.out.println("Welcome to the traffic light program");
         TrafficController trafficController = new TrafficController();
         trafficController.start(primaryStage);
-        /*terminal = new Terminal();
+        terminal = new Terminal();
         terminal.start();
-        Thread serverGUI = new ServerGUI(primaryStage);
-        serverGUI.run();*/
+
     }
 }

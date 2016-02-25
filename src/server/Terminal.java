@@ -25,6 +25,7 @@ public class Terminal extends Thread {
                 default:
                     System.out.println("Unsupported command!");
             }
+            System.out.println(input);
         }
     }
 }
