@@ -36,7 +36,7 @@ public class ServerGUI{
     private Slider redslider, yellowslider, greenslider;
     private Button startServer,stopServer,refreshClientList;
     private TrafficController trafficController;
-    private static final int SCENE_WIDTH = 1300;
+    private static final int SCENE_WIDTH = 1400;
     private static final int SCENE_HEIGTH = 900;
 
 
@@ -94,7 +94,7 @@ public class ServerGUI{
 
         clientlist.getColumns().addAll(clientName);
         clientlist.getSelectionModel().cellSelectionEnabledProperty();
-        clientlist.setPrefSize(300,800);
+        clientlist.setPrefSize(300,100);
         this.refreshClientlist();
       /*  GridPane gpane = new GridPane();*/
         valueoption = new VBox();
@@ -105,11 +105,11 @@ public class ServerGUI{
         lightoption = new HBox();
 
         //Start knapp
-        startServer = new Button();
+        startServer = new Button("START SERVER");
         startServer.setOnAction(e -> startServer());
-        stopServer = new Button();
+        stopServer = new Button("STOP SERVER");
         stopServer.setOnAction(e-> shutdownServer());
-        refreshClientList = new Button();
+        refreshClientList = new Button("REFRESH CLIENTLIST");
         refreshClientList.setOnAction(e-> this.refreshClientlist());
         BorderPane bpane = new BorderPane();
 
@@ -121,7 +121,6 @@ public class ServerGUI{
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
         left.getChildren().addAll(lightoption,terminalwindow,startServer,stopServer,refreshClientList);
 
-        bpane.setPrefSize(1000,1000);
 
         bpane.setLeft(left);
         bpane.setRight(clientlist);
