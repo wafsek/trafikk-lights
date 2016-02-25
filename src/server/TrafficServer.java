@@ -49,7 +49,7 @@ public class TrafficServer{
     }
 
     /**
-     * Loops thro all the clients. If it finds any data on anyone of them it creates a task
+     * Loops through all the clients. If it finds any data on anyone of them it creates a task
      * and gives it to a ServiceQueue type. If it finds a broken socket, its deletes it form the list.
      * IMPORTANT! This This method assumes the a char is one byte. This might not always be
      * true everywhere. The portability of this method is not a guarantee.
@@ -67,7 +67,7 @@ public class TrafficServer{
             //System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
-                    client.getDataOutputStream().writeUTF("T");
+                    client.getDataOutputStream().writeUTF("CC");//Just to check if it is alive :)
                     if( client.getDataInputStream().available()> 0){
                         trafficService.execute(new ServiceTask(client,BUFFERSIZE
                         ));
