@@ -11,14 +11,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+
 /**
  * Created by kim on 15.02.2016.
  */
-public class ServerGUI extends Application {
+public class ServerGUI extends Thread{
 
-    private ActionListener actionListener;
     private ScrollPane terminalwindow, clientlist;
     private Scene scene;
+    private Stage stage;
     private Label redLabel,yellowLabel,greenLabel;
     private RadioButton red, yellow, green;
     private ToggleGroup colourGroup;
@@ -26,8 +27,8 @@ public class ServerGUI extends Application {
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
 
-    public ServerGUI(/*ActionListener actionListener*/){
-       // this.actionListener = actionListener;
+    public ServerGUI(Stage stage){
+        this.stage = stage;
         Label redname = new Label("RED");
 
         Label yellowname = new Label("YELLOW");
@@ -97,25 +98,18 @@ public class ServerGUI extends Application {
         bpane.setRight(clientlist);
 
         scene = new Scene(bpane,1300,900);
+        stage.setTitle("Server");
+        stage.setScene(scene);
 
-     /*   gpane.setPrefSize(1000,1000);
-     //   gpane.setAlignment(Pos.CENTER);
-
-
-        gpane.add(left, 0, 0);
-        gpane.add(clientlist, 1,0);
-
-        scene = new Scene(gpane, 1300, 900);*/
 
     }
-    public void start(Stage primaryStage){
-        primaryStage.setTitle("Server");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void run(){
+        stage.show();
     }
-    public static void main(String[] args){
+
+ /*   public static void main(String[] args){
         launch(args);
-    }
+    }*/
 // RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
     public Slider getRedSlider(){
         return redslider;
