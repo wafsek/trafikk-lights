@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import server.TrafficServer;
 
 
 /**
@@ -26,6 +27,7 @@ public class ServerGUI extends Thread{
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
+    private Button startServer;
 
     public ServerGUI(Stage stage){
         this.stage = stage;
@@ -82,6 +84,10 @@ public class ServerGUI extends Thread{
         slideroption = new VBox();
         lightoption = new HBox();
 
+        //Start knapp
+        startServer = new Button();
+        startServer.setOnAction(e -> startServer());
+
         BorderPane bpane = new BorderPane();
 
 
@@ -90,7 +96,7 @@ public class ServerGUI extends Thread{
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow);
+        left.getChildren().addAll(lightoption,terminalwindow,startServer);
 
         bpane.setPrefSize(1000,1000);
 
@@ -145,5 +151,9 @@ public class ServerGUI extends Thread{
     public void greenSliderAction(){
         greenLabel.setText(String.format("%.0f",greenslider.getValue()));
         System.out.println(greenslider.getValue());
+    }
+    //START/LAGE SERVER METODE
+    public void startServer(){
+        
     }
 }
