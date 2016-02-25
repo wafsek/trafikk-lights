@@ -1,9 +1,12 @@
 package Client;
 
+import javafx.application.Platform;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -20,13 +23,14 @@ public class ClientSocket extends Thread{
     private DataOutputStream dos;
     private String host;
     private int portNumber;
+    private ClientController clientController;
 
 
     /**
      * Initializes the client socket
      */
-    public ClientSocket() {
-
+    public ClientSocket(ClientController clientController) {
+        this.clientController = clientController;
     }
 
     public void connect(String host, int portNumber) {
@@ -104,11 +108,18 @@ public class ClientSocket extends Thread{
             }
             default: return "Unsupported command!";
         }*/
-        try {
+        /*try {
             dos.writeUTF(s);
         } catch(IOException ioe) {
             System.out.println("Could not send: "+s);
-        }
+        }*/
+
+        System.out.println(s);
+        String[] a = s.split(",");
+        System.out.println(Arrays.toString(a));
+
+        int[] ab = {Integer.parseInt(a[0]), Integer.parseInt(a[1]), Integer.parseInt(a[2])};
+        Platform.runLater(() -> clientController.changeLightSequence(ab[0], ab[1], ab[2]));
     }
 
     /**

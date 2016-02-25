@@ -12,7 +12,7 @@ public class ClientController {
     private ClientGUI clientGUI;
 
     public ClientController(Stage primaryStage, String host, int portNumber) {
-        clientSocket = new ClientSocket();
+        clientSocket = new ClientSocket(this);
         clientSocket.start();
         clientGUI = new ClientGUI(primaryStage, this);
     }
@@ -21,6 +21,10 @@ public class ClientController {
         if(this.clientSocket instanceof ClientSocket){
             ((ClientSocket)this.clientSocket).connect(host, portNumber);
         }
+    }
+
+    public void changeLightSequence(int red, int yellow, int green) {
+        clientGUI.changeLightSequence(red, yellow, green);
     }
 
 }

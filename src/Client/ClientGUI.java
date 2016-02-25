@@ -37,7 +37,7 @@ public class ClientGUI {
     private Timeline[] idleTimeLine, runningTimeLine;
     Duration[] duration = new Duration[4];
 
-    final Duration DEFAULTTIME = Duration.millis(2000);
+    final int DEFAULTTIME = 2000;
 
 
     public ClientGUI(Stage stage, ClientController clientController) {
@@ -46,10 +46,8 @@ public class ClientGUI {
         this.clientController = clientController;
         this.stage = stage;
 
-        duration[0] = duration[1] = duration[2] = duration[3] = DEFAULTTIME;
-
         setIdleTimeLine();
-        setRunningTimeLine();
+        setRunningTimeLine(DEFAULTTIME, DEFAULTTIME, DEFAULTTIME);
         //Konstruerer trafikklyset
         StackPane trafikklys = new StackPane();
         Rectangle rektangel = new Rectangle(125, 300, 125, 300);
@@ -135,11 +133,9 @@ public class ClientGUI {
         if(!hasSequence) {
             idle();
             hasSequence = !hasSequence;
-            System.out.println("ran idle "+hasSequence);
         } else {
             animation();
             hasSequence = !hasSequence;
-            System.out.println("ran animation "+hasSequence);
         }
     }
 
@@ -173,10 +169,13 @@ public class ClientGUI {
         sqt.play();
     }
 
-    private void setRunningTimeLine() {
+    private void setRunningTimeLine(int red, int yellow, int green) {
+        duration[0] = new Duration(green);
+        duration[1] = new Duration(yellow);
+        duration[2] = new Duration(red);
         runningTimeLine = new Timeline[4];
         runningTimeLine[0] = new Timeline(new KeyFrame(
-                duration[0],
+                duration[1],
                 a -> {
                     yellowLight.setFill(Color.GREY);
                     redLight.setFill(Color.GREY);
@@ -185,7 +184,7 @@ public class ClientGUI {
                 }));
 
         runningTimeLine[1] = new Timeline(new KeyFrame(
-                duration[1],
+                duration[0],
                 e -> {
                     yellowLight.setFill(Color.YELLOW);
                     redLight.setFill(Color.GREY);
@@ -194,7 +193,7 @@ public class ClientGUI {
                 }));
 
         runningTimeLine[2] = new Timeline(new KeyFrame(
-                duration[2],
+                duration[1],
                 ai -> {
                     yellowLight.setFill(Color.GREY);
                     redLight.setFill(Color.RED);
@@ -203,7 +202,7 @@ public class ClientGUI {
                 }));
 
         runningTimeLine[3] = new Timeline(new KeyFrame(
-                duration[3],
+                duration[2],
                 ie -> {
                     yellowLight.setFill(Color.YELLOW);
                     redLight.setFill(Color.RED);
@@ -219,6 +218,12 @@ public class ClientGUI {
         sqt.getChildren().addAll(runningTimeLine[0], runningTimeLine[1], runningTimeLine[2], runningTimeLine[3]);
         sqt.setCycleCount(sqt.INDEFINITE);
         sqt.play();
+    }
+
+    public void changeLightSequence(int red, int yellow, int green) {
+        setRunningTimeLine(red, yellow, green);
+        hostField.setText("Hello world!");
+        animation();
     }
 
     public void setSequence(int a, double b) {
