@@ -193,15 +193,15 @@ public class ServerGUI{
     //SLIDERACTIONS
     public void redSliderAction(){
         redLabel.setText(String.format("%.0f",redslider.getValue()));
-        System.out.println(redslider.getValue());
+        //System.out.println(redslider.getValue());
     }
     public void yellowSliderAction(){
         yellowLabel.setText(String.format("%.0f",yellowslider.getValue()));
-        System.out.println(yellowslider.getValue());
+      // System.out.println(yellowslider.getValue());
     }
     public void greenSliderAction(){
         greenLabel.setText(String.format("%.0f",greenslider.getValue()));
-        System.out.println(greenslider.getValue());
+        //System.out.println(greenslider.getValue());
     }
 
     //START/CREATE SERVER
