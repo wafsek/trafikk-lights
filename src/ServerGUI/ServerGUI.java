@@ -2,12 +2,15 @@ package ServerGUI;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -21,6 +24,7 @@ import java.io.IOException;
 
 /**
  * Created by kim on 15.02.2016.
+ * GUI for Server.
  */
 public class ServerGUI{
 
@@ -29,12 +33,13 @@ public class ServerGUI{
     private Scene scene;
     private Stage stage;
     private Label redLabel,yellowLabel,greenLabel;
+    private TextArea serverInput;
     private RadioButton red, yellow, green;
     private ToggleGroup colourGroup;
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
-    private Button startServer,stopServer,refreshClientList;
+    private Button startServer,stopServer,refreshClientList,sendServerInput;
     private TrafficController trafficController;
     private static final int SCENE_WIDTH = 1400;
     private static final int SCENE_HEIGTH = 900;
@@ -104,6 +109,7 @@ public class ServerGUI{
         slideroption = new VBox();
         lightoption = new HBox();
 
+
         //Start knapp
         startServer = new Button("START SERVER");
         startServer.setOnAction(e -> startServer());
@@ -111,15 +117,38 @@ public class ServerGUI{
         stopServer.setOnAction(e-> shutdownServer());
         refreshClientList = new Button("REFRESH CLIENTLIST");
         refreshClientList.setOnAction(e-> this.refreshClientlist());
+        HBox buttons = new HBox();
+        buttons.getChildren().addAll(startServer,stopServer,refreshClientList);
+
         BorderPane bpane = new BorderPane();
 
+        //Serverinput
+        serverInput = new TextArea();
+        serverInput.setPromptText("SEND COMMANDS TO CLIENT");
+        serverInput.setPrefSize(300,200);
+        serverInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                                        @Override
+                                        public void handle(KeyEvent keyEvent) {
+                                            if (keyEvent.getCode() == KeyCode.ENTER) {
+                                                String text = serverInput.getText();
+                                                System.out.println(text);
+                                                // do your thing...
 
-        nameoption.getChildren().addAll(redname,yellowname,greenname);
+                                                // clear text
+                                                serverInput.setText("");
+                                            }
+                                        }
+                                    });
+
+
+
+
+            nameoption.getChildren().addAll(redname,yellowname,greenname);
         coloroption.getChildren().addAll(red,yellow,green);
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow,startServer,stopServer,refreshClientList);
+        left.getChildren().addAll(lightoption,terminalwindow,serverInput,buttons);
 
 
         bpane.setLeft(left);
@@ -175,7 +204,7 @@ public class ServerGUI{
         System.out.println(greenslider.getValue());
     }
 
-    //START/LAGE SERVER METODE
+    //START/CREATE SERVER
     public void startServer(){
         this.trafficController.startServer();
     }
@@ -184,14 +213,17 @@ public class ServerGUI{
         this.trafficController.shutdownServer();
     }
 
+    //REFRESH CLIENT LIST
     public void refreshClientlist(){
-
         System.out.println("refresh");
-
 
         clientlist.getSelectionModel().clearSelection();
 
         clientlist.setItems(this.trafficController.getClientObervableList());
         System.out.println(this.trafficController.getClientObervableList());
+    }
+    //SEND COMMAND TO CIENT
+    public void sendCommand(){
+
     }
 }
