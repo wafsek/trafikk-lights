@@ -2,6 +2,7 @@ package Client;
 
 import javafx.application.Platform;
 
+import javax.activity.InvalidActivityException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class ClientSocket extends Thread{
             socket = new Socket(this.host, this.portNumber);
             dos = new DataOutputStream(socket.getOutputStream());
             dis = new DataInputStream(socket.getInputStream());
+            this.startSocket();
         } catch(IOException ioe) {
             System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].");
         }
@@ -48,22 +50,20 @@ public class ClientSocket extends Thread{
     /**
      * Hand shake protocol
      */
-    /* boolean handShake(String handshake) {
+    /*public void handShake(String handshake) {
         try {
             String i = scanner.nextLine();
             dos.writeUTF(i);
             i = dis.readUTF();
             if(i.equals(expected)) {
                 dos.writeUTF(secondHandShake);
-                return true;
             } else {
                 throw new InvalidActivityException(i + " is an invalid command!");
             }
         } catch(IOException ioe) {
             System.out.println("Could not send message: " + handshake);
         }
-
-    }/*
+    }*/
 
     /**
      * Sets the new light routine for the controller
@@ -79,15 +79,23 @@ public class ClientSocket extends Thread{
      * Initializes running loop
      */
     private void startSocket() {
-        String input;
+        byte[] content = new byte[10];
         while(true) {
-            input=scanner.next();
-            handle(input);
+            try{
+                this.dis.read(content, 0, 10);
+                System.out.println("Message read");
+                for(int i = 0; i < 10; i++) {
+                    System.out.println(content[i]);
+                }
+            } catch(IOException ioe) {
+                System.out.println("Could not read the input.");
+            }
+
         }
     }
 
     public void run() {
-        this.startSocket();
+
     }
 
     /**
