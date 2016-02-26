@@ -122,6 +122,8 @@ public class ClientSocket extends Thread{
         Platform.runLater(() -> clientController.changeLightSequence(ab[0], ab[1], ab[2]));
     }
 
+
+
     /**
      * returns the status of the light
      * @return

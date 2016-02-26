@@ -88,6 +88,48 @@ public class TrafficServer extends Thread{
 
 
     /**
+     *
+     */
+    public void broardcast(String msg){
+        for(Client client: this.clientArrayList){
+            try{
+                client.getDataOutputStream().writeUTF(msg);//Just to check if it is alive :)
+            }catch (IOException ioe){
+                System.out.println("Something on this socket is not right :)");
+                socketTerminator.execute(new SocketTerminate(this,client,ioe));
+                //This task Should be given to the socketTerminator that
+                // i have made above as the server must go on and can not wait for
+                // closing the socket properly as this could risk the server. :) --Sarai
+            }
+        }//System.out.println("TACK");
+    }
+
+
+
+    /**
+     *
+     * @param id
+     * @param msg
+     */
+    public void send(String id,String msg ){
+        for(Client client: this.clientArrayList){
+            try{
+                if(client.getName().equals(id)){
+                    client.getDataOutputStream().writeUTF(msg);
+                }
+            }catch (IOException ioe){
+                System.out.println("Something on this socket is not right :)");
+                socketTerminator.execute(new SocketTerminate(this,client,ioe));
+                //This task Should be given to the socketTerminator that
+                // i have made above as the server must go on and can not wait for
+                // closing the socket properly as this could risk the server. :) --Sarai
+            }
+        }//System.out.println("TACK");
+    }
+
+
+
+    /**
      * Attempts a clean shutdown. Terminates finally
      */
     public void shutdown(){

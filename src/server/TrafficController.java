@@ -16,7 +16,7 @@ public class TrafficController extends Application{
 
     private ServerGUI serverGUI;
     private Stage stage;
-    private Thread trafficServer;
+    private TrafficServer trafficServer;
     private ObservableList clientObervableList;
 
     public TrafficController(){
@@ -34,6 +34,13 @@ public class TrafficController extends Application{
 
     }
 
+    public void send(String id,String msg){
+        this.trafficServer.send(id,msg);
+    }
+    
+    public void broadcast(String msg){
+        this.trafficServer.broardcast(msg);
+    }
 
     public void startServer(){
 
