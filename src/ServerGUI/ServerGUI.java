@@ -131,8 +131,8 @@ public class ServerGUI{
                                         public void handle(KeyEvent keyEvent) {
                                             if (keyEvent.getCode() == KeyCode.ENTER) {
                                                 String text = serverInput.getText();
-                                                System.out.println(text);
-                                                // do your thing...
+                                                trafficController.broadcast(text); // broadcast message
+
 
                                                 // clear text
                                                 serverInput.setText("");
