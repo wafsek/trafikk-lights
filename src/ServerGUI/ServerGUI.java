@@ -136,30 +136,28 @@ public class ServerGUI{
         serverInput = new TextField();
         serverInput.setPromptText("SEND COMMANDS TO CLIENT");
         serverInput.setPrefSize(300,200);
-        serverInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                                        @Override
-                                        public void handle(KeyEvent keyEvent) {
-                                            if (keyEvent.getCode() == KeyCode.ENTER) {
-                                                Client clienttest = clientlist.getSelectionModel().getSelectedItem();
-                                                String text = serverInput.getText();
-                                                if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
-                                                    trafficController.send(clienttest.getName(),text);
-                                                }
-                                                else if(!text.matches("(?m)^(\\n/time)$")){ // HVIS IKKE NOE ER TRYKKET PÅ
-                                                    System.out.println("TIL ALLE");
-                                                    System.out.println(text);
-                                                    trafficController.broadcast(text); // broadcast message
-                                                }else{
+        serverInput.setOnKeyPressed(e-> {
+            
+     /*       if (e.getCode() == KeyCode.ENTER) {
+                Client clienttest = clientlist.getSelectionModel().getSelectedItem();
+                String text = serverInput.getText();
+                if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
+                    trafficController.send(clienttest.getName(),text);
+                }
+                else if(!text.matches("(?m)^(/time)$")){ // HVIS IKKE NOE ER TRYKKET PÅ
+                    System.out.println("TIL ALLE");
+                    System.out.println(text);
+                    trafficController.broadcast(text); // broadcast message
+                }else{
                                                     serverInput.setText("YOU CAN'T USE /time WITHOUT CHOOSING A CLIENT");
-                                                    System.out.println("DU HAR IKKE VALGT CLEINT");
-                                            }
-                                                    // clear text
-                                                    serverInput.clear();
+                    System.out.println("DU HAR IKKE VALGT CLEINT");
+                }
+                // clear text
+                serverInput.clear();
 
-
-                                            }
-                                        }
-                                    });
+            }
+            */
+        });
 
         nameoption.getChildren().addAll(redname,yellowname,greenname);
         coloroption.getChildren().addAll(red,yellow,green);
