@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import server.Client;
 import server.TrafficController;
@@ -28,7 +29,7 @@ import java.io.IOException;
  */
 public class ServerGUI{
 
-    private ScrollPane terminalwindow;
+    private ScrollPane terminalwindow,loggWindow;
     private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
@@ -101,7 +102,12 @@ public class ServerGUI{
         clientlist.getSelectionModel().cellSelectionEnabledProperty();
         clientlist.setPrefSize(300,100);
         this.refreshClientlist();
-      /*  GridPane gpane = new GridPane();*/
+
+        //Loggwindow
+        loggWindow = new ScrollPane();
+
+        loggWindow.setPrefSize(1000,300);
+
         valueoption = new VBox();
         nameoption = new VBox();
         coloroption = new VBox();
@@ -148,7 +154,7 @@ public class ServerGUI{
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow,serverInput,buttons);
+        left.getChildren().addAll(lightoption,terminalwindow,serverInput,loggWindow,buttons);
 
 
         bpane.setLeft(left);
