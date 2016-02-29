@@ -34,12 +34,14 @@ public class TrafficController extends Application{
 
     }
 
+
+
     public void send(String id,String msg){
-        this.trafficServer.send(id,msg);
+        this.trafficServer.messageRequest(msg,false);
     }
     
     public void broadcast(String msg){
-        this.trafficServer.broardcast(msg);
+        this.trafficServer.messageRequest(msg,true);
     }
 
     public void startServer(){
