@@ -36,7 +36,12 @@ public class TrafficController extends Application{
 
 
     public void handleInput(String input){
-        System.out.println("This is your input: "+input);
+        Client client = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
+        if(client != null){
+            send(client.getName(),input);
+        }else{
+            broadcast(input);
+        }
     }
 
     public void send(String id,String msg){
