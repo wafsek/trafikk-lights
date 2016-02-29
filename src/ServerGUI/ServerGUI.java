@@ -20,6 +20,7 @@ import server.Client;
 import server.TrafficController;
 import server.TrafficServer;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 
 
@@ -137,9 +138,10 @@ public class ServerGUI{
         serverInput.setPromptText("SEND COMMANDS TO CLIENT");
         serverInput.setPrefSize(300,200);
         serverInput.setOnKeyPressed(e-> {
-            
-     /*       if (e.getCode() == KeyCode.ENTER) {
-                Client clienttest = clientlist.getSelectionModel().getSelectedItem();
+
+            if (e.getCode() == KeyCode.ENTER) {
+                this.trafficController.handleInput(serverInput.getText());
+                /*Client clienttest = clientlist.getSelectionModel().getSelectedItem();
                 String text = serverInput.getText();
                 if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
                     trafficController.send(clienttest.getName(),text);
@@ -153,10 +155,10 @@ public class ServerGUI{
                     System.out.println("DU HAR IKKE VALGT CLEINT");
                 }
                 // clear text
-                serverInput.clear();
+                serverInput.clear();*/
 
             }
-            */
+
         });
 
         nameoption.getChildren().addAll(redname,yellowname,greenname);
