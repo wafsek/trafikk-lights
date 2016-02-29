@@ -35,6 +35,9 @@ public class TrafficController extends Application{
     }
 
 
+    public void handleInput(String input){
+        System.out.println("This is your input: "+input);
+    }
 
     public void send(String id,String msg){
         this.trafficServer.messageRequest(msg,false);
