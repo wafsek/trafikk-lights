@@ -16,6 +16,7 @@ public class TrafficServer extends Thread{
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
+    private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
     //Variables
     private ServerSocket serverSocket ;
@@ -25,6 +26,7 @@ public class TrafficServer extends Thread{
     private ServiceQueue socketTerminator;
     private Thread clientHandler;
     private boolean stopped = false;
+    private String[] commands = new String[10];
 
 
     /**
@@ -70,7 +72,7 @@ public class TrafficServer extends Thread{
             //System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
-                    client.getDataOutputStream().writeUTF("CC");//Just to check if it is alive :)
+                    client.getDataOutputStream().write(PING);//Just to check if it is alive :)
                     if( client.getDataInputStream().available()> 0){
                         trafficService.execute(new ServiceTask(client,BUFFERSIZE
                         ));
@@ -87,13 +89,36 @@ public class TrafficServer extends Thread{
     }
 
 
+    public void messageRequest(String msg,boolean broadcast){
+        String command;
+        byte[] data;
+        if(msg.charAt(0) == '/'){
+            this.command(msg.substring(1));
+        }
+    }
+
+
+
+    public byte[] command(String command){
+        byte[] result = {0,0,0,0,0};
+        switch (command){
+            case "time":{
+                
+            }
+            default:{
+                System.out.println("whatever");
+            }
+        }
+        return result;
+    }
+
     /**
      *
      */
-    public void broardcast(String msg){
+    public void broardcast(byte[] data){
         for(Client client: this.clientArrayList){
             try{
-                client.getDataOutputStream().writeUTF(msg);//Just to check if it is alive :)
+                client.getDataOutputStream().write(data);
             }catch (IOException ioe){
                 System.out.println("Something on this socket is not right :)");
                 socketTerminator.execute(new SocketTerminate(this,client,ioe));
@@ -109,13 +134,13 @@ public class TrafficServer extends Thread{
     /**
      *
      * @param id
-     * @param msg
+     * @param data
      */
-    public void send(String id,String msg ){
+    public void send(String id,byte[] data ){
         for(Client client: this.clientArrayList){
             try{
                 if(client.getName().equals(id)){
-                    client.getDataOutputStream().writeUTF(msg);
+                    client.getDataOutputStream().write(data);
                 }
             }catch (IOException ioe){
                 System.out.println("Something on this socket is not right :)");

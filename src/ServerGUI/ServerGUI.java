@@ -198,6 +198,18 @@ public class ServerGUI{
     // RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
     //DIFFERENT METHODS ON DIFFERNT ACTIONS-------------------------------------------------------
 
+    public int getRedValue(){
+        return (int)redslider.getValue();
+    }
+
+    public int getYellowValue(){
+        return (int)yellowslider.getValue();
+    }
+
+    public int getGreenValue(){
+        return (int)greenslider.getValue();
+    }
+
     //RADIOBUTTONACTIONS
     public void redRadioButtonAction(){
         //DO SOMETHING WITH THE RED RADIO BUTTON

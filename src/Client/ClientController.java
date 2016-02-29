@@ -26,5 +26,4 @@ public class ClientController {
     public void changeLightSequence(int red, int yellow, int green) {
         clientGUI.changeLightSequence(red, yellow, green);
     }
-
 }
