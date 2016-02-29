@@ -34,7 +34,7 @@ public class ServerGUI{
     private Scene scene;
     private Stage stage;
     private Label redLabel,yellowLabel,greenLabel;
-    private TextArea serverInput;
+    private TextField serverInput;
     private RadioButton red, yellow, green;
     private ToggleGroup colourGroup;
     private VBox left,nameoption,coloroption, slideroption, valueoption;
@@ -97,10 +97,14 @@ public class ServerGUI{
 
         TableColumn clientName = new TableColumn("Client Name");
         clientName.setCellValueFactory(new PropertyValueFactory<Client,String>("name"));
+        clientName.setPrefWidth(300);
 
         clientlist.getColumns().addAll(clientName);
         clientlist.getSelectionModel().cellSelectionEnabledProperty();
         clientlist.setPrefSize(300,100);
+        clientlist.getSelectionModel().cellSelectionEnabledProperty();
+        clientlist.setFocusTraversable(false);
+        clientlist.focusedProperty();
         this.refreshClientlist();
 
         //Loggwindow
@@ -129,27 +133,35 @@ public class ServerGUI{
         BorderPane bpane = new BorderPane();
 
         //Serverinput
-        serverInput = new TextArea();
+        serverInput = new TextField();
         serverInput.setPromptText("SEND COMMANDS TO CLIENT");
         serverInput.setPrefSize(300,200);
         serverInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
                                         @Override
                                         public void handle(KeyEvent keyEvent) {
                                             if (keyEvent.getCode() == KeyCode.ENTER) {
+                                                Client clienttest = clientlist.getSelectionModel().getSelectedItem();
                                                 String text = serverInput.getText();
-                                                trafficController.broadcast(text); // broadcast message
+                                                if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
+                                                    trafficController.send(clienttest.getName(),text);
+                                                }
+                                                else if(!text.matches("(?m)^(\\n/time)$")){ // HVIS IKKE NOE ER TRYKKET PÅ
+                                                    System.out.println("TIL ALLE");
+                                                    System.out.println(text);
+                                                    trafficController.broadcast(text); // broadcast message
+                                                }else{
+                                                    serverInput.setText("YOU CAN'T USE /time WITHOUT CHOOSING A CLIENT");
+                                                    System.out.println("DU HAR IKKE VALGT CLEINT");
+                                            }
+                                                    // clear text
+                                                    serverInput.clear();
 
 
-                                                // clear text
-                                                serverInput.setText("");
                                             }
                                         }
                                     });
 
-
-
-
-            nameoption.getChildren().addAll(redname,yellowname,greenname);
+        nameoption.getChildren().addAll(redname,yellowname,greenname);
         coloroption.getChildren().addAll(red,yellow,green);
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
@@ -240,8 +252,8 @@ public class ServerGUI{
         clientlist.setItems(this.trafficController.getClientObervableList());
         System.out.println(this.trafficController.getClientObervableList());
     }
-    //SEND COMMAND TO CIENT
-    public void sendCommand(){
 
+    public TableView<Client> getClientlist() {
+        return clientlist;
     }
 }
