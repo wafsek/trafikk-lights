@@ -139,7 +139,6 @@ public class ServerGUI{
                                                 String text = serverInput.getText();
                                                 trafficController.broadcast(text); // broadcast message
 
-
                                                 // clear text
                                                 serverInput.setText("");
                                             }
