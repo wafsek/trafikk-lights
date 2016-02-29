@@ -146,10 +146,7 @@ public class ServerGUI{
                                         }
                                     });
 
-
-
-
-            nameoption.getChildren().addAll(redname,yellowname,greenname);
+        nameoption.getChildren().addAll(redname,yellowname,greenname);
         coloroption.getChildren().addAll(red,yellow,green);
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
