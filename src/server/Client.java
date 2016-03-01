@@ -19,7 +19,12 @@ public class Client {
      */
     public Client(Socket socket){
         this.name = "anonymous";
+
+
         this.socket = socket;
+        this.name = this.socket.getInetAddress()+":"+this.socket.getPort();
+        //System.out.println(this.socket.getInetAddress());
+        //System.out.println(this.socket.getPort());
         try{
             this.out = new DataOutputStream(this.socket.getOutputStream());
             this.in = new DataInputStream(this.socket.getInputStream());

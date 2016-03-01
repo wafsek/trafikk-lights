@@ -17,7 +17,7 @@ public class TrafficServer extends Thread{
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
-    private final int MESSAGE_SIZE =20;
+    private final int MESSAGE_SIZE =10;
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
 
@@ -76,7 +76,7 @@ public class TrafficServer extends Thread{
             //System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
-                    client.getDataOutputStream().write(PING);//Just to check if it is alive :)
+                    //client.getDataOutputStream().write(PING);//Just to check if it is alive :)
                     if( client.getDataInputStream().available()> 0){
                         trafficService.execute(new ServiceTask(client,BUFFERSIZE
                         ));
@@ -147,12 +147,23 @@ public class TrafficServer extends Thread{
                 this.send(client,msg);
                 result = "Server -> "+client.getName()+": "+msg;
             }
+            case "timeall":{
+                msg[1] = 5;
+                msg[2] = 'T';
+                msg[3] = 'M';
+                msg[4] =  times[0].byteValue();
+                msg[5] = times[1].byteValue();
+                msg[6] = times[2].byteValue();
+                this.broardcast(msg);
+                result = "Server -> all clients :"+msg;
+            }
             default:{
                 System.out.println("whatever");
             }
         }
         return result;
     }
+
 
     /**
      *
