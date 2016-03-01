@@ -25,6 +25,9 @@ public class ClientSocket extends Thread{
     private String host;
     private int portNumber;
     private ClientController clientController;
+    private static final String[] COMMANDS = {"CC", "TM"};
+    private static final byte[] PING = {0,2,67,67,0,0,0,0,0,0};
+    private boolean conntected;
 
 
     /**
@@ -41,7 +44,6 @@ public class ClientSocket extends Thread{
             socket = new Socket(this.host, this.portNumber);
             dos = new DataOutputStream(socket.getOutputStream());
             dis = new DataInputStream(socket.getInputStream());
-            this.startSocket();
         } catch(IOException ioe) {
             System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].");
         }
@@ -72,7 +74,7 @@ public class ClientSocket extends Thread{
      * @param green
      */
     public void setLightRoutine(int red, int yellow, int green) {
-
+        clientController.changeLightSequence(red,yellow,green);
     }
 
     /**
@@ -80,22 +82,23 @@ public class ClientSocket extends Thread{
      */
     private void startSocket() {
         byte[] content = new byte[10];
-        while(true) {
+        conntected = true;
+        while(conntected) {
             try{
                 this.dis.read(content, 0, 10);
-                System.out.println("Message read");
                 for(int i = 0; i < 10; i++) {
                     System.out.println(content[i]);
                 }
+                handle(content);
             } catch(IOException ioe) {
-                System.out.println("Could not read the input.");
+                disconnectSocket();
             }
 
         }
     }
 
     public void run() {
-
+        this.startSocket();
     }
 
     /**
@@ -103,31 +106,49 @@ public class ClientSocket extends Thread{
      * @param s
      * @return an appropriate String to the input.
      */
-    private void handle(String s) {
-        /*switch (s) {
-            case ("exit") : {
-                try{
-                    if(socket != null) socket.close();
-                } catch (IOException ioe) {
-                    System.out.println("No socket to close");
-                }
-                System.out.println("Closing client");
-                System.exit(0);
-            }
-            default: return "Unsupported command!";
-        }*/
-        /*try {
-            dos.writeUTF(s);
-        } catch(IOException ioe) {
-            System.out.println("Could not send: "+s);
-        }*/
+    private void handle(byte[] content) {
 
-        System.out.println(s);
+        if(content[0] == 0) {
+            readChar(content, content[1]);
+        } else if(content[0] == 1) {
+           readNumeric(content, content[1]);
+        } else if(content[0] == 2) {
+            readCommand(Arrays.copyOfRange(content, 1, content[1]));
+        }
+
+        /*System.out.println(s);
         String[] a = s.split(",");
         System.out.println(Arrays.toString(a));
 
         int[] ab = {Integer.parseInt(a[0]), Integer.parseInt(a[1]), Integer.parseInt(a[2])};
-        Platform.runLater(() -> clientController.changeLightSequence(ab[0], ab[1], ab[2]));
+        Platform.runLater(() -> clientController.changeLightSequence(ab[0], ab[1], ab[2]));*/
+    }
+
+    private void readCommand(byte[] content) {
+        String command = new String(new char[] {(char)content[0], (char)content[1]});
+        if(command.equals(COMMANDS[0])) {
+            setLightRoutine((int)content[2]*100, (int)content[3]*100, (int)content[4]*100);
+        }
+        else if(command.equals(COMMANDS[1])) {
+            try {
+                dos.write(PING);
+            } catch (IOException ioe) {
+                disconnectSocket();
+            }
+        }
+    }
+
+    private void readNumeric(byte[] content, int length) {
+
+    }
+
+    private void readChar(byte[] content, int length) {
+
+    }
+
+    private void disconnectSocket() {
+        System.out.println("Could not establish connection, closing socket.");
+        conntected = false;
     }
 
 
