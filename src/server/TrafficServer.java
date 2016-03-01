@@ -1,4 +1,5 @@
 package server;
+import java.awt.geom.Arc2D;
 import java.net.*;
 import java.io.*;
 import java.util.List;
@@ -16,6 +17,7 @@ public class TrafficServer extends Thread{
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
+    private final int MESSAGE_SIZE =20;
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
 
@@ -91,34 +93,59 @@ public class TrafficServer extends Thread{
     }
 
 
-    public void messageRequest(String msg,boolean broadcast){
+    public String messageRequest(String msg,Client client,Double[] times){
         String command;
+        String result = "Something unexpected happend";
         DataControl dataControl;
         byte[] data;
+
         if(msg.charAt(0) == '/'){
-            dataControl = this.validateCommand(msg.substring(1));
+            dataControl = this.validateCommand(msg.substring(1),client);
             if(dataControl.equals(DataControl.SUCCESS)){
-                this.command(msg.substring(1));
+                result = this.command(msg.substring(1),client,times);
             }
         }
-        
-        System.out.println("this where i print the result on the screen");
-
+        return result;
     }
 
 
-    public  DataControl validateCommand(String command){
+    public  DataControl validateCommand(String command,Client client){
+        boolean found = false;
+        for(String co: this.commands){
+            if(co.equals(command)){
+                found = true;
+            }
+        }
+
+        if (!found){
+            return DataControl.COMMAND_NOT_FOUND;
+        }
+
+        switch (command){
+            case "time":{
+                if(client == null){
+                    return DataControl.NO_CLIENT_SELECTED;
+                }
+            }
+        }
         return DataControl.SUCCESS;
     }
 
 
-    public byte[] command(String command){
-        byte[] result = {0,0,0,0,0};
+    public String command(String command,Client client,Double[] times){
+        byte[] msg = new byte[this.MESSAGE_SIZE];
+        msg[0] = 2;
+        String result = "";
         switch (command){
             case "time":{
-                if(){
-
-                }
+                msg[1] = 5;
+                msg[2] = 'T';
+                msg[3] = 'M';
+                msg[4] =  times[0].byteValue();
+                msg[5] = times[1].byteValue();
+                msg[6] = times[2].byteValue();
+                this.send(client,msg);
+                result = "Server -> "+client.getName()+": "+msg;
             }
             default:{
                 System.out.println("whatever");
@@ -148,24 +175,21 @@ public class TrafficServer extends Thread{
 
     /**
      *
-     * @param id
+     * @param client
      * @param data
      */
-    public void send(String id,byte[] data ){
-        for(Client client: this.clientArrayList){
-            try{
-                if(client.getName().equals(id)){
-                    client.getDataOutputStream().write(data);
-                }
-            }catch (IOException ioe){
-                System.out.println("Something on this socket is not right :)");
-                socketTerminator.execute(new SocketTerminate(this,client,ioe));
-                //This task Should be given to the socketTerminator that
-                // i have made above as the server must go on and can not wait for
-                // closing the socket properly as this could risk the server. :) --Sarai
-            }
-        }//System.out.println("TACK");
-    }
+    public void send(Client client,byte[] data ){
+        try{
+            client.getDataOutputStream().write(data);
+        }catch (IOException ioe){
+            System.out.println("Something on this socket is not right :)");
+            socketTerminator.execute(new SocketTerminate(this,client,ioe));
+            //This task Should be given to the socketTerminator that
+            // i have made above as the server must go on and can not wait for
+            // closing the socket properly as this could risk the server. :) --Sarai
+        }
+    }//System.out.println("TACK");
+
 
 
 

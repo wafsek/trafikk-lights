@@ -37,12 +37,21 @@ public class TrafficController extends Application{
 
 
     public void handleInput(String input){
+        String result;
+        Double[] times = new Double[3];
+        times[0] = this.serverGUI.getRedSlider().getValue();
+        times[1] = this.serverGUI.getYellowslider().getValue();
+        times[2] = this.serverGUI.getGreenslider().getValue();
         this.reciver = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
-        if(reciver != null){
+        this.trafficServer.messageRequest(input,this.reciver,times);
+
+
+
+        /*if(reciver != null){
             send(reciver.getName(),input);
         }else{
             broadcast(input);
-        }
+        }*/
     }
 
     public Client getReciver(){
@@ -50,13 +59,13 @@ public class TrafficController extends Application{
     }
 
 
-    public void send(String id,String msg){
+    /*public void send(String id,String msg){
         this.trafficServer.messageRequest(msg,false);
     }
     
     public void broadcast(String msg){
         this.trafficServer.messageRequest(msg,true);
-    }
+    }*/
 
     public void startServer(){
 

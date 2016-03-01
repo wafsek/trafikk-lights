@@ -8,7 +8,8 @@ package server;
 
 public enum DataControl {
     SUCCESS("Success"),
-    NO_CLIENT_SELECTED("No client stected");
+    NO_CLIENT_SELECTED("No client stected"),
+    COMMAND_NOT_FOUND("Did not found that command");
     private final String description;
 
 
