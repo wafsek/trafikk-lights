@@ -81,11 +81,11 @@ public class ClientSocket extends Thread{
      * Initializes running loop
      */
     private void startSocket() {
-        byte[] content = new byte[10];
+        byte[] content = new byte[20];
         conntected = true;
         while(conntected) {
             try{
-                this.dis.read(content, 0, 10);
+                this.dis.read(content, 0, 20);
                 handle(content);
             } catch(IOException ioe) {
                 disconnectSocket();
@@ -110,14 +110,12 @@ public class ClientSocket extends Thread{
         } else if(content[0] == 1) {
            readNumeric(content, content[1]);
         } else if(content[0] == 2) {
-            System.out.println(content[1]);
             readCommand(Arrays.copyOfRange(content, 2, (content[1]+2)));
         }
     }
 
     private void readCommand(byte[] content) {
         String command = new String(new char[] {(char)content[0], (char)content[1]});
-        System.out.println(Arrays.toString(content));
         if(command.equals(COMMANDS[0])) {
             try {
                 dos.write(PING);
