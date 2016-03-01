@@ -40,6 +40,11 @@ public class ClientGUI {
     final int DEFAULTTIME = 2000;
 
 
+    /**
+     * Constructor. Constructs the ClientGUI with all relevant fields.
+     * @param stage
+     * @param clientController
+     */
     public ClientGUI(Stage stage, ClientController clientController) {
         hasSequence = false;
         isConnected = false;
@@ -50,7 +55,7 @@ public class ClientGUI {
         setRunningTimeLine(DEFAULTTIME, DEFAULTTIME, DEFAULTTIME);
         //Konstruerer trafikklyset
         StackPane trafikklys = new StackPane();
-        Rectangle rektangel = new Rectangle(125, 300, 125, 300);
+        Rectangle rectangle = new Rectangle(125, 300, 125, 300);
         stop = new Button("Stop");
         stop.setOnAction(e -> tryStart());
         connect = new Button("Connect");
@@ -80,9 +85,9 @@ public class ClientGUI {
         vBox.setPadding(new Insets(10));
 
 
-        rektangel.setFill(Color.BLACK);
-        rektangel.setStroke(Color.BLACK);
-        trafikklys.getChildren().add(rektangel);
+        rectangle.setFill(Color.BLACK);
+        rectangle.setStroke(Color.BLACK);
+        trafikklys.getChildren().add(rectangle);
 
 
         //Desinger sirklene på trafikklyset
@@ -117,18 +122,27 @@ public class ClientGUI {
         start();
     }
 
+    /**
+     * Clears the contents of all the text fields.
+     */
     private void clearFields() {
         hostField.setText("");
         handshakeField.setText("");
         portField.setText("");
     }
 
+    /**
+     * Show the stage and puts it on idle mode.
+     */
     public void start() {
 
         stage.show();
         idle();
     }
 
+    /**
+     * Tries to start the animation based on a boolean
+     */
     public void tryStart() {
         if(!hasSequence) {
             idle();
@@ -139,6 +153,9 @@ public class ClientGUI {
         }
     }
 
+    /**
+     * Sets the animation rules for idle.
+     */
     private void setIdleTimeLine() {
         idleTimeLine = new Timeline[2];
         idleTimeLine[0] = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
@@ -154,6 +171,9 @@ public class ClientGUI {
         }));
     }
 
+    /**
+     * Initiates the idle animation
+     */
     public void idle() {
 
         if(sqt != null) {
@@ -169,6 +189,12 @@ public class ClientGUI {
         sqt.play();
     }
 
+    /**
+     * Sets the run time for the different lights based on three parameters.
+     * @param red
+     * @param yellow
+     * @param green
+     */
     private void setRunningTimeLine(int red, int yellow, int green) {
         duration[0] = new Duration(green);
         duration[1] = new Duration(yellow);
@@ -211,6 +237,9 @@ public class ClientGUI {
                 }));
     }
 
+    /**
+     * Starts the main animation (red, yellow and green light).
+     */
     public void animation() {
 
         sqt.stop();
@@ -220,21 +249,32 @@ public class ClientGUI {
         sqt.play();
     }
 
+    /**
+     *
+     * @param red
+     * @param yellow
+     * @param green
+     */
     public void changeLightSequence(int red, int yellow, int green) {
         setRunningTimeLine(red, yellow, green);
-        hostField.setText("Hello world!");
         animation();
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     */
     public void setSequence(int a, double b) {
         duration[a] = Duration.millis(b);
     }
 
+    /**
+     *
+     * @param a
+     * @return
+     */
     public Duration getDuration(int a){
         return duration[a];
-    }
-
-    private void connect() {
-
     }
 }
