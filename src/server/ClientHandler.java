@@ -1,6 +1,7 @@
 package server;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import logging.CustomLogger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.AbstractList;
+import java.util.logging.Level;
 
 /**
  * This class primarily accepts incoming connections and deals with them appropriately.
@@ -22,6 +24,7 @@ public class ClientHandler extends Thread {
     private DataInputStream in;
     private ServiceQueue validatingService;
     private TrafficServer trafficServer;
+    private CustomLogger logger = CustomLogger.getInstance();
 
 
     /**
@@ -44,9 +47,10 @@ public class ClientHandler extends Thread {
         {
             try
             {
-                System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+                this.logger.log("Waiting for client on port" + serverSocket.getLocalPort() + "...", Level.INFO);
+
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connected from: "+clientSocket.getInetAddress());
+                this.logger.log("Client connected from: "+clientSocket.getInetAddress() +":"+clientSocket.getPort(),Level.INFO);
 
 
                 ////////////////////////////////////////

@@ -252,12 +252,11 @@ public class ServerGUI{
 
     //REFRESH CLIENT LIST
     public void refreshClientlist(){
-        System.out.println("refresh");
 
         clientlist.getSelectionModel().clearSelection();
 
         clientlist.setItems(this.trafficController.getClientObervableList());
-        System.out.println(this.trafficController.getClientObervableList());
+
     }
 
     public TableView<Client> getClientlist() {

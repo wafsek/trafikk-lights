@@ -3,9 +3,12 @@ import com.sun.org.apache.xml.internal.utils.ThreadControllerWrapper;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import logging.CustomLogger;
 import server.Terminal;
 import server.TrafficController;
 import server.TrafficServer;
+
+import java.util.logging.Level;
 
 /**
  * Created by Baljit Singh Sarai on 01.02.16.
@@ -13,7 +16,7 @@ import server.TrafficServer;
  */
 public class ServerMain extends Application{
     private static Thread terminal;
-
+    private CustomLogger logger = CustomLogger.getInstance();
 
     public static void main(String[] args){
         launch(args);
@@ -21,11 +24,10 @@ public class ServerMain extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println("Welcome to the traffic light program");
+        this.logger.log("Welcome to the traffic light program", Level.INFO);
         TrafficController trafficController = new TrafficController();
         trafficController.start(primaryStage);
         terminal = new Terminal();
         terminal.start();
-
     }
 }

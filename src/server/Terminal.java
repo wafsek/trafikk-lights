@@ -1,7 +1,10 @@
 package server;
 
+import logging.CustomLogger;
+
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 /**
  * Created by Baljit Singh Sarai on 01.02.16.
@@ -10,11 +13,12 @@ import java.util.Scanner;
 public class Terminal extends Thread {
     Scanner scanner;
     String input;
+    private CustomLogger logger = CustomLogger.getInstance();
 
 
     public void run(){
         scanner = new Scanner(System.in);
-        System.out.println("The Terminal window Traffic Light System v1.0");
+        this.logger.log("The Terminal window Traffic Light System v1.0", Level.INFO);
         while (true) {
             input = scanner.next();
             switch (input) {

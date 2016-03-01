@@ -1,9 +1,12 @@
 package server;
+import logging.CustomLogger;
+
 import java.awt.geom.Arc2D;
 import java.net.*;
 import java.io.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 
 
 /**
@@ -17,7 +20,7 @@ public class TrafficServer extends Thread{
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
-    private final int MESSAGE_SIZE =10;
+    private final int MESSAGE_SIZE =20;
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
 
@@ -31,6 +34,7 @@ public class TrafficServer extends Thread{
     private Thread clientHandler;
     private boolean stopped = false;
     private String[] commands = new String[10];
+    private CustomLogger logger = CustomLogger.getInstance();
 
 
     /**
@@ -65,6 +69,7 @@ public class TrafficServer extends Thread{
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
+        this.logger.log("Serving forver", Level.INFO);
         trafficService = new ServiceQueue(SERVICESWORKERS);
         socketTerminator = new ServiceQueue(TERMINATORS);
         while (!stopped) {
@@ -83,7 +88,7 @@ public class TrafficServer extends Thread{
                         ));
                     }
                 }catch (IOException ioe){
-                    System.out.println("Something on this socket is not right :)");
+                    this.logger.log("Something on this socket is not right :)",Level.FINE);
                     socketTerminator.execute(new SocketTerminate(this,client,ioe));
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for
@@ -99,7 +104,6 @@ public class TrafficServer extends Thread{
         String result = "Something unexpected happend";
         DataControl dataControl;
         byte[] data;
-
         if(msg.charAt(0) == '/'){
             dataControl = this.validateCommand(msg.substring(1),client);
             if(dataControl.equals(DataControl.SUCCESS)){
@@ -160,9 +164,6 @@ public class TrafficServer extends Thread{
                 result = "Server -> all clients :"+msg;
                 break;
             }
-            default:{
-                System.out.println("whatever");
-            }
         }
         return result;
     }
@@ -176,7 +177,7 @@ public class TrafficServer extends Thread{
             try{
                 client.getDataOutputStream().write(data);
             }catch (IOException ioe){
-                System.out.println("Something on this socket is not right :)");
+                this.logger.log("Something on this socket is not right :)",Level.FINE);
                 socketTerminator.execute(new SocketTerminate(this,client,ioe));
                 //This task Should be given to the socketTerminator that
                 // i have made above as the server must go on and can not wait for
@@ -196,7 +197,7 @@ public class TrafficServer extends Thread{
         try{
             client.getDataOutputStream().write(data);
         }catch (IOException ioe){
-            System.out.println("Something on this socket is not right :)");
+            this.logger.log("Something on this socket is not right :)",Level.FINE);
             socketTerminator.execute(new SocketTerminate(this,client,ioe));
             //This task Should be given to the socketTerminator that
             // i have made above as the server must go on and can not wait for
@@ -211,8 +212,8 @@ public class TrafficServer extends Thread{
      * Attempts a clean shutdown. Terminates finally
      */
     public void shutdown(){
-        System.out.println("Initiating Shutdown");
-        System.out.println("Closing all the connections...");
+        this.logger.log("Initiating Shutdown",Level.INFO);
+        this.logger.log("Closing all the connections...",Level.INFO);
         //Close all the sockets and then remove the clients they belong to.
         for(Client client: clientArrayList){
             try{
@@ -223,10 +224,9 @@ public class TrafficServer extends Thread{
             clientArrayList.add(client);
         }
 
-        this.trafficService = null;
         this.socketTerminator = null;
 
-        System.out.println("Closing socket");
+        this.logger.log("Closing Socket",Level.INFO);
         try{
             this.serverSocket.close();
             System.exit(0);
@@ -247,7 +247,8 @@ public class TrafficServer extends Thread{
             try{
                 trafficServer = new TrafficServer(12345);
             }catch (IOException e){
-                System.out.println("Could not create the server instance");
+                CustomLogger.getInstance().log("Could not create the server instance",Level.SEVERE);
+
             }
         }
         return trafficServer;
