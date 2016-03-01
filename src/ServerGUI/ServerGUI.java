@@ -31,6 +31,7 @@ import java.io.IOException;
 public class ServerGUI{
 
     private ScrollPane terminalwindow,loggWindow;
+    private TextArea logg;
     private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
@@ -109,9 +110,11 @@ public class ServerGUI{
         this.refreshClientlist();
 
         //Loggwindow
-        loggWindow = new ScrollPane();
+        logg = new TextArea();
+        logg.setPrefSize(1100,220);
+        logg.setEditable(false);
+        loggWindow = new ScrollPane(logg);
 
-        loggWindow.setPrefSize(1000,300);
 
         valueoption = new VBox();
         nameoption = new VBox();
@@ -255,5 +258,8 @@ public class ServerGUI{
 
     public TableView<Client> getClientlist() {
         return clientlist;
+    }
+    public void refreshLog(String loggtext){
+       logg.appendText(loggtext+"\n");
     }
 }
