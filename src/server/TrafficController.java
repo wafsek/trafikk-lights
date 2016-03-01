@@ -18,6 +18,7 @@ public class TrafficController extends Application{
     private Stage stage;
     private TrafficServer trafficServer;
     private ObservableList clientObervableList;
+    private Client reciver;
 
     public TrafficController(){
 
@@ -36,13 +37,18 @@ public class TrafficController extends Application{
 
 
     public void handleInput(String input){
-        Client client = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
-        if(client != null){
-            send(client.getName(),input);
+        this.reciver = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
+        if(reciver != null){
+            send(reciver.getName(),input);
         }else{
             broadcast(input);
         }
     }
+
+    public Client getReciver(){
+        return this.reciver;
+    }
+
 
     public void send(String id,String msg){
         this.trafficServer.messageRequest(msg,false);
