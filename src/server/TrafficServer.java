@@ -116,9 +116,9 @@ public class TrafficServer extends Thread{
         byte[] result = {0,0,0,0,0};
         switch (command){
             case "time":{
-                if(){
+              /*  if(){
 
-                }
+                }*/
             }
             default:{
                 System.out.println("whatever");

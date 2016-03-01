@@ -30,8 +30,8 @@ import java.io.IOException;
  */
 public class ServerGUI{
 
-    private ScrollPane terminalwindow,loggWindow;
-    private TextArea logg;
+    private ScrollPane commandWindow,loggWindow;
+    private TextArea logg,command;
     private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
@@ -92,8 +92,10 @@ public class ServerGUI{
 
         greenLabel = new Label(String.format("%.0f",redslider.getValue()));
 
-        terminalwindow = new ScrollPane();
-        terminalwindow.setPrefSize(1000,300);
+        command = new TextArea();
+        command.setPrefSize(1100,220);
+        commandWindow = new ScrollPane(command);
+
 
         clientlist = new TableView();
 
@@ -169,7 +171,7 @@ public class ServerGUI{
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,terminalwindow,serverInput,loggWindow,buttons);
+        left.getChildren().addAll(lightoption,commandWindow,serverInput,loggWindow,buttons);
 
 
         bpane.setLeft(left);
@@ -261,5 +263,8 @@ public class ServerGUI{
     }
     public void refreshLog(String loggtext){
        logg.appendText(loggtext+"\n");
+    }
+    public void refreshCommand(String commandtext){
+        command.appendText(commandtext);
     }
 }
