@@ -86,9 +86,6 @@ public class ClientSocket extends Thread{
         while(conntected) {
             try{
                 this.dis.read(content, 0, 10);
-                for(int i = 0; i < 10; i++) {
-                    System.out.println(content[i]);
-                }
                 handle(content);
             } catch(IOException ioe) {
                 disconnectSocket();
@@ -116,13 +113,6 @@ public class ClientSocket extends Thread{
             System.out.println(content[1]);
             readCommand(Arrays.copyOfRange(content, 2, (content[1]+2)));
         }
-
-        /*System.out.println(s);
-        String[] a = s.split(",");
-        System.out.println(Arrays.toString(a));
-
-        int[] ab = {Integer.parseInt(a[0]), Integer.parseInt(a[1]), Integer.parseInt(a[2])};
-        Platform.runLater(() -> clientController.changeLightSequence(ab[0], ab[1], ab[2]));*/
     }
 
     private void readCommand(byte[] content) {
@@ -136,7 +126,11 @@ public class ClientSocket extends Thread{
             }
         }
         else if(command.equals(COMMANDS[1])) {
-            setLightRoutine((int)content[2]*1000, (int)content[3]*1000, (int)content[4]*1000);
+            if((int)content[3] < 2) {
+                setLightRoutine((int)content[2]*1000, 2000, (int)content[4]*1000);
+            } else {
+                setLightRoutine((int)content[2]*1000, (int)content[3]*1000, (int)content[4]*1000);
+            }
         }
     }
 
