@@ -27,11 +27,10 @@ public class TrafficController extends Application{
 
     public void start(Stage stage){
         this.stage = stage;
-
-            this.trafficServer = TrafficServer.getInstance();
-            this.trafficServer.start();
-            ServerGUI serverGUI = new ServerGUI(this,this.stage);
-            serverGUI.run();
+        this.trafficServer = TrafficServer.getInstance();
+        this.trafficServer.start();
+        serverGUI = new ServerGUI(this,this.stage);
+        serverGUI.run();
 
     }
 

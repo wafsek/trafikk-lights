@@ -50,7 +50,7 @@ public class TrafficServer extends Thread{
      * Starts the main server.
      */
     public void run() {
-
+        this.commands[0] = "time";
         //this.clientArrayList.add(new Client(new Socket()));
         clientHandler = new ClientHandler(this,this.serverSocket);
         clientHandler.start(); //Starts accepting incoming connections.
@@ -112,7 +112,7 @@ public class TrafficServer extends Thread{
     public  DataControl validateCommand(String command,Client client){
         boolean found = false;
         for(String co: this.commands){
-            if(co.equals(command)){
+            if(co != null && co.equals(command)){
                 found = true;
             }
         }
