@@ -18,6 +18,8 @@ public class TrafficServer extends Thread{
     private final int TERMINATORS = Config.getTerminators();
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
+
+
     //Variables
     private ServerSocket serverSocket ;
     private static TrafficServer trafficServer;
@@ -91,19 +93,32 @@ public class TrafficServer extends Thread{
 
     public void messageRequest(String msg,boolean broadcast){
         String command;
+        DataControl dataControl;
         byte[] data;
         if(msg.charAt(0) == '/'){
-            this.command(msg.substring(1));
+            dataControl = this.validateCommand(msg.substring(1));
+            if(dataControl.equals(DataControl.SUCCESS)){
+                this.command(msg.substring(1));
+            }
         }
+        
+        System.out.println("this where i print the result on the screen");
+
     }
 
+
+    public  DataControl validateCommand(String command){
+        return DataControl.SUCCESS;
+    }
 
 
     public byte[] command(String command){
         byte[] result = {0,0,0,0,0};
         switch (command){
             case "time":{
-                
+                if(){
+
+                }
             }
             default:{
                 System.out.println("whatever");
