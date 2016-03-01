@@ -81,11 +81,11 @@ public class ClientSocket extends Thread{
      * Initializes running loop
      */
     private void startSocket() {
-        byte[] content = new byte[10];
+        byte[] content = new byte[20];
         conntected = true;
         while(conntected) {
             try{
-                this.dis.read(content, 0, 10);
+                this.dis.read(content, 0, 20);
                 handle(content);
             } catch(IOException ioe) {
                 disconnectSocket();
