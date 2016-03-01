@@ -1,6 +1,8 @@
 package logging;
 import java.io.IOException;
 import java.util.logging.*;
+
+import ServerGUI.ServerGUI;
 import server.Config;
 /**
  * Created by Baljit Singh Sarai on 01.03.16.
@@ -60,8 +62,16 @@ public class CustomLogger {
         }
     }
 
+    public void setTextOutput(){
+
+    }
+
+    public void addTextAreaLog(ServerGUI serverGUI){
+        this.logger.addHandler(new CustomHandler(serverGUI,Level.INFO));
+    }
+
     private void setLoggerLevel(Level loggerLevel) {
-        this.logger.setLevel(Level.FINEST);
+        this.logger.setLevel(loggerLevel);
     }
 
 

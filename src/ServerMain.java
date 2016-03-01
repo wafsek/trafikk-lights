@@ -24,7 +24,7 @@ public class ServerMain extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.logger.log("Welcome to the traffic light program", Level.INFO);
+
         TrafficController trafficController = new TrafficController();
         trafficController.start(primaryStage);
         terminal = new Terminal();

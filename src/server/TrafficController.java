@@ -5,9 +5,9 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import logging.CustomLogger;
 
-import java.io.IOException;
-import java.util.AbstractList;
+import java.util.logging.Level;
 
 /**
  * Created by Baljit Singh Sarai on 25.02.16.
@@ -21,6 +21,7 @@ public class TrafficController extends Application{
     private TrafficServer trafficServer;
     private ObservableList clientObervableList;
     private Client reciver;
+    private CustomLogger logger = CustomLogger.getInstance();
 
     public TrafficController(){
 
@@ -29,10 +30,12 @@ public class TrafficController extends Application{
 
     public void start(Stage stage){
         this.stage = stage;
+        serverGUI = new ServerGUI(this,this.stage);
+        this.logger.addTextAreaLog(this.serverGUI);
+        serverGUI.run();
+        this.logger.log("Welcome to the traffic light program", Level.INFO);
         this.trafficServer = TrafficServer.getInstance();
         this.trafficServer.start();
-        serverGUI = new ServerGUI(this,this.stage);
-        serverGUI.run();
 
     }
 

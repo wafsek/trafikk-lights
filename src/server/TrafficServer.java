@@ -69,7 +69,7 @@ public class TrafficServer extends Thread{
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
-        this.logger.log("Serving forver", Level.INFO);
+        this.logger.log("Serving forver", Level.FINE);
         trafficService = new ServiceQueue(SERVICESWORKERS);
         socketTerminator = new ServiceQueue(TERMINATORS);
         while (!stopped) {

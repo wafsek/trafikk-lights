@@ -265,6 +265,11 @@ public class ServerGUI{
     public void refreshLog(String loggtext){
        logg.appendText(loggtext+"\n");
     }
+
+    public TextArea getLogg(){
+        return logg;
+    }
+
     public void refreshCommand(String commandtext){
         command.appendText(commandtext);
     }
