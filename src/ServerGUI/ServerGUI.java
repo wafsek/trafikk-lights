@@ -146,6 +146,8 @@ public class ServerGUI{
 
             if (e.getCode() == KeyCode.ENTER) {
                 this.trafficController.handleInput(serverInput.getText());
+                serverInput.clear();
+                this.refreshClientlist();
                 /*Client clienttest = clientlist.getSelectionModel().getSelectedItem();
                 String text = serverInput.getText();
                 if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
