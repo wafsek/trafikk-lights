@@ -11,6 +11,8 @@ import java.util.AbstractList;
 
 /**
  * Created by Baljit Singh Sarai on 25.02.16.
+ * @author Baljit Singh Sarai
+ * @author Kim Long Vu
  */
 public class TrafficController extends Application{
 
@@ -42,8 +44,9 @@ public class TrafficController extends Application{
         times[1] = this.serverGUI.getYellowslider().getValue();
         times[2] = this.serverGUI.getGreenslider().getValue();
         this.reciver = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
-        this.trafficServer.messageRequest(input,this.reciver,times);
+        result = this.trafficServer.messageRequest(input,this.reciver,times);
 
+        this.serverGUI.refreshCommand(result+"\n");
 
 
         /*if(reciver != null){

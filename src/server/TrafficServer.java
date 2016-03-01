@@ -51,6 +51,7 @@ public class TrafficServer extends Thread{
      */
     public void run() {
         this.commands[0] = "time";
+        this.commands[1] = "timeall";
         //this.clientArrayList.add(new Client(new Socket()));
         clientHandler = new ClientHandler(this,this.serverSocket);
         clientHandler.start(); //Starts accepting incoming connections.
@@ -145,7 +146,8 @@ public class TrafficServer extends Thread{
                 msg[5] = times[1].byteValue();
                 msg[6] = times[2].byteValue();
                 this.send(client,msg);
-                result = "Server -> "+client.getName()+": "+msg;
+                result = "Server -> "+client.getName()+": "+command+" "+msg[4]+msg[5]+msg[6]+"\n";
+                break;
             }
             case "timeall":{
                 msg[1] = 5;
@@ -156,6 +158,7 @@ public class TrafficServer extends Thread{
                 msg[6] = times[2].byteValue();
                 this.broardcast(msg);
                 result = "Server -> all clients :"+msg;
+                break;
             }
             default:{
                 System.out.println("whatever");
