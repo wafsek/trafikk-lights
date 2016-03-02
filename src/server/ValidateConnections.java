@@ -97,8 +97,6 @@ public class ValidateConnections implements Runnable{
 
     public boolean checkHandshakeMsg(byte[] msg,int no){
         String handshake = this.handshakeArray[no];
-        System.out.println(handshake.length());
-        System.out.println(msg[1]);
         if(msg[1] != handshake.length()){
             this.logger.log("Handshake message validating failed at length",Level.FINER);
             return false;
