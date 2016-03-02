@@ -8,6 +8,7 @@ package server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * This class is going to set all configurations of the program.
@@ -120,6 +121,37 @@ public class Config {
      */
     public static String getApplicationName() {
         return getProperties().getProperty("applicationName");
+    }
+
+    public static Level getGuiLoggingLevel(){
+        String guilevel = getProperties().getProperty("guiLoggingLevel");;
+
+        switch (guilevel){
+            case "severe":{
+                return  Level.SEVERE;
+            }
+            case "warning":{
+                return Level.WARNING;
+            }
+            case "info":{
+                return Level.INFO;
+            }
+            case "config":{
+                return Level.CONFIG;
+            }
+            case "fine":{
+                return Level.FINE;
+            }
+            case "finer":{
+                return Level.FINER;
+            }
+            case "finest":{
+                return Level.FINEST;
+            }
+            default:{
+                return Level.INFO;
+            }
+        }
     }
 
     /**

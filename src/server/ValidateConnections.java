@@ -69,8 +69,9 @@ public class ValidateConnections implements Runnable{
                 this.socket.close();
                 return;
             }
+            this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINEST);
             out.write(this.handshakeMsg);
-
+            this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINEST);
             in.read(msgRecieved,0,20);
             if(this.checkHandshakeMsg(msgRecieved,2)){
                 count++;
@@ -95,14 +96,17 @@ public class ValidateConnections implements Runnable{
     public boolean checkHandshakeMsg(byte[] msg,int no){
         String handshake = this.handshakeArray[no];
         if(msg[1] != handshake.length()){
+            this.logger.log("Handshake message validating failed",Level.FINER);
             return false;
         }else{
             for(int i = 0;i<msg[1];i++){
                 if(handshake.charAt(i)!=msg[i+OFFSET]){
+                    this.logger.log("Handshake message validating failed",Level.FINER);
                     return false;
                 }
             }
         }
+        this.logger.log("Handshake message validating passed",Level.FINER);
         return true;
     }
 
