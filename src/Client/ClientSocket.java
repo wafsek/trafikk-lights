@@ -63,7 +63,11 @@ public class ClientSocket extends Thread{
         byte[] content = toByteArray(handshake, 3);
         dos.write(content);
         clearBuffer(content);
-        dis.read(content, 0, BUFFERSIZE);
+        int bytesRead = dis.read(content, 0, BUFFERSIZE);
+        if(bytesRead == -1) {
+            throw new IOException("Connection was cut");
+        }
+
         if(!compare(content)) {
             throw new IOException("Invalid handshake");
         }
