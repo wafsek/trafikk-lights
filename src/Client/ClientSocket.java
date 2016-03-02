@@ -37,16 +37,20 @@ public class ClientSocket extends Thread{
         this.clientController = clientController;
     }
 
-    public void connect(String host, int portNumber) {
+    public boolean connect(String host, int portNumber) {
         try {
             this.host = host;
             this.portNumber = portNumber;
             socket = new Socket(this.host, this.portNumber);
-            dos = new DataOutputStream(socket.getOutputStream());
-            dis = new DataInputStream(socket.getInputStream());
+            if(socket != null) {
+                dos = new DataOutputStream(socket.getOutputStream());
+                dis = new DataInputStream(socket.getInputStream());
+                return true;
+            }
         } catch(IOException ioe) {
             System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].");
         }
+        return false;
     }
 
     /**
