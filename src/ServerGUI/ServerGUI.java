@@ -40,7 +40,6 @@ public class ServerGUI{
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
-    private Button startServer,stopServer,refreshClientList,sendServerInput;
     private TrafficController trafficController;
     private static final int SCENE_WIDTH = 1400;
     private static final int SCENE_HEIGTH = 900;
@@ -114,17 +113,6 @@ public class ServerGUI{
         slideroption = new VBox();
         lightoption = new HBox();
 
-
-        //Start knapp
-        startServer = new Button("START SERVER");
-        startServer.setOnAction(e -> startServer());
-        stopServer = new Button("STOP SERVER");
-        stopServer.setOnAction(e-> shutdownServer());
-        refreshClientList = new Button("REFRESH CLIENTLIST");
-        refreshClientList.setOnAction(e-> this.refreshClientlist());
-        HBox buttons = new HBox();
-        buttons.getChildren().addAll(startServer,stopServer,refreshClientList);
-
         BorderPane bpane = new BorderPane();
 
         //Serverinput
@@ -162,7 +150,7 @@ public class ServerGUI{
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,commandWindow,serverInput,loggWindow,buttons);
+        left.getChildren().addAll(lightoption,commandWindow,serverInput,loggWindow);
 
 
         bpane.setLeft(left);

@@ -53,3 +53,11 @@
 [FINE|Wed Mar 02 17:46:22 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
 [INFO|Wed Mar 02 17:46:22 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
 [INFO|Wed Mar 02 17:46:23 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 18:22:32 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 18:22:32 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 18:22:32 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 18:22:33 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 18:50:12 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 18:50:12 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 18:50:12 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 18:50:12 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
