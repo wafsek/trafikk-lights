@@ -37,8 +37,6 @@ public class ServerGUI{
     private Stage stage;
     private Label redLabel,yellowLabel,greenLabel;
     private TextField serverInput;
-    private RadioButton red, yellow, green;
-    private ToggleGroup colourGroup;
     private VBox left,nameoption,coloroption, slideroption, valueoption;
     private HBox lightoption;
     private Slider redslider, yellowslider, greenslider;
@@ -58,18 +56,7 @@ public class ServerGUI{
         Label greenname = new Label("GREEN");
 
 
-        colourGroup = new ToggleGroup();
-        red = new RadioButton();
-        red.setToggleGroup(colourGroup);
 
-        red.setOnAction(e-> redRadioButtonAction());
-        yellow = new RadioButton();
-        yellow.setToggleGroup(colourGroup);
-        yellow.setOnAction(e->yellowRadioButtonAction());
-        green = new RadioButton();
-        green.setToggleGroup(colourGroup);
-
-        green.setOnAction(e->greenRadioButtonAction());
 
         redslider = new Slider(0,100,50);
 
@@ -92,9 +79,11 @@ public class ServerGUI{
 
         greenLabel = new Label(String.format("%.0f",redslider.getValue()));
 
-        command = new TextArea();
+        command = new TextArea("Command Transcations:\n");
+        command.setEditable(false);
         command.setPrefSize(1100,220);
         commandWindow = new ScrollPane(command);
+
 
 
         clientlist = new TableView();
@@ -169,10 +158,10 @@ public class ServerGUI{
         });
 
         nameoption.getChildren().addAll(redname,yellowname,greenname);
-        coloroption.getChildren().addAll(red,yellow,green);
+
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
-        lightoption.getChildren().addAll(nameoption,coloroption,slideroption,valueoption);
+        lightoption.getChildren().addAll(nameoption,slideroption,valueoption);
         left.getChildren().addAll(lightoption,commandWindow,serverInput,loggWindow,buttons);
 
 
@@ -217,16 +206,7 @@ public class ServerGUI{
         return (int)greenslider.getValue();
     }
 
-    //RADIOBUTTONACTIONS
-    public void redRadioButtonAction(){
-        //DO SOMETHING WITH THE RED RADIO BUTTON
-    }
-    public void yellowRadioButtonAction(){
-        //DO SOMETHING WITH THE yellow RADIO BUTTON
-    }
-    public void greenRadioButtonAction(){
-        //DO SOMETHING WITH THE green RADIO BUTTON
-    }
+
     //SLIDERACTIONS
     public void redSliderAction(){
         redLabel.setText(String.format("%.0f",redslider.getValue()));
@@ -261,9 +241,6 @@ public class ServerGUI{
 
     public TableView<Client> getClientlist() {
         return clientlist;
-    }
-    public void refreshLog(String loggtext){
-       logg.appendText(loggtext+"\n");
     }
 
     public TextArea getLogg(){

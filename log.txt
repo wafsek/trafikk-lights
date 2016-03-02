@@ -25,3 +25,31 @@
 [FINE|Wed Mar 02 17:03:17 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
 [INFO|Wed Mar 02 17:03:17 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
 [INFO|Wed Mar 02 17:03:18 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:16:47 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:16:47 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:16:47 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:16:48 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:16:55 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:16:55 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:16:55 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:16:56 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:35:44 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:35:44 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:35:44 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:35:45 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:39:35 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:39:35 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:39:35 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:39:36 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:41:56 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:41:56 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:41:56 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:41:56 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:42:18 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:42:18 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:42:18 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:42:18 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
+[INFO|Wed Mar 02 17:46:22 CET 2016]: server.TrafficController| In Method -> start | : Welcome to the traffic light program
+[FINE|Wed Mar 02 17:46:22 CET 2016]: server.TrafficServer| In Method -> serverForever | : Serving forver
+[INFO|Wed Mar 02 17:46:22 CET 2016]: server.ClientHandler| In Method -> run | : Waiting for client on port12345...
+[INFO|Wed Mar 02 17:46:23 CET 2016]: server.Terminal| In Method -> run | : The Terminal window Traffic Light System v1.0
