@@ -32,13 +32,16 @@ public class TrafficController extends Application{
         this.stage = stage;
         this.logger.log("Welcome to the traffic light program", Level.INFO);
         this.trafficServer = TrafficServer.getInstance();
+        this.trafficServer.setTrafficController(this);
         this.trafficServer.start();
         serverGUI = new ServerGUI(this,this.stage);
         this.logger.addTextAreaLog(this.serverGUI);
         serverGUI.run();
-
     }
 
+    public ServerGUI getServerGUI() {
+        return serverGUI;
+    }
 
     public void handleInput(String input){
         String result;

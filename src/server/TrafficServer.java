@@ -35,6 +35,7 @@ public class TrafficServer extends Thread{
     private boolean stopped = false;
     private String[] commands = new String[10];
     private CustomLogger logger = CustomLogger.getInstance();
+    private TrafficController trafficController;
 
 
     /**
@@ -48,7 +49,9 @@ public class TrafficServer extends Thread{
         //serverSocket.setSoTimeout(100);
     }
 
-
+    public void setTrafficController(TrafficController trafficController) {
+        this.trafficController = trafficController;
+    }
 
     /**
      * Starts the main server.
@@ -79,6 +82,7 @@ public class TrafficServer extends Thread{
             } catch (InterruptedException ie) {
                 //This should be handled properly --Sarai:P
             }
+            this.trafficController.getServerGUI().refreshClientlist();
             //System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{

@@ -58,14 +58,14 @@ public class ClientHandler extends Thread {
                 // should be removed later. very important.
                 //It bypasses the security and is only going to be used
                 // in the developing time.
-                trafficServer.clientArrayList.add(new Client(clientSocket));
+                //trafficServer.clientArrayList.add(new Client(clientSocket));
                 //System.out.println(TrafficServer.getInstance().clientArrayList.size());
 
 
                 ///////////////////////////////////////
 
 
-                //validatingService.execute(new ValidateConnections(clientSocket));
+                validatingService.execute(new ValidateConnections(clientSocket));
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");
