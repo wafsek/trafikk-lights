@@ -63,17 +63,19 @@ public class ValidateConnections implements Runnable{
             in = new DataInputStream(socket.getInputStream());
 
             in.read(msgRecieved,0,20);
-            if(this.checkHandshakeMsg(msgRecieved,1)){
+            if(this.checkHandshakeMsg(msgRecieved,0)){
                 count++;
             }else{
                 this.socket.close();
                 return;
             }
-            this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINEST);
+
+            this.clearBuffer(msgRecieved);
+            this.logger.log("Trying to write back the handshake msg to the client ",Level.FINEST);
             out.write(this.handshakeMsg);
-            this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINEST);
+            this.logger.log("written  the handshake feedback to the client",Level.FINEST);
             in.read(msgRecieved,0,20);
-            if(this.checkHandshakeMsg(msgRecieved,2)){
+            if(this.checkHandshakeMsg(msgRecieved,1)){
                 count++;
             }else{
                 this.socket.close();
@@ -95,8 +97,10 @@ public class ValidateConnections implements Runnable{
 
     public boolean checkHandshakeMsg(byte[] msg,int no){
         String handshake = this.handshakeArray[no];
+        System.out.println(handshake.length());
+        System.out.println(msg[1]);
         if(msg[1] != handshake.length()){
-            this.logger.log("Handshake message validating failed",Level.FINER);
+            this.logger.log("Handshake message validating failed at length",Level.FINER);
             return false;
         }else{
             for(int i = 0;i<msg[1];i++){
@@ -108,6 +112,12 @@ public class ValidateConnections implements Runnable{
         }
         this.logger.log("Handshake message validating passed",Level.FINER);
         return true;
+    }
+
+    private void clearBuffer(byte[] buffer){
+        for(int i = 0;i<buffer.length;i++){
+            buffer[i] = 0;
+        }
     }
 
 }
