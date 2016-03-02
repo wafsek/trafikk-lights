@@ -1,6 +1,7 @@
 package logging;
 
 import ServerGUI.ServerGUI;
+import javafx.application.Platform;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ public class CustomHandler extends Handler {
     @Override
     public void publish(LogRecord record) {
         if(this.getLevel().intValue() <= record.getLevel().intValue()){
-            this.serverGUI.getLogg().appendText(record.getMessage()+"\n");
+            Platform.runLater(() -> this.serverGUI.getLogg().appendText(record.getMessage() + "\n"));
         }
     }
 

@@ -16,11 +16,12 @@ public class ClientController {
     }
 
     public void requestConnection(String handshake, String host, int portNumber) {
+        boolean connected = false;
         clientSocket = new ClientSocket(this);
         if(this.clientSocket instanceof ClientSocket){
-            ((ClientSocket)this.clientSocket).connect(host, portNumber);
+            connected = ((ClientSocket)this.clientSocket).connect(host, portNumber);
         }
-        clientSocket.start();
+        if(connected) clientSocket.start();
     }
 
     public void changeLightSequence(int red, int yellow, int green) {
