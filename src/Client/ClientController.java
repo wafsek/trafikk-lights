@@ -11,7 +11,7 @@ public class ClientController {
     private Thread clientSocket;
     private ClientGUI clientGUI;
 
-    public ClientController(Stage primaryStage, String host, int portNumber) {
+    public ClientController(Stage primaryStage) {
         clientGUI = new ClientGUI(primaryStage, this);
     }
 
@@ -19,7 +19,7 @@ public class ClientController {
         boolean connected = false;
         clientSocket = new ClientSocket(this);
         if(this.clientSocket instanceof ClientSocket){
-            connected = ((ClientSocket)this.clientSocket).connect(host, portNumber);
+            connected = ((ClientSocket)this.clientSocket).connect(host, portNumber, handshake);
         }
         if(connected) clientSocket.start();
     }

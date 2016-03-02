@@ -12,13 +12,10 @@ public class ClientMain extends Application{
 
 
     public static void main(String... args) {
-
         launch(args);
     }
 
     public void start(Stage primaryStage) {
-        new ClientController(primaryStage, "localhost", 12345);
-
-
+        new ClientController(primaryStage);
     }
 }

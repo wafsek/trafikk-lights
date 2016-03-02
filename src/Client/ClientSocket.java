@@ -1,13 +1,14 @@
 package Client;
 
-import javafx.application.Platform;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.control.TextInputDialog;
 
-import javax.activity.InvalidActivityException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -15,19 +16,19 @@ import java.util.Scanner;
  */
 public class ClientSocket extends Thread{
 
-    private Scanner scanner = new Scanner(System.in);
-    private String handshake = "abc";
-    private String expected = "bca";
-    private String secondHandShake = "Connect plz";
-    private DataInputStream dis ;
+    private DataInputStream dis;
     private Socket socket;
     private DataOutputStream dos;
     private String host;
     private int portNumber;
+    private TextInputDialog tid;
     private ClientController clientController;
     private static final String[] COMMANDS = {"CC", "TM"};
     private static final byte[] PING = {0,2,67,67,0,0,0,0,0,0};
+    private final int OFFSET = 2;
+    private final String expected = "secret";
     private boolean conntected;
+    private final int BUFFERSIZE = 20;
 
 
     /**
@@ -35,9 +36,12 @@ public class ClientSocket extends Thread{
      */
     public ClientSocket(ClientController clientController) {
         this.clientController = clientController;
+        tid = new TextInputDialog();
+        tid.setTitle("Second Handshake");
+        tid.setContentText("Please enter the second handshake");
     }
 
-    public boolean connect(String host, int portNumber) {
+    public boolean connect(String host, int portNumber, String handshake) {
         try {
             this.host = host;
             this.portNumber = portNumber;
@@ -45,31 +49,54 @@ public class ClientSocket extends Thread{
             if(socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
+                handshake(handshake);
                 return true;
             }
         } catch(IOException ioe) {
-            System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].");
+            System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].\n");
+            ioe.printStackTrace();
         }
         return false;
     }
 
-    /**
-     * Hand shake protocol
-     */
-    /*public void handShake(String handshake) {
-        try {
-            String i = scanner.nextLine();
-            dos.writeUTF(i);
-            i = dis.readUTF();
-            if(i.equals(expected)) {
-                dos.writeUTF(secondHandShake);
-            } else {
-                throw new InvalidActivityException(i + " is an invalid command!");
-            }
-        } catch(IOException ioe) {
-            System.out.println("Could not send message: " + handshake);
+    private boolean handshake(String handshake) throws IOException{
+        byte[] content = toByteArray(handshake, 3);
+        dos.write(content);
+        dis.read(content, 0, BUFFERSIZE);
+        compare(content);
+        if(!compare(content)) {
+            throw new IOException("Invalid handshake");
         }
-    }*/
+
+        Optional<String> hs_two = tid.showAndWait();
+        if(hs_two.isPresent()) {
+            content = toByteArray(hs_two.toString(), 3);
+            dos.write(content);
+        } else {
+            throw new IOException("Not valid input");
+        }
+
+        return true;
+    }
+
+    private byte[] toByteArray(String handshake, int commandType) {
+        byte[] content = new byte[BUFFERSIZE];
+        content[0] = (byte)commandType;
+        content[1] = (byte)handshake.length();
+        for(int i = 0; i < handshake.length(); i++) {
+            content[i+OFFSET] = (byte)handshake.charAt(i);
+        }
+        return content;
+    }
+
+    private boolean compare(byte[] content) {
+        for(int i = 0; i < content[1]; i++) {
+            if(expected.charAt(i) != content[i+OFFSET]) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Sets the new light routine for the controller
@@ -104,7 +131,7 @@ public class ClientSocket extends Thread{
 
     /**
      * Handles input from the user via switch-case
-     * @param s
+     * @param content
      * @return an appropriate String to the input.
      */
     private void handle(byte[] content) {
