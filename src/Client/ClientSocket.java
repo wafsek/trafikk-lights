@@ -64,11 +64,6 @@ public class ClientSocket extends Thread{
         dos.write(content);
         clearBuffer(content);
         dis.read(content, 0, BUFFERSIZE);
-        for(int i = OFFSET; i < 20; i++) {
-            System.out.println("Derp");
-            System.out.print((char)content[i]);
-            System.out.println(Arrays.toString(content));
-        }
         if(!compare(content)) {
             throw new IOException("Invalid handshake");
         }
