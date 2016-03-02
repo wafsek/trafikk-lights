@@ -62,8 +62,8 @@ public class ClientSocket extends Thread{
     private boolean handshake(String handshake) throws IOException{
         byte[] content = toByteArray(handshake, 3);
         dos.write(content);
+        clearBuffer(content);
         dis.read(content, 0, BUFFERSIZE);
-        compare(content);
         if(!compare(content)) {
             throw new IOException("Invalid handshake");
         }
@@ -91,11 +91,18 @@ public class ClientSocket extends Thread{
 
     private boolean compare(byte[] content) {
         for(int i = 0; i < content[1]; i++) {
-            if(expected.charAt(i) != content[i+OFFSET]) {
+            System.out.println(expected.charAt(i) + " " + (char)content[i+OFFSET]);
+            if(expected.charAt(i) != (char)content[i+OFFSET]) {
                 return false;
             }
         }
         return true;
+    }
+
+    private void clearBuffer(byte[] content) {
+        for(int i = 0; i < 20; i++) {
+            content[i] = 0;
+        }
     }
 
     /**
