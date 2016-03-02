@@ -67,7 +67,7 @@ public class CustomLogger {
     }
 
     public void addTextAreaLog(ServerGUI serverGUI){
-        this.logger.addHandler(new CustomHandler(serverGUI,Level.INFO));
+        this.logger.addHandler(new CustomHandler(serverGUI,Config.getGuiLoggingLevel()));
     }
 
     private void setLoggerLevel(Level loggerLevel) {
