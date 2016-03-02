@@ -75,7 +75,7 @@ public class ClientSocket extends Thread{
 
         Optional<String> hs_two = tid.showAndWait();
         if(hs_two.isPresent()) {
-            content = toByteArray(hs_two.toString(), 3);
+            content = toByteArray(hs_two.get(), 3);
             dos.write(content);
         } else {
             throw new IOException("Not valid input");
