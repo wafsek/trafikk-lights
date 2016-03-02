@@ -49,6 +49,8 @@ public class ValidateConnections implements Runnable{
         int msgIndex = 2;
         boolean clientAdded;
         byte[] msgRecieved= new byte[20];
+        this.handshakeMsg[0] = 3;
+        this.handshakeMsg[1] = (byte)this.handshakeString.length();
         for(int i = 0;i < this.handshakeString.length();i++){
             this.handshakeMsg[i+OFFSET] =(byte)this.handshakeString.charAt(i);
         }
