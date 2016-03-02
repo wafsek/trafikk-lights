@@ -24,7 +24,7 @@ public class ServerMain extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        primaryStage.setOnCloseRequest(e->System.exit(0));
         TrafficController trafficController = new TrafficController();
         trafficController.start(primaryStage);
         terminal = new Terminal();
