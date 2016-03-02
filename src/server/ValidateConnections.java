@@ -69,7 +69,6 @@ public class ValidateConnections implements Runnable{
                 this.socket.close();
                 return;
             }
-
             out.write(this.handshakeMsg);
 
             in.read(msgRecieved,0,20);
@@ -81,7 +80,9 @@ public class ValidateConnections implements Runnable{
             }
             this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINER);
             clientAdded =  TrafficServer.getInstance().clientArrayList.add(new Client(this.socket));
-
+            if(clientAdded){
+                this.logger.log("New Client Connected",Level.INFO);
+            }
             this.logger.log("Status for added_new_client: "+clientAdded,Level.FINEST);
 
 
