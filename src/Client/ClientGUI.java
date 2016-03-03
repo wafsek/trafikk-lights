@@ -30,14 +30,16 @@ public class ClientGUI {
     private Circle redLight = new Circle(150, 60, 40);
     private Circle yellowLight = new Circle(150, 60, 40);
     private Circle greenLight = new Circle(150, 60, 40);
-    private SequentialTransition sqt;
+    private FillTransition redTrans, yelTrans, greTrans, yelIdleTrans;
+    private PauseTransition redDur, yelDur, greDur, yelIdleDur, grayIdleDur;
+    private SequentialTransition redSeq, yelSeq, greSeq, mainSequence;
     private Stage stage;
     private Scene scene;
     private Button stop, connect;
     private ClientController clientController;
     private TextField handshakeField, hostField, portField;
-    private boolean hasSequence, isConnected;
-    private Timeline[] idleTimeLine, runningTimeLine;
+    private boolean hasSequence, isIdle;
+    //private Timeline[] idleTimeLine, runningTimeLine;
     Duration[] duration = new Duration[4];
 
     final int DEFAULTTIME = 2000;
@@ -50,17 +52,14 @@ public class ClientGUI {
      */
     public ClientGUI(Stage stage, ClientController clientController) {
         hasSequence = false;
-        isConnected = false;
         this.clientController = clientController;
         this.stage = stage;
 
-        setIdleTimeLine();
-        setRunningTimeLine(DEFAULTTIME, DEFAULTTIME, DEFAULTTIME);
+        //setIdleTimeLine();
+        //setRunningTimeLine(DEFAULTTIME, DEFAULTTIME, DEFAULTTIME);
         //Konstruerer trafikklyset
         StackPane trafikklys = new StackPane();
         Rectangle rectangle = new Rectangle(125, 300, 125, 300);
-        stop = new Button("Stop");
-        stop.setOnAction(e -> tryStart());
         connect = new Button("Connect");
 
         hostField = new TextField();
@@ -72,26 +71,32 @@ public class ClientGUI {
         handshakeField = new TextField();
         handshakeField.setPromptText("Connection Command");
         connect.setOnAction(e -> {
-            if(handshakeField.getText().length() == 0) {
-                handshakeField.setPromptText("Can't be empty");
-                handshakeField.setStyle("-fx-effect: dropshadow"
-                        + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
-            }else {
-                handshakeField.setPromptText("Connection Command");
-                handshakeField.setStyle("");
-                clientController.requestConnection(handshakeField.getText().trim(),
-                        hostField.getText().trim(),
-                        Integer.parseInt(portField.getText().trim()));
-                clearFields();
+
+            if(isIdle) {
+                if(handshakeField.getText().length() == 0) {
+                    handshakeField.setPromptText("Can't be empty");
+                    handshakeField.setStyle("-fx-effect: dropshadow"
+                            + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
+                }else {
+                    handshakeField.setPromptText("Connection Command");
+                    handshakeField.setStyle("");
+                    clientController.requestConnection(handshakeField.getText().trim(),
+                            hostField.getText().trim(),
+                            Integer.parseInt(portField.getText().trim()));
+                    clearFields();
+                }
+            } else {
+                idle();
             }
+
+
         });
 
-        VBox rightVBox = new VBox(10, new Label("Host"),hostField,new Label("PortNumber"),
+        VBox rightVBox = new VBox(10, new Label("Host"),hostField,new Label("Port number"),
                 portField,new Label("Handshake Command"), handshakeField, connect);
         rightVBox.setPadding(new Insets(10));
 
         VBox vBox = new VBox(5);
-        vBox.getChildren().add(stop);
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(10));
 
@@ -108,7 +113,7 @@ public class ClientGUI {
         layout.add(redLight, 1, 1);
 
         yellowLight.setStroke(Color.BLACK);
-        yellowLight.setFill(Color.YELLOW);
+        yellowLight.setFill(Color.GRAY);
         layout.add(yellowLight, 1, 2);
 
         layout.setVgap(5);
@@ -130,6 +135,11 @@ public class ClientGUI {
         scene = new Scene(hovedLayout);
         stage.setTitle("Trafikklys");
         stage.setScene(scene);
+        initiateLightSequence();
+        initiateIdleSequence();
+        mainSequence = new SequentialTransition();
+        mainSequence.setAutoReverse(true);
+        mainSequence.setCycleCount(SequentialTransition.INDEFINITE);
         start();
     }
 
@@ -146,7 +156,6 @@ public class ClientGUI {
      * Show the stage and puts it on idle mode.
      */
     public void start() {
-
         stage.show();
         idle();
     }
@@ -159,105 +168,63 @@ public class ClientGUI {
             idle();
             hasSequence = !hasSequence;
         } else {
-            animation();
+            //animation();
             hasSequence = !hasSequence;
         }
-    }
-
-    /**
-     * Sets the animation rules for idle.
-     */
-    private void setIdleTimeLine() {
-        idleTimeLine = new Timeline[2];
-        idleTimeLine[0] = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
-            redLight.setFill(Color.GREY);
-            greenLight.setFill(Color.GREY);
-            yellowLight.setFill(Color.YELLOW);
-        }));
-
-        idleTimeLine[1] = new Timeline(new KeyFrame(Duration.millis(1500), e -> {
-            redLight.setFill(Color.GREY);
-            greenLight.setFill(Color.GREY);
-            yellowLight.setFill(Color.GREY);
-        }));
     }
 
     /**
      * Initiates the idle animation
      */
     public void idle() {
-
-        if(sqt != null) {
-            sqt.stop();
-        }
-        try {
-            sqt.getChildren().clear();
-            sqt.getChildren().addAll(idleTimeLine[0], idleTimeLine[1]);
-        } catch (NullPointerException npe) {
-            sqt = new SequentialTransition(idleTimeLine[0], idleTimeLine[1]);
-        }
-        sqt.setCycleCount(sqt.INDEFINITE);
-        sqt.play();
-    }
-
-    /**
-     * Sets the run time for the different lights based on three parameters.
-     * @param red
-     * @param yellow
-     * @param green
-     */
-    private void setRunningTimeLine(int red, int yellow, int green) {
-        duration[0] = new Duration(green);
-        duration[1] = new Duration(yellow);
-        duration[2] = new Duration(red);
-        runningTimeLine = new Timeline[4];
-        runningTimeLine[0] = new Timeline(new KeyFrame(
-                duration[1],
-                a -> {
-                    yellowLight.setFill(Color.GREY);
-                    redLight.setFill(Color.GREY);
-                    greenLight.setFill(Color.GREEN);
-
-                }));
-
-        runningTimeLine[1] = new Timeline(new KeyFrame(
-                duration[0],
-                e -> {
-                    yellowLight.setFill(Color.YELLOW);
-                    redLight.setFill(Color.GREY);
-                    greenLight.setFill(Color.GREY);
-
-                }));
-
-        runningTimeLine[2] = new Timeline(new KeyFrame(
-                duration[1],
-                ai -> {
-                    yellowLight.setFill(Color.GREY);
-                    redLight.setFill(Color.RED);
-                    greenLight.setFill(Color.GREY);
-
-                }));
-
-        runningTimeLine[3] = new Timeline(new KeyFrame(
-                duration[2],
-                ie -> {
-                    yellowLight.setFill(Color.YELLOW);
-                    redLight.setFill(Color.RED);
-                    greenLight.setFill(Color.GREY);
-
-                }));
+        isIdle = true;
+        mainSequence.stop();
+        mainSequence.getChildren().clear();
+        mainSequence.getChildren().addAll(yelIdleDur, yelIdleTrans, grayIdleDur);
+        mainSequence.play();
     }
 
     /**
      * Starts the main animation (red, yellow and green light).
      */
-    public void animation() {
+    public void animation(int red, int yellow, int green) {
 
-        sqt.stop();
-        sqt.getChildren().clear();
-        sqt.getChildren().addAll(runningTimeLine[0], runningTimeLine[1], runningTimeLine[2], runningTimeLine[3]);
-        sqt.setCycleCount(sqt.INDEFINITE);
-        sqt.play();
+        mainSequence.stop();
+        redDur.setDuration(Duration.millis(red/4));
+        yelDur.setDuration(Duration.millis(yellow/2));
+        greDur.setDuration(Duration.millis(green/4));
+        System.out.println(red + " " + yellow + " " + green);
+        mainSequence.getChildren().clear();
+        mainSequence.getChildren().addAll(redSeq, yelSeq, greSeq);
+        mainSequence.play();
+    }
+
+    private void initiateLightSequence() {
+
+        redTrans = new FillTransition(Duration.millis(1), redLight, Color.GRAY, Color.RED);
+        yelTrans = new FillTransition(Duration.millis(1), yellowLight, Color.GRAY, Color.YELLOW);
+        greTrans = new FillTransition(Duration.millis(1), greenLight, Color.GRAY, Color.GREEN);
+
+        redDur= new PauseTransition(Duration.millis(1));
+        yelDur = new PauseTransition(Duration.millis(1));
+        greDur = new PauseTransition(Duration.millis(1));
+
+        redSeq = new SequentialTransition(redTrans, redDur);
+        yelSeq = new SequentialTransition(yelTrans, yelDur);
+        greSeq = new SequentialTransition(greTrans, greDur);
+        redSeq.setAutoReverse(true);
+        redSeq.setCycleCount(2);
+        yelSeq.setAutoReverse(true);
+        yelSeq.setCycleCount(2);
+        greSeq.setAutoReverse(true);
+        greSeq.setCycleCount(2);
+    }
+
+    public void initiateIdleSequence() {
+
+        yelIdleTrans = new FillTransition(Duration.millis(100), yellowLight, Color.GRAY, Color.YELLOW);
+        yelIdleDur = new PauseTransition(Duration.millis(1000));
+        grayIdleDur = new PauseTransition(Duration.millis(1000));
     }
 
     /**
@@ -267,25 +234,6 @@ public class ClientGUI {
      * @param green
      */
     public void changeLightSequence(int red, int yellow, int green) {
-        setRunningTimeLine(red, yellow, green);
-        animation();
-    }
-
-    /**
-     *
-     * @param a
-     * @param b
-     */
-    public void setSequence(int a, double b) {
-        duration[a] = Duration.millis(b);
-    }
-
-    /**
-     *
-     * @param a
-     * @return
-     */
-    public Duration getDuration(int a){
-        return duration[a];
+        animation(red, yellow, green);
     }
 }
