@@ -39,10 +39,6 @@ public class ClientGUI {
     private ClientController clientController;
     private TextField handshakeField, hostField, portField;
     private boolean hasSequence, isIdle;
-    //private Timeline[] idleTimeLine, runningTimeLine;
-    Duration[] duration = new Duration[4];
-
-    final int DEFAULTTIME = 2000;
 
 
     /**
@@ -71,25 +67,18 @@ public class ClientGUI {
         handshakeField = new TextField();
         handshakeField.setPromptText("Connection Command");
         connect.setOnAction(e -> {
-
-            if(isIdle) {
-                if(handshakeField.getText().length() == 0) {
-                    handshakeField.setPromptText("Can't be empty");
-                    handshakeField.setStyle("-fx-effect: dropshadow"
-                            + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
-                }else {
-                    handshakeField.setPromptText("Connection Command");
-                    handshakeField.setStyle("");
-                    clientController.requestConnection(handshakeField.getText().trim(),
-                            hostField.getText().trim(),
-                            Integer.parseInt(portField.getText().trim()));
-                    clearFields();
-                }
-            } else {
-                idle();
+            if(handshakeField.getText().length() == 0) {
+                handshakeField.setPromptText("Can't be empty");
+                handshakeField.setStyle("-fx-effect: dropshadow"
+                        + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
+            }else {
+                handshakeField.setPromptText("Connection Command");
+                handshakeField.setStyle("");
+                clientController.requestConnection(handshakeField.getText().trim(),
+                        hostField.getText().trim(),
+                        Integer.parseInt(portField.getText().trim()));
+                clearFields();
             }
-
-
         });
 
         VBox rightVBox = new VBox(10, new Label("Host"),hostField,new Label("Port number"),
