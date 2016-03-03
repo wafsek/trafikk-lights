@@ -26,7 +26,7 @@ public class ClientSocket extends Thread{
     private int portNumber;
     private TextInputDialog tid;
     private ClientController clientController;
-    private static final String[] COMMANDS = {"CC", "TM"};
+    private static final String[] COMMANDS = {"CC", "TM", "ST"};
     private static final byte[] PING = {0,2,67,67,0,0,0,0,0,0};
     private final int OFFSET = 2;
     private final String expected = "secret";
@@ -169,6 +169,7 @@ public class ClientSocket extends Thread{
                 this.dis.read(content, 0, 20);
                 handle(content);
             } catch(IOException ioe) {
+                clientController.setIdle();
                 disconnectSocket();
             }
 
@@ -216,6 +217,8 @@ public class ClientSocket extends Thread{
             } else {
                 setLightRoutine((int)content[2]*1000, (int)content[3]*1000, (int)content[4]*1000);
             }
+        } else if(command.equals(COMMANDS[2])) {
+            clientController.setIdle();
         }
     }
 
