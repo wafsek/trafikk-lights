@@ -128,7 +128,6 @@ public class ClientSocket extends Thread{
      */
     private boolean compare(byte[] content) {
         for(int i = 0; i < content[1]; i++) {
-            System.out.println(expected.charAt(i) + " " + (char)content[i+OFFSET]);
             if(expected.charAt(i) != (char)content[i+OFFSET]) {
                 return false;
             }
