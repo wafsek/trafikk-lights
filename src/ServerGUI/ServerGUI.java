@@ -229,7 +229,7 @@ public class ServerGUI{
         this.trafficController.restartTrafficServer();
     }
 
-    public void shutdownServer(){
+    public void stopServer(){
         this.trafficController.shutdownServer();
     }
 
