@@ -34,6 +34,7 @@ public class TrafficServer extends Thread{
     private ServiceQueue socketTerminator;
     private Thread clientHandler;
     private volatile boolean stopped = false;
+    private volatile boolean hasStopped = false;
 
     private CustomLogger logger = CustomLogger.getInstance();
     private TrafficController trafficController;
@@ -60,12 +61,35 @@ public class TrafficServer extends Thread{
      * Starts the main server.
      */
     public void run() {
-
         //this.clientArrayList.add(new Client(new Socket()));
-        clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
-        clientHandler.start(); //Starts accepting incoming connections.
-        this.serverForever();
+        while(true) {
+            if(!this.stopped){
+                logger.log("Server started. Host: "+this.serverSocket.getInetAddress()
+                        +" Port: "+this.serverSocket.getLocalPort(),Level.INFO);
+                clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
+                clientHandler.start(); //Starts accepting incoming connections.
+                this.serverForever();
+            }
+        }
     }
+
+    public void startServer(){
+        this.logger.log("Starting server...",Level.FINE);
+        this.stopped = false;
+    }
+
+    public void serverStop(){
+        clientHandler = null;
+        this.logger.log("Stopping server...",Level.FINE);
+        this.stopped = true;
+        while(!this.hasStopped){
+
+        }
+        this.logger.log("Server stopped",Level.FINE);
+        this.clientArrayList.clear();
+    }
+
+
 
     /**
      * Loops through all the clients. If it finds any data on anyone of them it creates a task
@@ -74,9 +98,10 @@ public class TrafficServer extends Thread{
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
-        this.logger.log("Serving forver", Level.FINE);
+        this.logger.log("Serving forever", Level.INFO);
         trafficService = new ServiceQueue(SERVICESWORKERS);
         socketTerminator = new ServiceQueue(TERMINATORS);
+        this.hasStopped = false;
         while (!stopped) {
             //System.out.println(this.clientArrayList.size());
             try {
@@ -101,7 +126,12 @@ public class TrafficServer extends Thread{
                 }
             }//System.out.println("TACK");
         }
+        this.hasStopped = true;
+        this.logger.log("Server main loop stopped", Level.FINE);
+
     }
+
+
 
 
     public String messageRequest(String msg,Client client,Double[] times){
@@ -120,8 +150,6 @@ public class TrafficServer extends Thread{
     }
 
 
-
-
     public StringBuilder createMsg(byte[] data,int offset,int numofbytes){
         StringBuilder result = new StringBuilder(numofbytes);
         for(int i = offset;i<numofbytes;i++){
@@ -129,6 +157,7 @@ public class TrafficServer extends Thread{
         }
         return result;
     }
+
 
 
     /**
@@ -149,7 +178,6 @@ public class TrafficServer extends Thread{
     }
 
 
-
     /**
      *
      * @param client
@@ -167,13 +195,6 @@ public class TrafficServer extends Thread{
         }
     }//System.out.println("TACK");
 
-
-    public void restart(){
-        this.logger.log("Restarting server...",Level.INFO);
-        this.stopped = true;
-        this.clientArrayList.clear();
-        this.run();
-    }
 
     /**
      * Attempts a clean shutdown. Terminates finally

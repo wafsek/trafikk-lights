@@ -28,7 +28,7 @@ import java.io.IOException;
  * Created by kim on 15.02.2016.
  * GUI for Server.
  */
-public class ServerGUI{
+public class ServerGUI extends Thread{
 
     private ScrollPane commandWindow,loggWindow;
     private TextArea logg,command;
@@ -175,6 +175,10 @@ public class ServerGUI{
         stage.show();
     }
 
+    public void close(){
+        stage.close();
+    }
+
  /*   public static void main(String[] args){
         launch(args);
     }*/
@@ -228,7 +232,7 @@ public class ServerGUI{
     }
 
     public void shutdownServer(){
-        this.trafficController.shutdownServer();
+        this.trafficController.stopServer();
     }
 
     //REFRESH CLIENT LIST

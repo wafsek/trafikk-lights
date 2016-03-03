@@ -50,7 +50,7 @@ public class ClientHandler extends Thread {
         {
             try
             {
-                this.logger.log("Waiting for client on port" + serverSocket.getLocalPort() + "...", Level.INFO);
+                this.logger.log("Waiting for client on port" + serverSocket.getLocalPort() + "...", Level.FINE);
 
                 Socket clientSocket = serverSocket.accept();
                 this.logger.log("Socket connected "+clientSocket.getInetAddress() +":"+clientSocket.getPort(),Level.FINE);

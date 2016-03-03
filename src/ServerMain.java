@@ -27,7 +27,7 @@ public class ServerMain extends Application{
         primaryStage.setOnCloseRequest(e->System.exit(0));
         TrafficController trafficController = new TrafficController();
         trafficController.start(primaryStage);
-        terminal = new Terminal();
-        terminal.start();
+        //terminal = new Terminal();
+        //terminal.start();
     }
 }
