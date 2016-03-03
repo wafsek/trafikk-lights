@@ -29,12 +29,9 @@ public class ServiceTask implements Runnable{
         try {
             availableData = this.dataInputStream.available();
             this.dataInputStream.read(contents, 0, availableData);
-            System.out.print(client.getSocket().getInetAddress() + " Said: ");
-            for (int i = 2; i < contents.length; i++){
-                if(contents[i] == 0){
-                    continue;
-                }
-                System.out.print((char) contents[i]);}
+            if(!isPing(contents)){
+                printMsg(contents);
+            }
             System.out.println();
             //This is the method that is going to handle the incoming signal
             // from a given socket/Client .
@@ -42,5 +39,21 @@ public class ServiceTask implements Runnable{
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
+    }
+
+    public void printMsg(byte[] data){
+        System.out.print(client.getSocket().getInetAddress() + " Said: ");
+        for (int i = 2; i < data.length; i++){
+            if(data[i] == 0){
+                continue;
+            }
+            System.out.print((char) data[i]);}
+    }
+
+    public boolean isPing(byte[] data){
+        if(data[2] == 'C' && data[3] == 'C'){
+            return true;
+        }
+        return false;
     }
 }
