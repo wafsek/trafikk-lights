@@ -91,7 +91,7 @@ public class TrafficServer extends Thread{
                         ));
                     }
                 }catch (IOException ioe){
-                    this.logger.log("Something on this socket is not right :)",Level.FINE);
+                    this.logger.log("Was unable to write to a socket.Attemting to delete it",Level.FINE);
                     socketTerminator.execute(new SocketTerminate(this,client,ioe,this.trafficController));
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for
@@ -104,7 +104,7 @@ public class TrafficServer extends Thread{
 
     public String messageRequest(String msg,Client client,Double[] times){
         String command;
-        String result = "Something unexpected happend";
+        String result = "Something unexpected happened";
         DataControl dataControl;
         byte[] data;
         if(msg.charAt(0) == '/'){
@@ -169,9 +169,17 @@ public class TrafficServer extends Thread{
                 msg[5] = times[1].byteValue();
                 msg[6] = times[2].byteValue();
                 this.broardcast(msg);
-                result = "Server -> all clients :"+msg;
+                result = "Server -> all clients : "+command+" "+msg[4]+msg[5]+msg[6]+"\n";
                 break;
             }
+        }
+        return result;
+    }
+
+    public StringBuilder createMsg(byte[] data,int offset,int numofbytes){
+        StringBuilder result = new StringBuilder(numofbytes);
+        for(int i = offset;i<numofbytes;i++){
+            result.append(","+(char)data[i]);
         }
         return result;
     }
@@ -185,7 +193,7 @@ public class TrafficServer extends Thread{
             try{
                 client.getDataOutputStream().write(data);
             }catch (IOException ioe){
-                this.logger.log("Something on this socket is not right :)",Level.FINE);
+                this.logger.log("Was unable to write to a socket.Attemting to delete it",Level.FINE);
                 socketTerminator.execute(new SocketTerminate(this,client,ioe,this.trafficController));
                 //This task Should be given to the socketTerminator that
                 // i have made above as the server must go on and can not wait for
