@@ -114,7 +114,7 @@ public class ValidateConnections implements Runnable{
         this.logger.log("Handshake message validating passed",Level.FINER);
         return true;
     }
-    
+
 
     private void clearBuffer(byte[] buffer){
         for(int i = 0;i<buffer.length;i++){

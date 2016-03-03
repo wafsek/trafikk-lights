@@ -3,6 +3,7 @@ package logging;
 import ServerGUI.ServerGUI;
 import javafx.application.Platform;
 
+import java.util.Date;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -14,7 +15,7 @@ import java.util.logging.StreamHandler;
  */
 public class CustomHandler extends Handler {
     private ServerGUI serverGUI;
-
+    private static final String lineSep = System.getProperty("line.separator");
     CustomHandler(ServerGUI serverGUI,Level level) {
         super.setLevel(level);
         this.serverGUI = serverGUI;
@@ -22,8 +23,22 @@ public class CustomHandler extends Handler {
 
     @Override
     public void publish(LogRecord record) {
+        String loggerName = record.getLoggerName();
+        if(loggerName == null) {
+            loggerName = "root";
+        }
+        StringBuilder output = new StringBuilder()
+                .append("[")
+                .append(record.getLevel()).append('|')
+                .append(new Date(record.getMillis()))
+                .append("]: ")
+                .append(record.getMessage())
+                .append(lineSep);
+        output.toString();
+
+
         if(this.getLevel().intValue() <= record.getLevel().intValue()){
-            Platform.runLater(() -> this.serverGUI.getLogg().appendText(record.getMessage() + "\n"));
+            Platform.runLater(() -> this.serverGUI.getLogg().appendText(output.toString()));
         }
     }
 

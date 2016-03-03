@@ -23,7 +23,8 @@ public class CustomLogger {
             txtFileHandler = new FileHandler("log.txt",true);
             txtFileHandler.setFormatter(customFormatter);
             consoleHandler = new ConsoleHandler();
-            consoleHandler.setFormatter(new ConsoleFormatter());
+            consoleHandler.setFormatter(new GuiConsoleFormatter());
+            //consoleHandler.setFormatter(new ConsoleFormatter());
         } catch (IOException ioe) {
             System.out.print("Something went wrong opening the log files");
         }
@@ -67,7 +68,9 @@ public class CustomLogger {
     }
 
     public void addTextAreaLog(ServerGUI serverGUI){
-        this.logger.addHandler(new CustomHandler(serverGUI,Config.getGuiLoggingLevel()));
+        CustomHandler customHandler = new CustomHandler(serverGUI,Config.getGuiLoggingLevel());
+        customHandler.setFormatter(new CustomFormatter());
+        this.logger.addHandler(customHandler);
     }
 
     private void setLoggerLevel(Level loggerLevel) {
