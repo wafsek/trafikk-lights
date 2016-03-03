@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 
 /**
- * The class that handles all the basic socket related chores.\n
+ * The TrafficServer is the main server.Tt contains and handle the main server logic.
  * Created by Baljit Singh Sarai on 01.02.16.
  * @author Baljit Singh Sarai
  */
@@ -22,7 +22,7 @@ public class TrafficServer extends Thread{
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
-    private final int REATTEMPTWAIT = 5;
+    private final int REATTEMPTWAIT = 1000;
     public final int MESSAGE_SIZE =20;
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
@@ -37,7 +37,6 @@ public class TrafficServer extends Thread{
     private Thread clientHandler;
     private volatile boolean stopped = false;
     private volatile boolean hasStopped = false;
-
     private CustomLogger logger = CustomLogger.getInstance();
     private TrafficController trafficController;
     private CommandHandler commandHandler;
@@ -57,10 +56,18 @@ public class TrafficServer extends Thread{
         //serverSocket.setSoTimeout(100);
     }
 
+    /**
+     * Sets the trafficController.
+     * @param trafficController- A {@link server.TrafficServer} Type.
+     */
     public void setTrafficController(TrafficController trafficController) {
         this.trafficController = trafficController;
     }
 
+    /**
+     * A {@link InetAddress} with "localhost" as host in a human readable format.
+     * @return A {@link InetAddress} in a human readable format.
+     */
     public String getIP(){
         try{
             return InetAddress.getByName("localhost").toString();
@@ -72,12 +79,11 @@ public class TrafficServer extends Thread{
 
 
     /**
-     * Starts the main server.
+     * Starts the main server.Will start the main logic if the stopped variable is set <code>false</code>
      */
     public void run() {
         while(true) {
             try {
-                logger.log("Attempting server start.",Level.INFO);
                 Thread.sleep(REATTEMPTWAIT);
             } catch (InterruptedException ie) {
                 //This should be handled properly --Sarai:P
@@ -92,11 +98,17 @@ public class TrafficServer extends Thread{
         }
     }
 
+    /**
+     * Starts the main logic loop.
+     */
     public void startServer(){
         this.logger.log("Starting server...",Level.FINE);
         this.stopped = false;
     }
 
+    /**
+     * Stop the main server logic.(Can be restarted with startServer() method.)
+     */
     public void serverStop(){
         clientHandler = null;
         this.logger.log("Stopping server...",Level.FINE);
@@ -151,8 +163,13 @@ public class TrafficServer extends Thread{
     }
 
 
-
-
+    /**
+     *
+     * @param msg The message that is requested.
+     * @param client The client to whome this message is intended.
+     * @param times The current times on the server wigets.
+     * @return A user-friendly message as to what happened.
+     */
     public String messageRequest(String msg,Client client,Double[] times){
         String command;
         String result = "Something unexpected happened";
@@ -168,8 +185,14 @@ public class TrafficServer extends Thread{
         return result;
     }
 
-
-    public StringBuilder createMsg(byte[] data,int offset,int numofbytes){
+    /**
+     * Creates a human readable message from byte array.
+     * @param data The byte array that it converts to a String.
+     * @param offset The offset.
+     * @param numofbytes The number of bytes that it converts to a String.
+     * @return A human friendly message.
+     */
+    private StringBuilder createMsg(byte[] data,int offset,int numofbytes){
         StringBuilder result = new StringBuilder(numofbytes);
         for(int i = offset;i<numofbytes;i++){
             result.append(","+(char)data[i]);
@@ -178,9 +201,9 @@ public class TrafficServer extends Thread{
     }
 
 
-
     /**
-     *
+     * This method takes some data and sends it to all the clients connected to the server.
+     * @param data The data to be sent.
      */
     public void broardcast(byte[] data){
         for(Client client: this.clientArrayList){
@@ -198,9 +221,9 @@ public class TrafficServer extends Thread{
 
 
     /**
-     *
-     * @param client
-     * @param data
+     *This method takes some data and sends it to the given {@link server.Client} client.
+     * @param client The client the message is intended for.
+     * @param data The data to be sent.
      */
     public void send(Client client,byte[] data ){
         try{
@@ -214,6 +237,9 @@ public class TrafficServer extends Thread{
         }
     }//System.out.println("TACK");
 
+    public void disconnectClient(Client client){
+        clientArrayList.remove(client);
+    }
 
     /**
      * Attempts a clean shutdown. Terminates finally

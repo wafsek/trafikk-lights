@@ -36,6 +36,18 @@ public class CommandHandler {
                 if(trafficServer.clientArrayList.isEmpty()){
                     return DataControl.EMPTY_CLIENT_LIST;
                 }
+            }case "disconnect":{
+                if(client == null){
+                    return DataControl.NO_CLIENT_SELECTED;
+                }
+            }case "stop":{
+                if(client == null){
+                    return DataControl.NO_CLIENT_SELECTED;
+                }
+            }case "stopall":{
+                if(trafficServer.clientArrayList.isEmpty()){
+                    return DataControl.EMPTY_CLIENT_LIST;
+                }
             }
         }
         return DataControl.SUCCESS;
@@ -68,7 +80,24 @@ public class CommandHandler {
                 trafficServer.broardcast(msg);
                 result = "Server -> all clients : "+command+" "+msg[4]+msg[5]+msg[6]+"\n";
                 break;
+            }case "disconnect":{
+                trafficServer.disconnectClient(client);
+            }case "stop":{
+                    msg[1] = 2;
+                    msg[2] = 'S';
+                    msg[3] = 'T';
+                    trafficServer.send(client,msg);
+                    result = "Server -> "+client.getName()+": "+command+"\n";
+                    break;
+            }case "stopall":{
+                msg[1] = 5;
+                msg[2] = 'S';
+                msg[3] = 'T';
+                trafficServer.broardcast(msg);
+                result = "Server -> all clients : "+command+"\n";
+                break;
             }
+
         }
         return result;
     }
