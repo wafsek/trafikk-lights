@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 
 /**
- * The class that handles all the basic socket related chores.
+ * The class that handles all the basic socket related chores.\n
  * Created by Baljit Singh Sarai on 01.02.16.
  * @author Baljit Singh Sarai
  */
@@ -110,6 +110,7 @@ public class TrafficServer extends Thread{
         byte[] data;
         if(msg.charAt(0) == '/'){
             dataControl = this.validateCommand(msg.substring(1),client);
+            result = dataControl.getDescription();
             if(dataControl.equals(DataControl.SUCCESS)){
                 result = this.command(msg.substring(1),client,times);
             }
@@ -134,6 +135,10 @@ public class TrafficServer extends Thread{
             case "time":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
+                }
+            }case "timeall":{
+                if(this.clientArrayList.isEmpty()){
+                    return DataControl.EMPTY_CLIENT_LIST;
                 }
             }
         }

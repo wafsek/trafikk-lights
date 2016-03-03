@@ -8,8 +8,9 @@ package server;
 
 public enum DataControl {
     SUCCESS("Success"),
-    NO_CLIENT_SELECTED("No client stected"),
-    COMMAND_NOT_FOUND("Did not found that command");
+    NO_CLIENT_SELECTED("No client selected"),
+    COMMAND_NOT_FOUND("No such command"),
+    EMPTY_CLIENT_LIST("The client list is empty");
     private final String description;
 
 
@@ -19,5 +20,14 @@ public enum DataControl {
      */
     DataControl(String description) {
         this.description = description;
+    }
+
+    /**
+     * Returns a description of this DataControl?
+     *
+     * @return a description of this DataControl?
+     */
+    public String getDescription() {
+        return this.description;
     }
 }
