@@ -148,7 +148,7 @@ public class ServerGUI{
         stop = new Button("STOP");
         stop.setOnAction(e-> shutdownServer());
         restart = new Button("RESTART");
-        restart.setOnAction(e->);
+        restart.setOnAction(e->refreshServer());
 
         buttonoption = new HBox();
         buttonoption.getChildren().addAll(stop,restart);
