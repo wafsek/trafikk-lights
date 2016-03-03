@@ -25,9 +25,11 @@ import java.io.IOException;
 
 
 /**
- * Created by kim on 15.02.2016.
- * GUI for Server.
+ * The GUI class for server side\n
+ * Created by Baljit Singh Sarai on 15.02.16.
+ * @author Kim Long Vu
  */
+
 public class ServerGUI extends Thread{
 
     private ScrollPane commandWindow,loggWindow;
