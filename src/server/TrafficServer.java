@@ -4,6 +4,7 @@ import logging.CustomLogger;
 import java.awt.geom.Arc2D;
 import java.net.*;
 import java.io.*;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ public class TrafficServer extends Thread{
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
+    private final int REATTEMPTWAIT = 5;
     public final int MESSAGE_SIZE =20;
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
@@ -39,6 +41,7 @@ public class TrafficServer extends Thread{
     private CustomLogger logger = CustomLogger.getInstance();
     private TrafficController trafficController;
     private CommandHandler commandHandler;
+    private String displayAddresse = "";
 
 
     /**
@@ -50,6 +53,7 @@ public class TrafficServer extends Thread{
     {
         serverSocket = new ServerSocket(port);
         commandHandler = new CommandHandler(this);
+        this.displayAddresse = getIP();
         //serverSocket.setSoTimeout(100);
     }
 
@@ -57,14 +61,29 @@ public class TrafficServer extends Thread{
         this.trafficController = trafficController;
     }
 
+    public String getIP(){
+        try{
+            return InetAddress.getByName("localhost").toString();
+        }catch (UnknownHostException uhe){
+            uhe.printStackTrace();
+        }
+        return this.serverSocket.getInetAddress().getCanonicalHostName();
+    }
+
+
     /**
      * Starts the main server.
      */
     public void run() {
-        //this.clientArrayList.add(new Client(new Socket()));
         while(true) {
+            try {
+                logger.log("Attempting server start.",Level.INFO);
+                Thread.sleep(REATTEMPTWAIT);
+            } catch (InterruptedException ie) {
+                //This should be handled properly --Sarai:P
+            }
             if(!this.stopped){
-                logger.log("Server started. Host: "+this.serverSocket.getInetAddress()
+                logger.log("Server started. Host: "+this.displayAddresse
                         +" Port: "+this.serverSocket.getLocalPort(),Level.INFO);
                 clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
                 clientHandler.start(); //Starts accepting incoming connections.
@@ -98,7 +117,7 @@ public class TrafficServer extends Thread{
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
-        this.logger.log("Serving forever", Level.INFO);
+        this.logger.log("Service Started.", Level.INFO);
         trafficService = new ServiceQueue(SERVICESWORKERS);
         socketTerminator = new ServiceQueue(TERMINATORS);
         this.hasStopped = false;

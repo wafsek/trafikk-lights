@@ -50,7 +50,7 @@ public class ClientHandler extends Thread {
         {
             try
             {
-                this.logger.log("Waiting for client on port" + serverSocket.getLocalPort() + "...", Level.FINE);
+                this.logger.log("Waiting for client on Port: " + serverSocket.getLocalPort() + "", Level.FINE);
 
                 Socket clientSocket = serverSocket.accept();
                 this.logger.log("Socket connected "+clientSocket.getInetAddress() +":"+clientSocket.getPort(),Level.FINE);
@@ -75,7 +75,6 @@ public class ClientHandler extends Thread {
                 System.out.println("Socket timed out!");
                 break;
             }catch (SocketException se){
-                System.out.println("kadfasdf");
                 this.logger.log("this socket's close status is "+this.serverSocket.isClosed(),Level.FINE);
                 //Thread.currentThread().interrupt();
             }

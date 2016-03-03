@@ -8,6 +8,7 @@ import server.Terminal;
 import server.TrafficController;
 import server.TrafficServer;
 
+import java.net.InetAddress;
 import java.util.logging.Level;
 
 /**
