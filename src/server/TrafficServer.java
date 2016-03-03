@@ -16,11 +16,12 @@ import java.util.logging.Level;
  */
 public class TrafficServer extends Thread{
     //The Constants
+    private static final int PORT = Config.getServerPort();
     private final int BUFFERSIZE = Config.getBufferSize();
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
-    private final int MESSAGE_SIZE =20;
+    public final int MESSAGE_SIZE =20;
     private final byte[] PING = {2,2,67,67,0,0,0,0,0,0};
 
 
@@ -32,10 +33,12 @@ public class TrafficServer extends Thread{
     private ServiceQueue trafficService;
     private ServiceQueue socketTerminator;
     private Thread clientHandler;
-    private boolean stopped = false;
-    private String[] commands = new String[10];
+    private volatile boolean stopped = false;
+    private volatile boolean hasStopped = false;
+
     private CustomLogger logger = CustomLogger.getInstance();
     private TrafficController trafficController;
+    private CommandHandler commandHandler;
 
 
     /**
@@ -46,6 +49,7 @@ public class TrafficServer extends Thread{
     private TrafficServer(int port) throws IOException
     {
         serverSocket = new ServerSocket(port);
+        commandHandler = new CommandHandler(this);
         //serverSocket.setSoTimeout(100);
     }
 
@@ -57,13 +61,35 @@ public class TrafficServer extends Thread{
      * Starts the main server.
      */
     public void run() {
-        this.commands[0] = "time";
-        this.commands[1] = "timeall";
         //this.clientArrayList.add(new Client(new Socket()));
-        clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
-        clientHandler.start(); //Starts accepting incoming connections.
-        this.serverForever();
+        while(true) {
+            if(!this.stopped){
+                logger.log("Server started. Host: "+this.serverSocket.getInetAddress()
+                        +" Port: "+this.serverSocket.getLocalPort(),Level.INFO);
+                clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
+                clientHandler.start(); //Starts accepting incoming connections.
+                this.serverForever();
+            }
+        }
     }
+
+    public void startServer(){
+        this.logger.log("Starting server...",Level.FINE);
+        this.stopped = false;
+    }
+
+    public void serverStop(){
+        clientHandler = null;
+        this.logger.log("Stopping server...",Level.FINE);
+        this.stopped = true;
+        while(!this.hasStopped){
+
+        }
+        this.logger.log("Server stopped",Level.FINE);
+        this.clientArrayList.clear();
+    }
+
+
 
     /**
      * Loops through all the clients. If it finds any data on anyone of them it creates a task
@@ -72,9 +98,10 @@ public class TrafficServer extends Thread{
      * true everywhere. The portability of this method is not a guarantee.
      */
     public void serverForever() {
-        this.logger.log("Serving forver", Level.FINE);
+        this.logger.log("Serving forever", Level.INFO);
         trafficService = new ServiceQueue(SERVICESWORKERS);
         socketTerminator = new ServiceQueue(TERMINATORS);
+        this.hasStopped = false;
         while (!stopped) {
             //System.out.println(this.clientArrayList.size());
             try {
@@ -99,7 +126,12 @@ public class TrafficServer extends Thread{
                 }
             }//System.out.println("TACK");
         }
+        this.hasStopped = true;
+        this.logger.log("Server main loop stopped", Level.FINE);
+
     }
+
+
 
 
     public String messageRequest(String msg,Client client,Double[] times){
@@ -108,73 +140,15 @@ public class TrafficServer extends Thread{
         DataControl dataControl;
         byte[] data;
         if(msg.charAt(0) == '/'){
-            dataControl = this.validateCommand(msg.substring(1),client);
+            dataControl = commandHandler.validateCommand(msg.substring(1),client);
             result = dataControl.getDescription();
             if(dataControl.equals(DataControl.SUCCESS)){
-                result = this.command(msg.substring(1),client,times);
+                result = commandHandler.command(msg.substring(1),client,times);
             }
         }
         return result;
     }
 
-
-    public  DataControl validateCommand(String command,Client client){
-        boolean found = false;
-        for(String co: this.commands){
-            if(co != null && co.equals(command)){
-                found = true;
-            }
-        }
-
-        if (!found){
-            return DataControl.COMMAND_NOT_FOUND;
-        }
-
-        switch (command){
-            case "time":{
-                if(client == null){
-                    return DataControl.NO_CLIENT_SELECTED;
-                }
-            }case "timeall":{
-                if(this.clientArrayList.isEmpty()){
-                    return DataControl.EMPTY_CLIENT_LIST;
-                }
-            }
-        }
-        return DataControl.SUCCESS;
-    }
-
-
-    public String command(String command,Client client,Double[] times){
-        byte[] msg = new byte[this.MESSAGE_SIZE];
-        msg[0] = 2;
-        String result = "";
-        switch (command){
-            case "time":{
-                msg[1] = 5;
-                msg[2] = 'T';
-                msg[3] = 'M';
-                msg[4] =  times[0].byteValue();
-                msg[5] = times[1].byteValue();
-                msg[6] = times[2].byteValue();
-                this.send(client,msg);
-                result = "Server -> "+client.getName()+": "+command+" "+msg[4]+msg[5]+msg[6]+"\n";
-                break;
-            }
-            case "timeall":{
-                msg[1] = 5;
-                msg[2] = 'T';
-                msg[3] = 'M';
-                msg[4] =  times[0].byteValue();
-                msg[5] = times[1].byteValue();
-                msg[6] = times[2].byteValue();
-                this.broardcast(msg);
-                result = "Server -> all clients : "+command+" "+msg[4]+msg[5]+msg[6]+"\n";
-                break;
-            }
-        }
-        return result;
-    }
 
     public StringBuilder createMsg(byte[] data,int offset,int numofbytes){
         StringBuilder result = new StringBuilder(numofbytes);
@@ -183,6 +157,7 @@ public class TrafficServer extends Thread{
         }
         return result;
     }
+
 
 
     /**
@@ -203,7 +178,6 @@ public class TrafficServer extends Thread{
     }
 
 
-
     /**
      *
      * @param client
@@ -222,13 +196,12 @@ public class TrafficServer extends Thread{
     }//System.out.println("TACK");
 
 
-
-
     /**
      * Attempts a clean shutdown. Terminates finally
      */
     public void shutdown(){
         this.logger.log("Initiating Shutdown",Level.INFO);
+        this.stopped = true;
         this.logger.log("Closing all the connections...",Level.INFO);
         //Close all the sockets and then remove the clients they belong to.
         for(Client client: clientArrayList){
@@ -237,7 +210,7 @@ public class TrafficServer extends Thread{
             }catch (IOException ioe){
 
             }
-            clientArrayList.add(client);
+            clientArrayList.remove(client);
         }
 
         this.socketTerminator = null;
@@ -245,12 +218,10 @@ public class TrafficServer extends Thread{
         this.logger.log("Closing Socket",Level.INFO);
         try{
             this.serverSocket.close();
-            System.exit(0);
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
         finally{
-            System.exit(-1);
         }
     }
 
@@ -261,7 +232,7 @@ public class TrafficServer extends Thread{
     public static TrafficServer getInstance(){
         if(trafficServer == null){
             try{
-                trafficServer = new TrafficServer(12345);
+                trafficServer = new TrafficServer(PORT);
             }catch (IOException e){
                 CustomLogger.getInstance().log("Could not create the server instance",Level.SEVERE);
 

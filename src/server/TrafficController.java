@@ -30,13 +30,13 @@ public class TrafficController extends Application{
 
     public void start(Stage stage){
         this.stage = stage;
-        this.logger.log("Welcome to the traffic light program", Level.INFO);
         this.trafficServer = TrafficServer.getInstance();
         this.trafficServer.setTrafficController(this);
-        this.trafficServer.start();
         serverGUI = new ServerGUI(this,this.stage);
         this.logger.addTextAreaLog(this.serverGUI);
         serverGUI.run();
+        this.logger.log("Welcome to the traffic light program.", Level.INFO);
+        this.trafficServer.start();
     }
 
     public ServerGUI getServerGUI() {
@@ -51,7 +51,6 @@ public class TrafficController extends Application{
         times[2] = this.serverGUI.getGreenslider().getValue();
         this.reciver = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
         result = this.trafficServer.messageRequest(input,this.reciver,times);
-
         this.serverGUI.refreshCommand(result+"\n");
 
 
@@ -62,26 +61,39 @@ public class TrafficController extends Application{
         }*/
     }
 
+
+    public void startServer(){
+        this.trafficServer.startServer();
+    }
+
+    public void stopServer(){
+        this.trafficServer.serverStop();
+        this.getServerGUI().refreshClientlist();
+        this.logger.log("Server Stopped", Level.INFO);
+    }
+
+    public void restartTrafficServer(){
+        this.logger.log("Restarting server wait...", Level.INFO);
+        this.trafficServer.serverStop();
+        this.trafficServer.startServer();
+        this.getServerGUI().refreshClientlist();
+    }
+
+
     public Client getReciver(){
         return this.reciver;
     }
 
-
     /*public void send(String id,String msg){
         this.trafficServer.messageRequest(msg,false);
     }
-    
+
     public void broadcast(String msg){
         this.trafficServer.messageRequest(msg,true);
     }*/
 
-    public void startServer(){
+    public void setTrafficServer(){
 
-        System.out.println("hey");
-    }
-
-    public void shutdownServer(){
-        TrafficServer.getInstance().shutdown();
     }
 
     public TrafficServer getTrafficServer(){

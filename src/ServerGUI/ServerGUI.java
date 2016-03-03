@@ -28,17 +28,18 @@ import java.io.IOException;
  * Created by kim on 15.02.2016.
  * GUI for Server.
  */
-public class ServerGUI{
+public class ServerGUI extends Thread{
 
     private ScrollPane commandWindow,loggWindow;
     private TextArea logg,command;
     private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
+    private Button restart,stop,start;
     private Label redLabel,yellowLabel,greenLabel;
     private TextField serverInput;
     private VBox left,nameoption,coloroption, slideroption, valueoption;
-    private HBox lightoption;
+    private HBox lightoption,buttonoption;
     private Slider redslider, yellowslider, greenslider;
     private TrafficController trafficController;
     private static final int SCENE_WIDTH = 1400;
@@ -144,13 +145,23 @@ public class ServerGUI{
             }
 
         });
+        stop = new Button("STOP");
+        stop.setOnAction(e-> shutdownServer());
+        start = new Button("START");
+        start.setOnAction(e-> startServer());
+        restart = new Button("RESTART");
+        restart.setOnAction(e->refreshServer());
+
+        buttonoption = new HBox();
+        buttonoption.getChildren().addAll(start,stop,restart);
+
 
         nameoption.getChildren().addAll(redname,yellowname,greenname);
 
         slideroption.getChildren().addAll(redslider,yellowslider,greenslider);
         valueoption.getChildren().addAll(redLabel,yellowLabel,greenLabel);
         lightoption.getChildren().addAll(nameoption,slideroption,valueoption);
-        left.getChildren().addAll(lightoption,commandWindow,serverInput,loggWindow);
+        left.getChildren().addAll(lightoption,commandWindow,serverInput,loggWindow,buttonoption);
 
 
         bpane.setLeft(left);
@@ -164,6 +175,10 @@ public class ServerGUI{
     }
     public void run(){
         stage.show();
+    }
+
+    public void close(){
+        stage.close();
     }
 
  /*   public static void main(String[] args){
@@ -214,8 +229,13 @@ public class ServerGUI{
         this.trafficController.startServer();
     }
 
+    public void refreshServer(){
+        this.trafficController.restartTrafficServer();
+    }
+
+
     public void shutdownServer(){
-        this.trafficController.shutdownServer();
+        this.trafficController.stopServer();
     }
 
     //REFRESH CLIENT LIST
