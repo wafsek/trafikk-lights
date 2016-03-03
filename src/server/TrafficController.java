@@ -51,7 +51,6 @@ public class TrafficController extends Application{
         times[2] = this.serverGUI.getGreenslider().getValue();
         this.reciver = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
         result = this.trafficServer.messageRequest(input,this.reciver,times);
-
         this.serverGUI.refreshCommand(result+"\n");
 
 
@@ -60,6 +59,12 @@ public class TrafficController extends Application{
         }else{
             broadcast(input);
         }*/
+    }
+
+
+    public void restartTrafficServer(){
+        trafficServer.restart();
+        this.getServerGUI().refreshClientlist();
     }
 
     public Client getReciver(){

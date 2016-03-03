@@ -47,6 +47,21 @@ public class Config {
         }
     }
 
+    /**
+     * Returns the size that the buffer-size should be.
+     *
+     * @returnt The buffer size
+     */
+    public static int getServerPort() {
+        int result;
+        String name = "port";
+        String stringBufferSize = getProperties().getProperty(name);
+        result = stringToInt(stringBufferSize,name);
+        if(result != -1){
+            return result;
+        }
+        return 12345;
+    }
 
     /**
      * Returns the size that the buffer-size should be.
@@ -153,6 +168,9 @@ public class Config {
             }
         }
     }
+
+
+
 
     /**
      * Returns the current console output option.

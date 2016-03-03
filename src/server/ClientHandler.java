@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.AbstractList;
 import java.util.logging.Level;
@@ -73,12 +74,19 @@ public class ClientHandler extends Thread {
             {
                 System.out.println("Socket timed out!");
                 break;
-            }catch(IOException e)
+            }catch (SocketException se){
+                System.out.println("kadfasdf");
+                this.logger.log("this socket's close status is "+this.serverSocket.isClosed(),Level.FINE);
+                //Thread.currentThread().interrupt();
+            }
+            catch(IOException e)
             {
                 e.printStackTrace();
                 break;
             }
         }
+        System.out.println("sssssssss");
+        this.logger.log("ClientHandler interupted",Level.FINE);
     }
 
 
