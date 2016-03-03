@@ -21,7 +21,8 @@ import javafx.util.Duration;
 import java.util.Optional;
 
 /**
- * Created by at_p9_000 on 16.02.2016.
+ * This purpose of this class is
+ * @author Adrian Siim Melsom, Anh Thu Pham Le
  */
 public class ClientGUI {
 
