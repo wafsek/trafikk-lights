@@ -25,11 +25,13 @@ public class ValidateConnections implements Runnable{
     private final int OFFSET = 2;
     private final String[] handshakeArray = {"handshake","protocol"};
     private CustomLogger logger;
+    private TrafficController trafficController;
 
 
-    public ValidateConnections(Socket socket){
+    public ValidateConnections(Socket socket,TrafficController trafficController){
         this.socket = socket;
         this.logger = CustomLogger.getInstance();
+        this.trafficController = trafficController;
     }
 
     @Override
@@ -83,6 +85,7 @@ public class ValidateConnections implements Runnable{
             }
             this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINER);
             clientAdded =  TrafficServer.getInstance().clientArrayList.add(new Client(this.socket));
+            this.trafficController.getServerGUI().refreshClientlist();
             if(clientAdded){
                 this.logger.log("New Client Connected",Level.INFO);
             }

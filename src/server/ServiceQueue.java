@@ -59,6 +59,7 @@ public class ServiceQueue {
                 }
                 catch (RuntimeException e) {
                     System.out.println("Was unable to do the task");
+                    e.printStackTrace();
                     // You might want to log something here
                 }
             }

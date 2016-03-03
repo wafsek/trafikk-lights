@@ -24,6 +24,7 @@ public class ClientHandler extends Thread {
     private DataInputStream in;
     private ServiceQueue validatingService;
     private TrafficServer trafficServer;
+    private TrafficController trafficController;
     private CustomLogger logger = CustomLogger.getInstance();
 
 
@@ -31,7 +32,8 @@ public class ClientHandler extends Thread {
      *
      * @param serverSocket SocketServer Object
      */
-    public ClientHandler(TrafficServer trafficServer,ServerSocket serverSocket){
+    public ClientHandler(TrafficServer trafficServer,ServerSocket serverSocket,TrafficController trafficController){
+        this.trafficController = trafficController;
         this.trafficServer = trafficServer;
         this.serverSocket = serverSocket;
         this.validatingService = new ServiceQueue(1);
@@ -66,7 +68,7 @@ public class ClientHandler extends Thread {
                 ///////////////////////////////////////
 
 
-                validatingService.execute(new ValidateConnections(clientSocket));
+                validatingService.execute(new ValidateConnections(clientSocket,this.trafficController));
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");

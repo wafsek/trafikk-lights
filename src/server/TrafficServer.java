@@ -60,7 +60,7 @@ public class TrafficServer extends Thread{
         this.commands[0] = "time";
         this.commands[1] = "timeall";
         //this.clientArrayList.add(new Client(new Socket()));
-        clientHandler = new ClientHandler(this,this.serverSocket);
+        clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
         clientHandler.start(); //Starts accepting incoming connections.
         this.serverForever();
     }
@@ -82,18 +82,17 @@ public class TrafficServer extends Thread{
             } catch (InterruptedException ie) {
                 //This should be handled properly --Sarai:P
             }
-            this.trafficController.getServerGUI().refreshClientlist();
             //System.out.println("TICK");
             for(Client client: this.clientArrayList){
                 try{
-                    //client.getDataOutputStream().write(PING);//Just to check if it is alive :)
+                    client.getDataOutputStream().write(PING);//Just to check if it is alive :)
                     if( client.getDataInputStream().available()> 0){
                         trafficService.execute(new ServiceTask(client,BUFFERSIZE
                         ));
                     }
                 }catch (IOException ioe){
                     this.logger.log("Something on this socket is not right :)",Level.FINE);
-                    socketTerminator.execute(new SocketTerminate(this,client,ioe));
+                    socketTerminator.execute(new SocketTerminate(this,client,ioe,this.trafficController));
                     //This task Should be given to the socketTerminator that
                     // i have made above as the server must go on and can not wait for
                     // closing the socket properly as this could risk the server. :) --Sarai
@@ -187,7 +186,7 @@ public class TrafficServer extends Thread{
                 client.getDataOutputStream().write(data);
             }catch (IOException ioe){
                 this.logger.log("Something on this socket is not right :)",Level.FINE);
-                socketTerminator.execute(new SocketTerminate(this,client,ioe));
+                socketTerminator.execute(new SocketTerminate(this,client,ioe,this.trafficController));
                 //This task Should be given to the socketTerminator that
                 // i have made above as the server must go on and can not wait for
                 // closing the socket properly as this could risk the server. :) --Sarai
@@ -206,8 +205,8 @@ public class TrafficServer extends Thread{
         try{
             client.getDataOutputStream().write(data);
         }catch (IOException ioe){
-            this.logger.log("Something on this socket is not right :)",Level.FINE);
-            socketTerminator.execute(new SocketTerminate(this,client,ioe));
+            this.logger.log("Was unable to write to a socket.Attemting to delete it",Level.FINE);
+            socketTerminator.execute(new SocketTerminate(this,client,ioe,this.trafficController));
             //This task Should be given to the socketTerminator that
             // i have made above as the server must go on and can not wait for
             // closing the socket properly as this could risk the server. :) --Sarai
