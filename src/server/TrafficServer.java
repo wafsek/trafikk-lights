@@ -159,7 +159,6 @@ public class TrafficServer extends Thread{
         }
         this.hasStopped = true;
         this.logger.log("Server main loop stopped", Level.FINE);
-
     }
 
 
@@ -239,6 +238,7 @@ public class TrafficServer extends Thread{
 
     public void disconnectClient(Client client){
         clientArrayList.remove(client);
+        trafficController.getServerGUI().refreshClientlist();
     }
 
     /**
