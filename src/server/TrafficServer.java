@@ -16,6 +16,7 @@ import java.util.logging.Level;
  */
 public class TrafficServer extends Thread{
     //The Constants
+    private static final int PORT = Config.getServerPort();
     private final int BUFFERSIZE = Config.getBufferSize();
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
@@ -32,7 +33,7 @@ public class TrafficServer extends Thread{
     private ServiceQueue trafficService;
     private ServiceQueue socketTerminator;
     private Thread clientHandler;
-    private boolean stopped = false;
+    private volatile boolean stopped = false;
 
     private CustomLogger logger = CustomLogger.getInstance();
     private TrafficController trafficController;
@@ -167,13 +168,19 @@ public class TrafficServer extends Thread{
     }//System.out.println("TACK");
 
 
-
+    public void restart(){
+        this.logger.log("Restarting server...",Level.INFO);
+        this.stopped = true;
+        this.clientArrayList.clear();
+        this.run();
+    }
 
     /**
      * Attempts a clean shutdown. Terminates finally
      */
     public void shutdown(){
         this.logger.log("Initiating Shutdown",Level.INFO);
+        this.stopped = true;
         this.logger.log("Closing all the connections...",Level.INFO);
         //Close all the sockets and then remove the clients they belong to.
         for(Client client: clientArrayList){
@@ -182,7 +189,7 @@ public class TrafficServer extends Thread{
             }catch (IOException ioe){
 
             }
-            clientArrayList.add(client);
+            clientArrayList.remove(client);
         }
 
         this.socketTerminator = null;
@@ -190,12 +197,10 @@ public class TrafficServer extends Thread{
         this.logger.log("Closing Socket",Level.INFO);
         try{
             this.serverSocket.close();
-            System.exit(0);
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
         finally{
-            System.exit(-1);
         }
     }
 
@@ -206,7 +211,7 @@ public class TrafficServer extends Thread{
     public static TrafficServer getInstance(){
         if(trafficServer == null){
             try{
-                trafficServer = new TrafficServer(12345);
+                trafficServer = new TrafficServer(PORT);
             }catch (IOException e){
                 CustomLogger.getInstance().log("Could not create the server instance",Level.SEVERE);
 
