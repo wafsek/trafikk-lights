@@ -6,18 +6,16 @@ package server;
  */
 public class CommandHandler {
 
-    private String[] commands = new String[10];
+    private final String[] COMMANDS = {"time","timeall","disconnect","stop","stopall"};
     private TrafficServer trafficServer;
 
     public CommandHandler(TrafficServer trafficServer){
         this.trafficServer = trafficServer;
-        this.commands[0] = "time";
-        this.commands[1] = "timeall";
     }
 
     public  DataControl validateCommand(String command,Client client){
         boolean found = false;
-        for(String co: this.commands){
+        for(String co: this.COMMANDS){
             if(co != null && co.equals(command)){
                 found = true;
             }
@@ -26,28 +24,29 @@ public class CommandHandler {
         if (!found){
             return DataControl.COMMAND_NOT_FOUND;
         }
-
+        System.out.println("ddddd");
         switch (command){
             case "time":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
-                }
+                }break;
             }case "timeall":{
                 if(trafficServer.clientArrayList.isEmpty()){
                     return DataControl.EMPTY_CLIENT_LIST;
                 }
+                break;
             }case "disconnect":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
-                }
+                }break;
             }case "stop":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
-                }
+                }break;
             }case "stopall":{
                 if(trafficServer.clientArrayList.isEmpty()){
                     return DataControl.EMPTY_CLIENT_LIST;
-                }
+                }break;
             }
         }
         return DataControl.SUCCESS;
@@ -97,7 +96,6 @@ public class CommandHandler {
                 result = "Server -> all clients : "+command+"\n";
                 break;
             }
-
         }
         return result;
     }
