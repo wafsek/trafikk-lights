@@ -68,7 +68,6 @@ public class ClientSocket extends Thread{
             }
         } catch(IOException ioe) {
             System.out.println("Could not connect to : ["+host+"] with port number : ["+portNumber+"].\n");
-            ioe.printStackTrace();
         }
         return false;
     }

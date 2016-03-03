@@ -39,10 +39,6 @@ public class ClientGUI {
     private ClientController clientController;
     private TextField handshakeField, hostField, portField;
     private boolean hasSequence, isIdle;
-    //private Timeline[] idleTimeLine, runningTimeLine;
-    Duration[] duration = new Duration[4];
-
-    final int DEFAULTTIME = 2000;
 
 
     /**
