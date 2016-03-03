@@ -63,7 +63,7 @@ public class TrafficController extends Application{
 
 
     public void startServer(){
-        this.trafficServer.run();
+        this.trafficServer.startServer();
     }
 
     public void stopServer(){
