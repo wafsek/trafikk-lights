@@ -1,6 +1,5 @@
 package Client;
 
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.TextInputDialog;
 
 import java.io.DataInputStream;
@@ -9,10 +8,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Scanner;
 
 /**
- * Created by Adrian on 15/02/2016.
+ * This class is a socket for the light client to the server.
+ * It's job is to establish connection, maintain it and listen
+ * for inputs from the server itself. If something should happen
+ * to the connection, it should also handle the situation
+ * appropriately.
+ * @author Adrian Siim Melsom, Anh Thu Pham Le
  */
 public class ClientSocket extends Thread{
 
@@ -27,7 +30,7 @@ public class ClientSocket extends Thread{
     private static final byte[] PING = {0,2,67,67,0,0,0,0,0,0};
     private final int OFFSET = 2;
     private final String expected = "secret";
-    private boolean conntected;
+    private boolean connected;
     private final int BUFFERSIZE = 20;
 
 
@@ -41,6 +44,17 @@ public class ClientSocket extends Thread{
         tid.setContentText("Please enter the second handshake");
     }
 
+    /**
+     * Tries to connect the socket based on the parameters host and portNumber.
+     * If the connection is established, there will be sent a handshake
+     * to the server. If the server responds with the expected handshake,
+     * there will be a pop-up for a second handshake which is then sent to the server.
+     * If all the info is correct, connection will not be cut.
+     * @param host
+     * @param portNumber
+     * @param handshake
+     * @return boolean
+     */
     public boolean connect(String host, int portNumber, String handshake) {
         try {
             this.host = host;
@@ -59,19 +73,28 @@ public class ClientSocket extends Thread{
         return false;
     }
 
+    /**
+     * Extention of connect(). The actual code for the handshake is
+     * being executed here.
+     * @param handshake
+     * @return
+     * @throws IOException
+     */
     private boolean handshake(String handshake) throws IOException{
         byte[] content = toByteArray(handshake, 3);
         dos.write(content);
         clearBuffer(content);
         int bytesRead = dis.read(content, 0, BUFFERSIZE);
         if(bytesRead == -1) {
+            clientController.disconnect();
+            disconnectSocket();
             throw new IOException("Connection was cut");
         }
 
         if(!compare(content)) {
             throw new IOException("Invalid handshake");
         }
-
+        
         Optional<String> hs_two = tid.showAndWait();
         if(hs_two.isPresent()) {
             content = toByteArray(hs_two.get(), 3);
@@ -79,10 +102,16 @@ public class ClientSocket extends Thread{
         } else {
             throw new IOException("Not valid input");
         }
-
         return true;
     }
 
+    /**
+     * Converts a String to a byte[]. Also, the first byte
+     * (command defining byte) is
+     * @param handshake
+     * @param commandType
+     * @return byte[]
+     */
     private byte[] toByteArray(String handshake, int commandType) {
         byte[] content = new byte[BUFFERSIZE];
         content[0] = (byte)commandType;
@@ -93,6 +122,11 @@ public class ClientSocket extends Thread{
         return content;
     }
 
+    /**
+     *
+     * @param content
+     * @return boolean
+     */
     private boolean compare(byte[] content) {
         for(int i = 0; i < content[1]; i++) {
             System.out.println(expected.charAt(i) + " " + (char)content[i+OFFSET]);
@@ -103,6 +137,10 @@ public class ClientSocket extends Thread{
         return true;
     }
 
+    /**
+     * Fills the array with 0 on every index.
+     * @param content
+     */
     private void clearBuffer(byte[] content) {
         for(int i = 0; i < 20; i++) {
             content[i] = 0;
@@ -120,12 +158,13 @@ public class ClientSocket extends Thread{
     }
 
     /**
-     * Initializes running loop
+     * Initializes running loop which listens to input from the server and
+     * sends it to be processed.
      */
     private void startSocket() {
         byte[] content = new byte[20];
-        conntected = true;
-        while(conntected) {
+        connected = true;
+        while(connected) {
             try{
                 this.dis.read(content, 0, 20);
                 handle(content);
@@ -136,6 +175,9 @@ public class ClientSocket extends Thread{
         }
     }
 
+    /**
+     * Initiates the code which listens for input from the server.
+     */
     public void run() {
         this.startSocket();
     }
@@ -143,7 +185,6 @@ public class ClientSocket extends Thread{
     /**
      * Handles input from the user via switch-case
      * @param content
-     * @return an appropriate String to the input.
      */
     private void handle(byte[] content) {
 
@@ -156,6 +197,10 @@ public class ClientSocket extends Thread{
         }
     }
 
+    /**
+     * reads the input as a command
+     * @param content
+     */
     private void readCommand(byte[] content) {
         String command = new String(new char[] {(char)content[0], (char)content[1]});
         if(command.equals(COMMANDS[0])) {
@@ -174,26 +219,29 @@ public class ClientSocket extends Thread{
         }
     }
 
+    /**
+     * reads the input as a numeric input
+     * @param content
+     * @param length
+     */
     private void readNumeric(byte[] content, int length) {
 
     }
 
+    /**
+     * reads the input as a character sequence.
+     * @param content
+     * @param length
+     */
     private void readChar(byte[] content, int length) {
 
     }
 
+    /**
+     * Disconnects the socket
+     */
     private void disconnectSocket() {
         System.out.println("Could not establish connection, closing socket.");
-        conntected = false;
-    }
-
-
-
-    /**
-     * returns the status of the light
-     * @return
-     */
-    public String getLightStatus() {
-        throw new UnsupportedOperationException();
+        connected = false;
     }
 }

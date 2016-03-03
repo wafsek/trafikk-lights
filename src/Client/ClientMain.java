@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * Created by Baljit Singh Sarai on 15.02.16.
- * @author Baljit Singh Sarai
+ *
+ * @author Adrian Siim Melsom, Anh Thu Pham Le
  */
 public class ClientMain extends Application{
 
