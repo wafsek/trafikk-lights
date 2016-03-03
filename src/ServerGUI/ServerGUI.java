@@ -35,7 +35,7 @@ public class ServerGUI extends Thread{
     private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
-    private Button restart,stop;
+    private Button restart,stop,start;
     private Label redLabel,yellowLabel,greenLabel;
     private TextField serverInput;
     private VBox left,nameoption,coloroption, slideroption, valueoption;
@@ -147,11 +147,13 @@ public class ServerGUI extends Thread{
         });
         stop = new Button("STOP");
         stop.setOnAction(e-> shutdownServer());
+        start = new Button("START");
+        start.setOnAction(e-> startServer());
         restart = new Button("RESTART");
         restart.setOnAction(e->refreshServer());
 
         buttonoption = new HBox();
-        buttonoption.getChildren().addAll(stop,restart);
+        buttonoption.getChildren().addAll(start,stop,restart);
 
 
         nameoption.getChildren().addAll(redname,yellowname,greenname);
@@ -230,6 +232,7 @@ public class ServerGUI extends Thread{
     public void refreshServer(){
         this.trafficController.restartTrafficServer();
     }
+
 
     public void shutdownServer(){
         this.trafficController.stopServer();
