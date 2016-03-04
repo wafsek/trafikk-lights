@@ -36,7 +36,6 @@ public class ClientController {
         if(!connected && clientSocket == null){
             clientSocket = new ClientSocket(this);
             connected = ((ClientSocket)this.clientSocket).connect(host, portNumber, handshake);
-            System.out.println(connected);
             if(connected) {
                 clientSocket.start();
             } else {

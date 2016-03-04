@@ -1,7 +1,6 @@
 package client;
 
 import javafx.scene.control.TextInputDialog;
-import logging.CustomLogger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,7 +9,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.logging.Level;
 
 /**
  * This class is a socket for the light Client to the server.
@@ -228,6 +226,7 @@ public class ClientSocket extends Thread{
                 break;
             }case stop: {
                 clientController.setIdle();
+                break;
             }case disconnect: {
                 disconnectSocket();
                 break;

@@ -13,7 +13,7 @@ import java.util.logging.Level;
 public class ServiceQueue {
 
 
-    private final int nThreads;
+    private  int nThreads;
     private final PoolWorker[] threads;
     private final LinkedList queue;
     private CustomLogger logger = CustomLogger.getInstance();
@@ -28,7 +28,7 @@ public class ServiceQueue {
         queue = new LinkedList();
         threads = new PoolWorker[nThreads];
 
-        for (int i=0; i<nThreads; i++) {
+        for (int i=0; i<this.nThreads; i++) {
             threads[i] = new PoolWorker();
             threads[i].start();
         }
