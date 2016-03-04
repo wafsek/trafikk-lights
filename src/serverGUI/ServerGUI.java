@@ -35,7 +35,7 @@ public class ServerGUI extends Thread{
 
     /**
      * Constructor which creates the whole GUI
-     * @param trafficController The trafficController object
+     * @param trafficController The trafficController object {@link server.TrafficController}
      * @param stage Stage object
      */
     public ServerGUI(TrafficController trafficController, Stage stage){
