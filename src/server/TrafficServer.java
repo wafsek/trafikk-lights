@@ -109,12 +109,10 @@ public class TrafficServer extends Thread{
      * Stop the main server logic.(Can be restarted with startServer() method.)
      */
     public void serverStop(){
+        disconnectAall();
         clientHandler = null;
         this.logger.log("Stopping server...",Level.FINE);
         this.stopped = true;
-        for(Client client : clientArrayList){
-            disconnectClient(client);
-        }
         while(!this.hasStopped){
 
         }
@@ -236,6 +234,13 @@ public class TrafficServer extends Thread{
             // closing the socket properly as this could risk the server. :) --Sarai
         }
     }//System.out.println("TACK");
+
+
+    public void disconnectAall(){
+        for(Client client:clientArrayList){
+            disconnectClient(client);
+        }
+    }
 
     /**
      * Try to cleanly close the socket and remove the Client.
