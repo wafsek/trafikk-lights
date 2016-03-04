@@ -14,7 +14,7 @@ Software description.
 
 How to use the software.
 	Server:
-	After staring the program you will see a gui user-interface.
+	After staring the program you will see a gui.
 	The interface is pretty simple. There are five components in the interface.
 The client list, which is on the right side. It lets you see the address and port the client are connected from.
 On the top you will find the time widget with lets you send time sequence to the traffic lights. You simply drag the widgets (sets time). And send the appropriate command to have the client.
@@ -37,6 +37,24 @@ Below the input area you will find the console output area. This is where you se
 
 	Client:
 
+	After starting the program you will see a gui.
+	There are 4 components on the interface.
+	The 3 input ares (TextField) represents 3 different inputs needed in order to establish a lasting connection with the server.
+	The first field must contain the host ID (e.g "localhost").
+	The second field must contain the port number to be used.
+	The third is a mandatory handshake (This HAS to be "handshake", which is defined by the host).
+	The fourth component is a button, which sends a connect request when pressed, using the data from the fields above.
+
+	If all the data was verified, and a connection was established, there will pop up a window with 2 components.
+	An input field (TextField) and a button.
+	The field is a second mandatory handshake (this HAS to be "protocol", which is defined by the host).
+	The button sends another handshake containing the data from the input field.
+
+	Disclaimers:
+	- There is no way to disconnect the socket via the client but to terminate the entire program instance.
+	This should be done from the server.
+	- Only the server can decide what state the traffic light is in (Idle or Running).
+	- Only the server can change the time intervals in the sequence of which the lights change.
 
 Description of the inner workings of the software and packages.
 
