@@ -86,11 +86,11 @@ public class ValidateConnection implements Runnable{
                 this.socket.close();
                 return;
             }
-            this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINER);
+            this.logger.log("Creating a new client object and adding it to the clientArratlist ",Level.FINER);
             clientAdded =  TrafficServer.getInstance().clientArrayList.add(new Client(this.socket));
             this.trafficController.getServerGUI().refreshClientlist();
             if(clientAdded){
-                this.logger.log("New Client Connected",Level.INFO);
+                this.logger.log("New client Connected",Level.INFO);
             }
             this.logger.log("Status for added_new_client: "+clientAdded,Level.FINEST);
 

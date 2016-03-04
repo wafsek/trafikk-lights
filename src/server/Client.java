@@ -14,7 +14,7 @@ public class Client {
     private String name;
 
     /**
-     *  Creats a new Client given the following parameters.
+     *  Creats a new client given the following parameters.
      * @param socket -Socket object.
      */
     public Client(Socket socket){
