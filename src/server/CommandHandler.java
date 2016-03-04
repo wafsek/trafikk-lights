@@ -7,7 +7,7 @@ package server;
  */
 public class CommandHandler {
 
-    private final String[] COMMANDS = {"time","timeall","disconnect","stop","stopall"};
+    private final String[] COMMANDS = {"help","commands","time","timeall","disconnect","disconnectall","stop","stopall"};
     private TrafficServer trafficServer;
     public CommandHandler(TrafficServer trafficServer){
         this.trafficServer = trafficServer;
@@ -76,6 +76,19 @@ public class CommandHandler {
         msg[0] = 2;
         String result = "";
         switch (command){
+            case "help": {
+                for(String c : COMMANDS){
+                    System.out.println(c);
+                    result += '/'+c+'\n';
+                }
+                break;
+            }case "commands": {
+                for(String c : COMMANDS){
+                    System.out.println(c);
+                    result += '/'+c+'\n';
+                }
+                break;
+            }
             case "time":{
                 msg[1] = 5;
                 msg[2] = 'T';
