@@ -44,6 +44,7 @@ public class ClientSocket extends Thread{
 
     /**
      * Initializes the Client socket
+     * @param clientController {@link client.ClientController}
      */
     public ClientSocket(ClientController clientController) {
         this.clientController = clientController;
@@ -58,9 +59,9 @@ public class ClientSocket extends Thread{
      * to the server. If the server responds with the expected handshake,
      * there will be a pop-up for a second handshake which is then sent to the server.
      * If all the info is correct, connection will not be cut.
-     * @param host
-     * @param portNumber
-     * @param handshake
+     * @param host String
+     * @param portNumber int
+     * @param handshake String
      * @return boolean
      */
     public boolean connect(String host, int portNumber, String handshake) {
@@ -83,7 +84,7 @@ public class ClientSocket extends Thread{
     /**
      * Extention of connect(). The actual code for the handshake is
      * being executed here.
-     * @param handshake
+     * @param handshake String
      * @return
      * @throws IOException
      */
@@ -115,8 +116,8 @@ public class ClientSocket extends Thread{
     /**
      * Converts a String to a byte[]. Also, the first byte
      * (command defining byte) is
-     * @param handshake
-     * @param commandType
+     * @param handshake String
+     * @param commandType int
      * @return byte[]
      */
     private byte[] toByteArray(String handshake, int commandType) {
@@ -131,7 +132,7 @@ public class ClientSocket extends Thread{
 
     /**
      * Compares the content of a byte[] to an expected String.
-     * @param content
+     * @param content byte[]
      * @return boolean
      */
     private boolean compare(byte[] content) {
@@ -145,7 +146,7 @@ public class ClientSocket extends Thread{
 
     /**
      * Fills the array with 0 on every index.
-     * @param content
+     * @param content byte[]
      */
     private void clearBuffer(byte[] content) {
         for(int i = 0; i < 20; i++) {
@@ -155,9 +156,9 @@ public class ClientSocket extends Thread{
 
     /**
      * Sets the new light routine for the controller
-     * @param red
-     * @param yellow
-     * @param green
+     * @param red int
+     * @param yellow int
+     * @param green int
      */
     public void setLightRoutine(int red, int yellow, int green) {
         clientController.changeLightSequence(red,yellow,green);
@@ -191,7 +192,7 @@ public class ClientSocket extends Thread{
 
     /**
      * Handles input from the user via switch-case
-     * @param content
+     * @param content byte[]
      */
     private void handle(byte[] content) {
 
@@ -240,8 +241,8 @@ public class ClientSocket extends Thread{
 
     /**
      * reads the input as a numeric input
-     * @param content
-     * @param length
+     * @param content byte[]
+     * @param length int
      */
     private void readNumeric(byte[] content, int length) {
         // Ready for when it's needed
@@ -249,8 +250,8 @@ public class ClientSocket extends Thread{
 
     /**
      * reads the input as a character sequence.
-     * @param content
-     * @param length
+     * @param content byte[]
+     * @param length int
      */
     private void readChar(byte[] content, int length) {
         // Ready for when it's needed

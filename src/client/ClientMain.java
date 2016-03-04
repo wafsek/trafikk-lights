@@ -12,7 +12,7 @@ public class ClientMain extends Application{
 
     /**
      * Main method
-     * @param args
+     * @param args String...
      */
     public static void main(String... args) {
         launch(args);
@@ -20,7 +20,7 @@ public class ClientMain extends Application{
 
     /**
      * Initiantes the program controller
-     * @param primaryStage
+     * @param primaryStage JavaFX Stage
      */
     public void start(Stage primaryStage) {
         new ClientController(primaryStage);

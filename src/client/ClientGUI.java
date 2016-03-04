@@ -40,8 +40,8 @@ public class ClientGUI {
 
     /**
      * Constructor. Constructs the ClientGUI with all relevant fields.
-     * @param stage
-     * @param clientController
+     * @param stage JavaFX Stage
+     * @param clientController ClientController
      */
     public ClientGUI(Stage stage, ClientController clientController) {
         hasSequence = false;
@@ -136,6 +136,9 @@ public class ClientGUI {
 
     /**
      * Starts the main animation (red, yellow and green light).
+     * @param red
+     * @param yellow
+     * @param green
      */
     private void animation(int red, int yellow, int green) {
 
@@ -260,9 +263,9 @@ public class ClientGUI {
 
     /**
      * Makes a call for animation.
-     * @param red
-     * @param yellow
-     * @param green
+     * @param red int
+     * @param yellow int
+     * @param green int
      */
     public void changeLightSequence(int red, int yellow, int green) {
         animation(red, yellow, green);

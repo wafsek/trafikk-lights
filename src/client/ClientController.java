@@ -17,7 +17,7 @@ public class ClientController {
 
     /**
      * Constructor which initiated the GUI.
-     * @param primaryStage
+     * @param primaryStage JavaFX Stage
      */
     public ClientController(Stage primaryStage) {
         clientGUI = new ClientGUI(primaryStage, this);
@@ -28,9 +28,9 @@ public class ClientController {
     /**
      * Requests a hand shake with the server via the socket created,
      * based on the two last parameters host and portNumber.
-     * @param handshake
-     * @param host
-     * @param portNumber
+     * @param handshake String
+     * @param host String
+     * @param portNumber int
      */
     public void requestConnection(String handshake, String host, int portNumber) {
         if(!connected && clientSocket == null){
@@ -55,9 +55,9 @@ public class ClientController {
 
     /**
      * Linking method between socket and GUI for changing the light sequence.
-     * @param red
-     * @param yellow
-     * @param green
+     * @param red int
+     * @param yellow int
+     * @param green int
      */
     public void changeLightSequence(int red, int yellow, int green) {
         clientGUI.changeLightSequence(red, yellow, green);
