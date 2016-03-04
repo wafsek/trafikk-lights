@@ -19,23 +19,18 @@ import java.util.logging.Level;
 public class ClientHandler extends Thread {
 
     private ServerSocket serverSocket;
-    private DataOutputStream out;
-    private DataInputStream in;
     private ServiceQueue validatingService;
-    private TrafficServer trafficServer;
     private TrafficController trafficController;
     private CustomLogger logger = CustomLogger.getInstance();
 
 
     /**
      * Creates a ClientHandler with the given values.
-     * @param trafficServer The server {@link server.TrafficServer}
      * @param serverSocket The server socket {@link ServerSocket}
      * @param trafficController The main controller {@link server.TrafficController}
      */
-    public ClientHandler(TrafficServer trafficServer,ServerSocket serverSocket,TrafficController trafficController){
+    public ClientHandler(ServerSocket serverSocket,TrafficController trafficController){
         this.trafficController = trafficController;
-        this.trafficServer = trafficServer;
         this.serverSocket = serverSocket;
         this.validatingService = new ServiceQueue(1);
     }

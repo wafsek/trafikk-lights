@@ -90,7 +90,7 @@ public class TrafficServer extends Thread{
             if(!this.stopped){
                 logger.log("Server started. Host: "+this.displayAddresse
                         +" Port: "+this.serverSocket.getLocalPort(),Level.INFO);
-                clientHandler = new ClientHandler(this,this.serverSocket,this.trafficController);
+                clientHandler = new ClientHandler(this.serverSocket,this.trafficController);
                 clientHandler.start(); //Starts accepting incoming connections.
                 this.serverForever();
             }

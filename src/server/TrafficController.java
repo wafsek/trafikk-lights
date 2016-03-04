@@ -20,7 +20,6 @@ public class TrafficController extends Application{
     private ServerGUI serverGUI;
     private Stage stage;
     private TrafficServer trafficServer;
-    private ObservableList clientObervableList;
     private Client reciver;
     private CustomLogger logger = CustomLogger.getInstance();
     public TrafficController(){
