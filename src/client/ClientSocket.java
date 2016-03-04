@@ -266,6 +266,7 @@ public class ClientSocket extends Thread{
             dis.close();
             socket.close();
             connected = false;
+            clientController.disconnect();
         } catch (SocketException se) {
             logger.log("Could not close the socket properly.", Level.WARNING);
         } catch (Exception e) {

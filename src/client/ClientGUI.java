@@ -143,7 +143,6 @@ public class ClientGUI {
         redDur.setDuration(Duration.millis(red/4));
         yelDur.setDuration(Duration.millis(yellow/2));
         greDur.setDuration(Duration.millis(green/4));
-        System.out.println(red + " " + yellow + " " + green);
         mainSequence.getChildren().clear();
         mainSequence.getChildren().addAll(redSeq, yelSeq, greSeq);
         mainSequence.play();
