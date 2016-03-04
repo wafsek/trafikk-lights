@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import javafx.scene.control.TextInputDialog;
 import logging.CustomLogger;
