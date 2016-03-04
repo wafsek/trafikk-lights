@@ -26,7 +26,7 @@ Below the display you have the input area. This is where you type in your comman
 		3. /stop → This command sends a stop command to the client which stop the current time sequence on the client. 
 		4. /stopall → Same as stop but to all clients
 		5. /disconnect → Try to do a .clean disconnect on the selected client (you have to select a client from the list on the right side by clicking on it).
-
+        6. /commands → Show all the available commands that can be used at the command line.
 
 
 Below the input area you will find the console output area. This is where you see what really is happening in the software. The detail of this log can be increased and decreased by changing the log level. 
@@ -41,7 +41,7 @@ Below the input area you will find the console output area. This is where you se
 	There are 4 components on the interface.
 	The 3 input ares (TextField) represents 3 different inputs needed in order to establish a lasting connection with the server.
 	The first field must contain the host ID (e.g "localhost").
-	The second field must contain the port number to be used.
+	The second field must contain the port number to be used. (Default : 12345 this can be modified)
 	The third is a mandatory handshake (This HAS to be "handshake", which is defined by the host).
 	The fourth component is a button, which sends a connect request when pressed, using the data from the fields above.
 
