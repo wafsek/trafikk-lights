@@ -16,7 +16,7 @@ import java.util.logging.Level;
  * @author Baljit Singh Sarai
  * @author Kim Long Vu
  */
-public class TrafficController extends Application{
+public class TrafficController {
     private ServerGUI serverGUI;
     private Stage stage;
     private TrafficServer trafficServer;
