@@ -15,7 +15,8 @@ import java.util.Optional;
  * for inputs from the server itself. If something should happen
  * to the connection, it should also handle the situation
  * appropriately.
- * @author Adrian Siim Melsom, Anh Thu Pham Le
+ * @author Adrian Siim Melsom
+ * @author Anh Thu Pham Le
  */
 public class ClientSocket extends Thread{
 
@@ -122,7 +123,7 @@ public class ClientSocket extends Thread{
     }
 
     /**
-     *
+     * Compares the content of a byte[] to an expected String.
      * @param content
      * @return boolean
      */
@@ -226,7 +227,7 @@ public class ClientSocket extends Thread{
      * @param length
      */
     private void readNumeric(byte[] content, int length) {
-
+        // Ready for when it's needed
     }
 
     /**
@@ -235,7 +236,7 @@ public class ClientSocket extends Thread{
      * @param length
      */
     private void readChar(byte[] content, int length) {
-
+        // Ready for when it's needed
     }
 
     /**
