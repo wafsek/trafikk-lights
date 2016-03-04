@@ -58,12 +58,13 @@ public class CommandHandler {
         return DataControl.SUCCESS;
     }
 
+
     /**
      * Excecute the command.
      * @param command- The command to be executed.
      * @param client-The client {@link server.Client} the command is intended for.
      * @param times- The times on the server widgets.
-     * @return- A User-friendly message as feedback for the user.
+     * @return A User-friendly message as feedback for the user.
      */
     public String command(String command,Client client,Double[] times){
         byte[] msg = new byte[trafficServer.MESSAGE_SIZE];

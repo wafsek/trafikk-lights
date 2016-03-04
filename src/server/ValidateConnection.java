@@ -48,7 +48,7 @@ public class ValidateConnection implements Runnable{
     /**
      * Initiate the Handshake protocol.
      * If the hanshake is passed it creates a new {@link server.Client} object and adds it to the list.
-     * @param socket- The {@link Socket} to be tested.
+     * @param socket The {@link Socket} to be tested.
      */
     public void handshakeProtocol(Socket socket){
         int msgIndex = 2;

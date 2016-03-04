@@ -58,7 +58,7 @@ public class Config {
 
     /**
      * Returns the size that the buffer-size should be.
-     * @return - The port number to be set to the server.
+     * @return The port number to be set to the server.
      */
     public static int getServerPort() {
         int result;

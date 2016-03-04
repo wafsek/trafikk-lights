@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 
 /**
+ * A Thread Worker pool.
  * Created by Baljit Sarai on 15.02.16.
  * @author Baljit Singh Sarai
  */
@@ -17,6 +18,10 @@ public class ServiceQueue {
     private final LinkedList queue;
     private CustomLogger logger = CustomLogger.getInstance();
 
+    /**
+     * Creates a ServiceQueue with the given number of threads.
+     * @param nThreads Number of threads to be created for this pool.
+     */
     public ServiceQueue (int nThreads)
     {
         this.nThreads = nThreads;
@@ -36,7 +41,12 @@ public class ServiceQueue {
         }
     }
 
+    /**
+     * The Poolworker class. This class is going to pick on Runnable at a time and execute it.
+     */
     private class PoolWorker extends Thread {
+
+        @Override
         public void run() {
             Runnable r;
 
