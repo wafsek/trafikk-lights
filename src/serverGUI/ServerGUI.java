@@ -19,7 +19,7 @@ import server.TrafficController;
 public class ServerGUI extends Thread{
 
     private ScrollPane commandWindow,loggWindow;
-    private TextArea logg,command;
+    private TextArea log,command;
     private TableView<Client> clientlist;
     private Scene scene;
     private Stage stage;
@@ -33,7 +33,11 @@ public class ServerGUI extends Thread{
     private static final int SCENE_WIDTH = 1400;
     private static final int SCENE_HEIGTH = 900;
 
-
+    /**
+     * Constructor which creates the whole GUI
+     * @param trafficController
+     * @param stage
+     */
     public ServerGUI(TrafficController trafficController, Stage stage){
         this.trafficController = trafficController;
 
@@ -46,7 +50,7 @@ public class ServerGUI extends Thread{
 
 
 
-        redslider = new Slider(0,100,50);
+        redslider = new Slider(2,100,50);
 
         redslider.setOnMouseDragged(e->redSliderAction());
         redslider.setPrefSize(900,0);
@@ -54,14 +58,14 @@ public class ServerGUI extends Thread{
         redLabel = new Label(String.format("%.0f",redslider.getValue()));
         redLabel.setPrefSize(50,0);
 
-        yellowslider = new Slider(0,100,50);
+        yellowslider = new Slider(2,100,50);
 
         yellowslider.setOnMouseDragged(e->yellowSliderAction());
 
         yellowLabel = new Label(String.format("%.0f",redslider.getValue()));
 
 
-        greenslider = new Slider(0,100,50);
+        greenslider = new Slider(2,100,50);
 
         greenslider.setOnMouseDragged(e->greenSliderAction());
 
@@ -89,11 +93,10 @@ public class ServerGUI extends Thread{
         this.refreshClientlist();
 
         //Loggwindow
-        logg = new TextArea();
-        logg.setPrefSize(1100,220);
-        logg.setEditable(false);
-        loggWindow = new ScrollPane(logg);
-
+        log = new TextArea();
+        log.setPrefSize(1100,220);
+        log.setEditable(false);
+        loggWindow = new ScrollPane(log);
 
         valueoption = new VBox();
         nameoption = new VBox();
@@ -161,72 +164,90 @@ public class ServerGUI extends Thread{
 
 
     }
+
+    /**
+     * Method shows the stage
+     */
     public void run(){
         stage.show();
     }
 
+    /**
+     * Method to close the stage which will close the GUI.
+     */
     public void close(){
         stage.close();
     }
 
- /*   public static void main(String[] args){
-        launch(args);
-    }*/
-// RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
+    /**
+     * Method for returning the red slider
+     * @return slider for the red color
+     */
     public Slider getRedSlider(){
         return redslider;
     }
+    /**
+     * Method for returning the yellow slider
+     * @return slider for the yellow color
+     */
     public Slider getYellowslider(){
         return yellowslider;
     }
+    /**
+     * Method for returning the green slider
+     * @return slider for the green color
+     */
     public Slider getGreenslider() {
         return greenslider;
-    }
-    // RETURN THE DIFFERENT ELEMENTS--------------------------------------------------------------
-    //DIFFERENT METHODS ON DIFFERNT ACTIONS-------------------------------------------------------
-
-    public int getRedValue(){
-        return (int)redslider.getValue();
-    }
-
-    public int getYellowValue(){
-        return (int)yellowslider.getValue();
-    }
-
-    public int getGreenValue(){
-        return (int)greenslider.getValue();
     }
 
 
     //SLIDERACTIONS
+
+    /**
+     * Method that updates the red label with the red sliders value
+     */
     public void redSliderAction(){
         redLabel.setText(String.format("%.0f",redslider.getValue()));
         //System.out.println(redslider.getValue());
     }
+    /**
+     * Method that updates the yellow label with the yellow sliders value
+     */
     public void yellowSliderAction(){
         yellowLabel.setText(String.format("%.0f",yellowslider.getValue()));
       // System.out.println(yellowslider.getValue());
     }
+    /**
+     * Method that updates the green label with the green sliders value
+     */
     public void greenSliderAction(){
         greenLabel.setText(String.format("%.0f",greenslider.getValue()));
         //System.out.println(greenslider.getValue());
     }
 
-    //START/CREATE SERVER
+    /**
+     * This method starts the server
+     */
     public void startServer(){
         this.trafficController.startServer();
     }
-
+    /**
+     * This method refreshes the server
+     */
     public void refreshServer(){
         this.trafficController.restartTrafficServer();
     }
-
-
+    /**
+     * This method shutdowns the server
+     */
     public void shutdownServer(){
         this.trafficController.stopServer();
     }
 
-    //REFRESH CLIENT LIST
+    /**
+     * Method refreshes the clientlist
+     */
     public void refreshClientlist(){
 
         clientlist.getSelectionModel().clearSelection();
@@ -235,14 +256,26 @@ public class ServerGUI extends Thread{
 
     }
 
+    /**
+     * This method returns the tablview object for clientlist to check if anything is pressed on
+     * @return the tableview for clientlist
+     */
     public TableView<Client> getClientlist() {
         return clientlist;
     }
 
+    /**
+     * Method returns the textarea
+     * @return the log textarea object
+     */
     public TextArea getLogg(){
-        return logg;
+        return log;
     }
 
+    /**
+     * Method refreshes the command window
+     * @param commandtext
+     */
     public void refreshCommand(String commandtext){
         command.appendText(commandtext);
     }

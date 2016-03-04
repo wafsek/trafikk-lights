@@ -18,11 +18,13 @@ import javafx.stage.Stage;
 import javafx.geometry.*;
 import javafx.util.Duration;
 
+import java.security.spec.ECField;
 import java.util.Optional;
 
 /**
- * This purpose of this class is
- * @author Adrian Siim Melsom, Anh Thu Pham Le
+ * The purpose of this class is to display and keep an animation.
+ * @author Adrian Siim Melsom
+ * @author Anh Thu Pham Le
  */
 public class ClientGUI {
 
@@ -51,9 +53,6 @@ public class ClientGUI {
         this.clientController = clientController;
         this.stage = stage;
 
-        //setIdleTimeLine();
-        //setRunningTimeLine(DEFAULTTIME, DEFAULTTIME, DEFAULTTIME);
-        //Konstruerer trafikklyset
         StackPane trafikklys = new StackPane();
         Rectangle rectangle = new Rectangle(125, 300, 125, 300);
         connect = new Button("Connect");
@@ -66,20 +65,7 @@ public class ClientGUI {
 
         handshakeField = new TextField();
         handshakeField.setPromptText("Connection Command");
-        connect.setOnAction(e -> {
-            if(handshakeField.getText().length() == 0) {
-                handshakeField.setPromptText("Can't be empty");
-                handshakeField.setStyle("-fx-effect: dropshadow"
-                        + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
-            }else {
-                handshakeField.setPromptText("Connection Command");
-                handshakeField.setStyle("");
-                clientController.requestConnection(handshakeField.getText().trim(),
-                        hostField.getText().trim(),
-                        Integer.parseInt(portField.getText().trim()));
-                clearFields();
-            }
-        });
+        connect.setOnAction(e -> connectPress());
 
         VBox rightVBox = new VBox(10, new Label("Host"),hostField,new Label("Port number"),
                 portField,new Label("Handshake Command"), handshakeField, connect);
@@ -89,13 +75,9 @@ public class ClientGUI {
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(10));
 
-
         rectangle.setFill(Color.BLACK);
         rectangle.setStroke(Color.BLACK);
         trafikklys.getChildren().add(rectangle);
-
-
-        //Desinger sirklene på trafikklyset
 
         redLight.setStroke(Color.BLACK);
         redLight.setFill(Color.GREY);
@@ -113,15 +95,13 @@ public class ClientGUI {
         layout.add(greenLight, 1, 3);
         trafikklys.getChildren().add(layout);
 
-        //Konstruerer hoved layouten
-        BorderPane hovedLayout = new BorderPane();
-        hovedLayout.setPadding(new Insets(10));
-        hovedLayout.setCenter(trafikklys);
-        hovedLayout.setBottom(vBox);
-        hovedLayout.setRight(rightVBox);
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setPadding(new Insets(10));
+        mainLayout.setCenter(trafikklys);
+        mainLayout.setBottom(vBox);
+        mainLayout.setRight(rightVBox);
 
-        // Konstruerer vinduet
-        scene = new Scene(hovedLayout);
+        scene = new Scene(mainLayout);
         stage.setTitle("Trafikklys");
         stage.setScene(scene);
         initiateLightSequence();
@@ -144,7 +124,7 @@ public class ClientGUI {
     /**
      * Show the stage and puts it on idle mode.
      */
-    public void start() {
+    private void start() {
         stage.show();
         idle();
     }
@@ -162,7 +142,7 @@ public class ClientGUI {
     /**
      * Starts the main animation (red, yellow and green light).
      */
-    public void animation(int red, int yellow, int green) {
+    private void animation(int red, int yellow, int green) {
 
         mainSequence.stop();
         redDur.setDuration(Duration.millis(red/4));
@@ -174,6 +154,9 @@ public class ClientGUI {
         mainSequence.play();
     }
 
+    /**
+     * Initiates the main components of the main animation
+     */
     private void initiateLightSequence() {
 
         redTrans = new FillTransition(Duration.millis(1), redLight, Color.GRAY, Color.RED);
@@ -195,7 +178,10 @@ public class ClientGUI {
         greSeq.setCycleCount(2);
     }
 
-    public void initiateIdleSequence() {
+    /**
+     * Initiates the main components of the idle animation
+     */
+    private void initiateIdleSequence() {
 
         yelIdleTrans = new FillTransition(Duration.millis(100), yellowLight, Color.GRAY, Color.YELLOW);
         yelIdleDur = new PauseTransition(Duration.millis(1000));
@@ -203,7 +189,83 @@ public class ClientGUI {
     }
 
     /**
-     *
+     * Verification for the fields.
+     */
+    private void connectPress() {
+        boolean host = hostCheck();
+        boolean port = portCheck();
+        boolean hand = handShakeCheck();
+        if(host && port && hand) {
+            clientController.requestConnection(handshakeField.getText().trim(),
+                    hostField.getText().trim(),
+                    Integer.parseInt(portField.getText().trim()));
+
+
+        }
+        clearFields();
+    }
+
+    /**
+     * Verification for the host field
+     * @return a boolean value for if the field is legal or not.
+     */
+    private boolean hostCheck() {
+        if(hostField.getText().length() == 0) {
+            hostField.setPromptText("Can't be empty");
+            hostField.setStyle("-fx-effect: dropshadow"
+                    + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
+            return false;
+        } else {
+            hostField.setPromptText("Connection Command");
+            hostField.setStyle("");
+            return true;
+        }
+    }
+
+    /**
+     * Verification for the host field
+     * @return a boolean value for if the field is legal or not.
+     */
+    private boolean portCheck() {
+        if(handshakeField.getText().length() == 0) {
+            portField.setPromptText("Can't be empty");
+            portField.setStyle("-fx-effect: dropshadow"
+                    + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
+            return false;
+        } else {
+            portField.setPromptText("Connection Command");
+            portField.setStyle("");
+        }
+        try {
+            Integer.parseInt(portField.getText());
+            return true;
+        } catch (Exception e) {
+            portField.setPromptText("Must be a number");
+            portField.setStyle("-fx-effect: dropshadow"
+                    + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
+            return false;
+        }
+    }
+
+    /**
+     * Verification for the host field
+     * @return a boolean value for if the field is legal or not.
+     */
+    private boolean handShakeCheck() {
+        if(handshakeField.getText().length() == 0) {
+            handshakeField.setPromptText("Can't be empty");
+            handshakeField.setStyle("-fx-effect: dropshadow"
+                    + "(three-pass-box, rgba(250, 0, 0, 250), 5, 0, 0, 0);");
+            return false;
+        } else {
+            handshakeField.setPromptText("Connection Command");
+            handshakeField.setStyle("");
+            return true;
+        }
+    }
+
+    /**
+     * Makes a call for animation.
      * @param red
      * @param yellow
      * @param green
