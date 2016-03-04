@@ -1,23 +1,28 @@
 package server;
 
 /**
+ * This class Validates and Executes the server commands.
  * Created by Baljit Singh Sarai on 03.03.16.
  * @author Baljit Singh Sarai
  */
 public class CommandHandler {
 
-    private String[] commands = new String[10];
+    private final String[] COMMANDS = {"time","timeall","disconnect","stop","stopall"};
     private TrafficServer trafficServer;
-
     public CommandHandler(TrafficServer trafficServer){
         this.trafficServer = trafficServer;
-        this.commands[0] = "time";
-        this.commands[1] = "timeall";
     }
 
+
+    /**
+     * Validates the commands given in the parameters.
+     * @param command- The command.
+     * @param client- The client to whome this command is going to be send (if it is going to be send).
+     * @return <code>true</code> if the commands is valid in everyway, <code>false</code> otherwise.
+     */
     public  DataControl validateCommand(String command,Client client){
         boolean found = false;
-        for(String co: this.commands){
+        for(String co: this.COMMANDS){
             if(co != null && co.equals(command)){
                 found = true;
             }
@@ -26,34 +31,41 @@ public class CommandHandler {
         if (!found){
             return DataControl.COMMAND_NOT_FOUND;
         }
-
         switch (command){
             case "time":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
-                }
+                }break;
             }case "timeall":{
                 if(trafficServer.clientArrayList.isEmpty()){
                     return DataControl.EMPTY_CLIENT_LIST;
                 }
+                break;
             }case "disconnect":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
-                }
+                }break;
             }case "stop":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
-                }
+                }break;
             }case "stopall":{
                 if(trafficServer.clientArrayList.isEmpty()){
                     return DataControl.EMPTY_CLIENT_LIST;
-                }
+                }break;
             }
         }
         return DataControl.SUCCESS;
     }
 
 
+    /**
+     * Excecute the command.
+     * @param command- The command to be executed.
+     * @param client-The client {@link server.Client} the command is intended for.
+     * @param times- The times on the server widgets.
+     * @return A User-friendly message as feedback for the user.
+     */
     public String command(String command,Client client,Double[] times){
         byte[] msg = new byte[trafficServer.MESSAGE_SIZE];
         msg[0] = 2;
@@ -97,7 +109,6 @@ public class CommandHandler {
                 result = "Server -> all clients : "+command+"\n";
                 break;
             }
-
         }
         return result;
     }

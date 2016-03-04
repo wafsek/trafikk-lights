@@ -38,11 +38,7 @@ public class ClientGUI {
     private Button stop, connect;
     private ClientController clientController;
     private TextField handshakeField, hostField, portField;
-    private boolean hasSequence, isIdle;
-    //private Timeline[] idleTimeLine, runningTimeLine;
-    Duration[] duration = new Duration[4];
-
-    final int DEFAULTTIME = 2000;
+    private boolean hasSequence;
 
 
     /**
@@ -154,23 +150,9 @@ public class ClientGUI {
     }
 
     /**
-     * Tries to start the animation based on a boolean
-     */
-    public void tryStart() {
-        if(!hasSequence) {
-            idle();
-            hasSequence = !hasSequence;
-        } else {
-            //animation();
-            hasSequence = !hasSequence;
-        }
-    }
-
-    /**
      * Initiates the idle animation
      */
     public void idle() {
-        isIdle = true;
         mainSequence.stop();
         mainSequence.getChildren().clear();
         mainSequence.getChildren().addAll(yelIdleDur, yelIdleTrans, grayIdleDur);

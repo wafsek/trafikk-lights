@@ -18,7 +18,7 @@ import java.util.logging.Level;
 public class TrafficServer extends Thread{
     //The Constants
     private static final int PORT = Config.getServerPort();
-    private final int BUFFERSIZE = Config.getBufferSize();
+    public final int BUFFERSIZE = Config.getBufferSize();
     private final int LOOPBACKTIME = Config.getLoopbackTime();
     private final int SERVICESWORKERS = Config.getServiceWorkers();
     private final int TERMINATORS = Config.getTerminators();
@@ -145,8 +145,7 @@ public class TrafficServer extends Thread{
                 try{
                     client.getDataOutputStream().write(PING);//Just to check if it is alive :)
                     if( client.getDataInputStream().available()> 0){
-                        trafficService.execute(new ServiceTask(client,BUFFERSIZE
-                        ));
+                        trafficService.execute(new ServiceTask(client));
                     }
                 }catch (IOException ioe){
                     this.logger.log("Was unable to write to a socket.Attemting to delete it",Level.FINE);
@@ -159,7 +158,6 @@ public class TrafficServer extends Thread{
         }
         this.hasStopped = true;
         this.logger.log("Server main loop stopped", Level.FINE);
-
     }
 
 
@@ -239,6 +237,7 @@ public class TrafficServer extends Thread{
 
     public void disconnectClient(Client client){
         clientArrayList.remove(client);
+        trafficController.getServerGUI().refreshClientlist();
     }
 
     /**

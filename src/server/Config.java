@@ -5,6 +5,8 @@ package server;
  * @author Baljit Singh Sarai
  */
 
+import logging.CustomLogger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,6 +16,7 @@ import java.util.logging.Level;
  * This class is going to set all configurations of the program.
  */
 public class Config {
+    private static CustomLogger logger = CustomLogger.getInstance();
 
     /**
      * Returns the properties for this config.
@@ -33,24 +36,29 @@ public class Config {
 
 
     /**
-     * Try to convert A String
+     * Trys to convert a String to an integer and return it.
+     * @param string The input string.
+     * @param name Name of the property to set.
+     * @return integer. If it fails it returns -1.
      */
     private static int stringToInt(String string,String name){
         int result = -1;
         try{
             result = Integer.parseInt(string);
         }catch (NumberFormatException nfe){
-            System.out.println("Was unable to set " +name+ " property ");
+            logger.log("Was unable to set " +name+ " property ",Level.WARNING);
+            System.out.println();
         }
         finally {
             return result;
         }
     }
 
+
+
     /**
      * Returns the size that the buffer-size should be.
-     *
-     * @returnt The buffer size
+     * @return The port number to be set to the server.
      */
     public static int getServerPort() {
         int result;
@@ -66,7 +74,7 @@ public class Config {
     /**
      * Returns the size that the buffer-size should be.
      *
-     * @returnt The buffer size
+     * @return The buffer size
      */
     public static int getBufferSize() {
         int result;
@@ -82,7 +90,7 @@ public class Config {
     /**
      * Returns the number of service worker threads should be.
      *
-     * @returnt The number of service threads
+     * @return The number of service threads
      */
     public static int getServiceWorkers() {
         int result;
@@ -98,7 +106,7 @@ public class Config {
     /**
      * Returns the number of terminator worker threads should be.
      *
-     * @returnt The number of terminator threads
+     * @return The number of terminator threads
      */
     public static int getTerminators() {
         int result;
@@ -114,7 +122,7 @@ public class Config {
     /**
      * Returns the size that the loopback time should be.
      *
-     * @returnt The loopback time
+     * @return The loopback time
      */
     public static int getLoopbackTime() {
         int result;
@@ -132,7 +140,7 @@ public class Config {
      * Returns the application's name. Will among other things be shown in the
      * window title.
      *
-     * @returnt the application's name
+     * @return the application's name
      */
     public static String getApplicationName() {
         return getProperties().getProperty("applicationName");
@@ -168,9 +176,6 @@ public class Config {
             }
         }
     }
-
-
-
 
     /**
      * Returns the current console output option.
