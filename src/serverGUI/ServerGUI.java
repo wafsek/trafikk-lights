@@ -35,8 +35,8 @@ public class ServerGUI extends Thread{
 
     /**
      * Constructor which creates the whole GUI
-     * @param trafficController
-     * @param stage
+     * @param trafficController The trafficController object
+     * @param stage Stage object
      */
     public ServerGUI(TrafficController trafficController, Stage stage){
         this.trafficController = trafficController;
@@ -260,7 +260,7 @@ public class ServerGUI extends Thread{
 
     /**
      * Method refreshes the command window
-     * @param commandtext
+     * @param commandtext The sent command as String
      */
     public void refreshCommand(String commandtext){
         command.appendText(commandtext);
