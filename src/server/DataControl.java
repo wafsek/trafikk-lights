@@ -8,9 +8,9 @@ package server;
 
 public enum DataControl {
     SUCCESS("Success"),
-    NO_CLIENT_SELECTED("No client selected"),
+    NO_CLIENT_SELECTED("No Client selected"),
     COMMAND_NOT_FOUND("No such command"),
-    EMPTY_CLIENT_LIST("The client list is empty");
+    EMPTY_CLIENT_LIST("The Client list is empty");
     private final String description;
 
 

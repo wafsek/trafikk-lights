@@ -80,7 +80,7 @@ public class ServerGUI extends Thread{
 
         clientlist = new TableView();
 
-        TableColumn clientName = new TableColumn("client Name");
+        TableColumn clientName = new TableColumn("Client Name");
         clientName.setCellValueFactory(new PropertyValueFactory<Client,String>("name"));
         clientName.setPrefWidth(300);
 
@@ -117,7 +117,7 @@ public class ServerGUI extends Thread{
                 this.trafficController.handleInput(serverInput.getText());
                 serverInput.clear();
                 this.refreshClientlist();
-                /*client clienttest = clientlist.getSelectionModel().getSelectedItem();
+                /*Client clienttest = clientlist.getSelectionModel().getSelectedItem();
                 String text = serverInput.getText();
                 if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
                     trafficController.send(clienttest.getName(),text);

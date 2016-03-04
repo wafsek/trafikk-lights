@@ -1,7 +1,6 @@
 package Client;
 
 import javafx.stage.Stage;
-import server.Terminal;
 
 /**
  * Controller class

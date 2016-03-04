@@ -17,7 +17,7 @@ public class CommandHandler {
     /**
      * Validates the commands given in the parameters.
      * @param command- The command.
-     * @param client- The client to whome this command is going to be send (if it is going to be send).
+     * @param client- The Client to whome this command is going to be send (if it is going to be send).
      * @return <code>true</code> if the commands is valid in everyway, <code>false</code> otherwise.
      */
     public  DataControl validateCommand(String command,Client client){
@@ -62,7 +62,7 @@ public class CommandHandler {
     /**
      * Excecute the command.
      * @param command- The command to be executed.
-     * @param client-The client {@link server.Client} the command is intended for.
+     * @param client-The Client {@link server.Client} the command is intended for.
      * @param times- The times on the server widgets.
      * @return A User-friendly message as feedback for the user.
      */

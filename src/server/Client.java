@@ -14,7 +14,7 @@ public class Client {
     private String name;
 
     /**
-     *  Creats a new client given the following parameters.
+     *  Creats a new Client given the following parameters.
      * @param socket -Socket object.
      */
     public Client(Socket socket){
@@ -39,7 +39,7 @@ public class Client {
     }
 
     /**
-     * Returns the name of this client {@link String}
+     * Returns the name of this Client {@link String}
      * @return name -String object.
      */
     public String getName() {
@@ -47,7 +47,7 @@ public class Client {
     }
 
     /**
-     * Sets the name of this client.
+     * Sets the name of this Client.
      * @param name -String object.
      */
     public void setName(String name) {

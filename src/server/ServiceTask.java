@@ -16,7 +16,7 @@ public class ServiceTask implements Runnable{
 
     /**
      * Creates a ServiceTask with the given parameters.
-     * @param client The client {@link server.Client}.
+     * @param client The Client {@link server.Client}.
      */
     public ServiceTask(Client client){
         this.client = client;

@@ -161,9 +161,9 @@ public class TrafficServer extends Thread{
 
 
     /**
-     * Handles any incoming data from the client.
+     * Handles any incoming data from the Client.
      * @param msg The message that is requested.
-     * @param client The client to whome this message is intended.
+     * @param client The Client to whome this message is intended.
      * @param times The current times on the server wigets.
      * @return A user-friendly message as to what happened.
      */
@@ -218,8 +218,8 @@ public class TrafficServer extends Thread{
 
 
     /**
-     *This method takes some data and sends it to the given {@link server.Client} client.
-     * @param client The client the message is intended for.
+     *This method takes some data and sends it to the given {@link server.Client} Client.
+     * @param client The Client the message is intended for.
      * @param data The data to be sent.
      */
     public void send(Client client,byte[] data ){
@@ -235,8 +235,8 @@ public class TrafficServer extends Thread{
     }//System.out.println("TACK");
 
     /**
-     * Try to cleanly close the socket and remove the client.
-     * @param client The client to be removed.
+     * Try to cleanly close the socket and remove the Client.
+     * @param client The Client to be removed.
      */
     public void disconnectClient(Client client){
         byte[] msg = new byte[MESSAGE_SIZE];
