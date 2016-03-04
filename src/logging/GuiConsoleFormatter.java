@@ -4,11 +4,15 @@ import java.util.Date;
 import java.util.logging.LogRecord;
 
 /**
+ * A formmater wrapper.
  * Created by Baljit Singh Sarai on 03.03.16.
+ * @author Baljit Singh Sarai.
  */
 public class GuiConsoleFormatter extends java.util.logging.Formatter {
 
-
+    /**
+     * Creates a GuiConsoleFormatter
+     */
     public GuiConsoleFormatter() { super(); }
 
     private static final String lineSep = System.getProperty("line.separator");

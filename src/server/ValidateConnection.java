@@ -30,8 +30,8 @@ public class ValidateConnection implements Runnable{
 
     /**
      * Creates a ValidateConnection instance with the given parameters.
-     * @param socket - The socket to be validated.
-     * @param trafficController - {@link server.TrafficController}
+     * @param socket The socket to be validated.
+     * @param trafficController {@link server.TrafficController}
      */
     public ValidateConnection(Socket socket, TrafficController trafficController){
         this.socket = socket;
