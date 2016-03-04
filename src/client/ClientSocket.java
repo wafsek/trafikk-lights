@@ -268,9 +268,9 @@ public class ClientSocket extends Thread{
             connected = false;
             clientController.disconnect();
         } catch (SocketException se) {
-            logger.log("Could not close the socket properly.", Level.WARNING);
+            System.out.println("Could not close the socket properly.");
         } catch (Exception e) {
-            logger.log("Issue encountered when closing the Client socket.", Level.SEVERE);
+            System.out.println("Issue encountered when closing the Client socket.");
         }
     }
 }
