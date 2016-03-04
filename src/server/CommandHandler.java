@@ -7,6 +7,11 @@ package server;
  */
 public class CommandHandler {
 
+    private final String[] COM_DESC = {CommandDescription.HELP.getDiscription(),
+            CommandDescription.COMMANDS.getDiscription(), CommandDescription.TIME.getDiscription(),
+            CommandDescription.TIMEALL.getDiscription(), CommandDescription.DISCONNECT.getDiscription(),
+            CommandDescription.DISCONNECTALL.getDiscription(), CommandDescription.STOP.getDiscription(),
+            CommandDescription.STOPALL.getDiscription()};
     private final String[] COMMANDS = {"help","commands","time","timeall","disconnect","disconnectall","stop","stopall"};
     private TrafficServer trafficServer;
     public CommandHandler(TrafficServer trafficServer){
@@ -77,15 +82,15 @@ public class CommandHandler {
         String result = "";
         switch (command){
             case "help": {
-                for(String c : COMMANDS){
-                    System.out.println(c);
-                    result += '/'+c+'\n';
+                result += "\n";
+                for(int i = 0; i < COMMANDS.length; i++){
+                    result += '/'+COMMANDS[i] + COM_DESC[i]+'\n';
                 }
                 break;
             }case "commands": {
-                for(String c : COMMANDS){
-                    System.out.println(c);
-                    result += '/'+c+'\n';
+                result += "\n";
+                for(int i = 0; i < COMMANDS.length; i++){
+                    result += '/'+COMMANDS[i] + COM_DESC[i]+'\n';
                 }
                 break;
             }
