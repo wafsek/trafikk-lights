@@ -247,18 +247,29 @@ public class TrafficServer extends Thread{
         msg[1] = 5;
         msg[2] = 'D';
         msg[3] = 'C';
+        send(client,msg);
+        disconnectClientSocket(client.getSocket(),client.getDataInputStream(),client.getDataOutputStream());
+        clientArrayList.remove(client);
+        trafficController.getServerGUI().refreshClientlist();
+    }
+
+    /**
+     * Closes the {@link Socket} , {@link DataInputStream} and {@link DataOutputStream}
+     * @param socket The {@link Socket} to be closed.
+     * @param in The {@link DataInputStream}
+     * @param out {@link DataOutputStream}
+     */
+    public void disconnectClientSocket(Socket socket,DataInputStream in ,DataOutputStream out){
         try{
-            client.getDataOutputStream().flush();
-            client.getDataOutputStream().close();
-            client.getDataInputStream().close();
-            client.getSocket().close();
+            out.flush();
+            out.close();
+            in.close();
+            socket.close();
         }catch (SocketException se){
             logger.log("Socket Exeception while trying to close the socket",Level.WARNING);
         }catch (IOException ioe){
             logger.log("IOExeception while trying to close the streams and socket",Level.WARNING);
         }
-        clientArrayList.remove(client);
-        trafficController.getServerGUI().refreshClientlist();
     }
 
     /**
