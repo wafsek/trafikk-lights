@@ -1,13 +1,12 @@
 package logging;
 
-import ServerGUI.ServerGUI;
+import serverGUI.ServerGUI;
 import javafx.application.Platform;
 
 import java.util.Date;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.StreamHandler;
 
 /**
  * Created by Baljit Singh Sarai on 01.03.16.

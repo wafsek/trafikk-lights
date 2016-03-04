@@ -1,27 +1,13 @@
-package ServerGUI;
+package serverGUI;
 
-import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import server.Client;
 import server.TrafficController;
-import server.TrafficServer;
-
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
 
 
 /**

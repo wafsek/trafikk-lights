@@ -2,7 +2,7 @@ package logging;
 import java.io.IOException;
 import java.util.logging.*;
 
-import ServerGUI.ServerGUI;
+import serverGUI.ServerGUI;
 import server.Config;
 /**
  * Created by Baljit Singh Sarai on 01.03.16.

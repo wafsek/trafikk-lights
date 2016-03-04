@@ -24,7 +24,6 @@ public class CommandHandler {
         if (!found){
             return DataControl.COMMAND_NOT_FOUND;
         }
-        System.out.println("ddddd");
         switch (command){
             case "time":{
                 if(client == null){

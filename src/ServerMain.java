@@ -1,15 +1,7 @@
-import ServerGUI.ServerGUI;
-import com.sun.org.apache.xml.internal.utils.ThreadControllerWrapper;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import logging.CustomLogger;
-import server.Terminal;
 import server.TrafficController;
-import server.TrafficServer;
-
-import java.net.InetAddress;
-import java.util.logging.Level;
 
 /**
  * Created by Baljit Singh Sarai on 01.02.16.

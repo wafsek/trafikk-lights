@@ -1,6 +1,6 @@
 package server;
 
-import ServerGUI.ServerGUI;
+import serverGUI.ServerGUI;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,18 +15,14 @@ import java.util.logging.Level;
  * @author Kim Long Vu
  */
 public class TrafficController extends Application{
-
     private ServerGUI serverGUI;
     private Stage stage;
     private TrafficServer trafficServer;
     private ObservableList clientObervableList;
     private Client reciver;
     private CustomLogger logger = CustomLogger.getInstance();
-
     public TrafficController(){
-
     }
-
 
     public void start(Stage stage){
         this.stage = stage;
@@ -52,13 +48,6 @@ public class TrafficController extends Application{
         this.reciver = serverGUI.getClientlist().getSelectionModel().getSelectedItem();
         result = this.trafficServer.messageRequest(input,this.reciver,times);
         this.serverGUI.refreshCommand(result+"\n");
-
-
-        /*if(reciver != null){
-            send(reciver.getName(),input);
-        }else{
-            broadcast(input);
-        }*/
     }
 
 
@@ -84,21 +73,11 @@ public class TrafficController extends Application{
         return this.reciver;
     }
 
-    /*public void send(String id,String msg){
-        this.trafficServer.messageRequest(msg,false);
-    }
-
-    public void broadcast(String msg){
-        this.trafficServer.messageRequest(msg,true);
-    }*/
-
-    public void setTrafficServer(){
-
-    }
 
     public TrafficServer getTrafficServer(){
         return (TrafficServer) this.trafficServer;
     }
+
 
     public ObservableList getClientObervableList(){
         return FXCollections.observableArrayList(TrafficServer.getInstance().clientArrayList);

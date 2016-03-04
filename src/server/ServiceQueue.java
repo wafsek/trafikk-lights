@@ -1,6 +1,9 @@
 package server;
 
+import logging.CustomLogger;
+
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 /**
  * Created by Baljit Sarai on 15.02.16.
@@ -12,7 +15,7 @@ public class ServiceQueue {
     private final int nThreads;
     private final PoolWorker[] threads;
     private final LinkedList queue;
-
+    private CustomLogger logger = CustomLogger.getInstance();
 
     public ServiceQueue (int nThreads)
     {
@@ -55,10 +58,11 @@ public class ServiceQueue {
                 // If we don't catch RuntimeException,
                 // the pool could leak threads
                 try {
+                    System.out.println(r.toString());
                     r.run();
                 }
                 catch (RuntimeException e) {
-                    System.out.println("Was unable to do the task");
+                    logger.log("Was unable to do the task:"+r.toString(), Level.WARNING);
                     e.printStackTrace();
                     // You might want to log something here
                 }

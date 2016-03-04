@@ -1,6 +1,5 @@
 package server;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import logging.CustomLogger;
 
 import java.io.DataInputStream;
@@ -10,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.AbstractList;
 import java.util.logging.Level;
 
 /**
@@ -30,8 +28,10 @@ public class ClientHandler extends Thread {
 
 
     /**
-     *
-     * @param serverSocket SocketServer Object
+     * Creates a ClientHandler with the given values.
+     * @param trafficServer The server {@link server.TrafficServer}
+     * @param serverSocket The server socket {@link ServerSocket}
+     * @param trafficController The main controller {@link server.TrafficController}
      */
     public ClientHandler(TrafficServer trafficServer,ServerSocket serverSocket,TrafficController trafficController){
         this.trafficController = trafficController;
@@ -45,38 +45,21 @@ public class ClientHandler extends Thread {
      * Starts the ClientHandler and start accepting incoming connections
      */
     public void run(){
-
         while(!this.isInterrupted())
         {
             try
             {
                 this.logger.log("Waiting for client on Port: " + serverSocket.getLocalPort() + "", Level.FINE);
-
                 Socket clientSocket = serverSocket.accept();
                 this.logger.log("Socket connected "+clientSocket.getInetAddress() +":"+clientSocket.getPort(),Level.FINE);
-
-
-
-                ////////////////////////////////////////
-                //The code written between these comment lines
-                // should be removed later. very important.
-                //It bypasses the security and is only going to be used
-                // in the developing time.
-                //trafficServer.clientArrayList.add(new Client(clientSocket));
-                //System.out.println(TrafficServer.getInstance().clientArrayList.size());
-
-
-                ///////////////////////////////////////
-
-
-                validatingService.execute(new ValidateConnections(clientSocket,this.trafficController));
+                validatingService.execute(new ValidateConnection(clientSocket,this.trafficController));
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");
                 break;
             }catch (SocketException se){
                 this.logger.log("this socket's close status is "+this.serverSocket.isClosed(),Level.FINE);
-                //Thread.currentThread().interrupt();
+                se.printStackTrace();
             }
             catch(IOException e)
             {
@@ -84,18 +67,7 @@ public class ClientHandler extends Thread {
                 break;
             }
         }
-        System.out.println("sssssssss");
         this.logger.log("ClientHandler interupted",Level.FINE);
-    }
-
-
-
-
-    /**
-     * This method close and deletes the socket and do the cleaning job.
-     */
-    public void closeSocket(){
-
     }
 
 }//End of class ClientHandler

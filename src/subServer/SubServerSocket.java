@@ -1,4 +1,4 @@
-package SubServer;
+package subServer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

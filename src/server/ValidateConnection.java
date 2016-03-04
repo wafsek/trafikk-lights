@@ -9,13 +9,13 @@ import java.net.Socket;
 import java.util.logging.Level;
 
 /**
- * This class will contain the task of validating the handshake of the newly incomming connection
+ * This class will contain the task of validating the handshake of the newly incoming connection.
  * Created by Baljit Singh Sarai on 15.02.16.
  * @author Baljit Singh Sarai
  */
 
 
-public class ValidateConnections implements Runnable{
+public class ValidateConnection implements Runnable{
 
     private Socket socket;
     private DataInputStream in;
@@ -28,7 +28,12 @@ public class ValidateConnections implements Runnable{
     private TrafficController trafficController;
 
 
-    public ValidateConnections(Socket socket,TrafficController trafficController){
+    /**
+     * Creates a ValidateConnection instance with the given parameters.
+     * @param socket - The socket to be validated.
+     * @param trafficController - {@link server.TrafficController}
+     */
+    public ValidateConnection(Socket socket, TrafficController trafficController){
         this.socket = socket;
         this.logger = CustomLogger.getInstance();
         this.trafficController = trafficController;
@@ -38,14 +43,12 @@ public class ValidateConnections implements Runnable{
     public void run() {
         this.logger.log("Validating Socket", Level.FINE);
         this.handshakeProtocol(this.socket);
-        //This method is going to be the methos that validates the connection
-        // If this mathod does more then just the hand shake----we will change the name of
-        // the class :)
     }
 
     /**
-     *Handshake protocol
-     *
+     * Initiate the Handshake protocol.
+     * If the hanshake is passed it creates a new {@link server.Client} object and adds it to the list.
+     * @param socket- The {@link Socket} to be tested.
      */
     public void handshakeProtocol(Socket socket){
         int msgIndex = 2;
@@ -98,6 +101,12 @@ public class ValidateConnections implements Runnable{
         //This is where i intent to write code to handle the incoming connections- Baljit Sarai.
     }
 
+    /**
+     * Checks whenter the individual handshake message was a valid one or not.
+     * @param msg The message to be checked.
+     * @param no The message number it is supposed to be checked against.
+     * @return <code>true</code> if passed. <code>false</code> if failed.
+     */
     public boolean checkHandshakeMsg(byte[] msg,int no){
         String handshake = this.handshakeArray[no];
         if(msg[1] != handshake.length()){
@@ -115,7 +124,10 @@ public class ValidateConnections implements Runnable{
         return true;
     }
 
-
+    /**
+     * Clears a buffer array.
+     * @param buffer - The byte array to be cleared.
+     */
     private void clearBuffer(byte[] buffer){
         for(int i = 0;i<buffer.length;i++){
             buffer[i] = 0;
