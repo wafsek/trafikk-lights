@@ -11,8 +11,8 @@ import server.TrafficController;
 
 
 /**
- * The GUI class for server side\n
- * Created by Baljit Singh Sarai on 15.02.16.
+ * The GUI class for server side
+ * Created by Kim Long Vu on 15.02.16.
  * @author Kim Long Vu
  */
 
