@@ -1,6 +1,7 @@
 package server;
 
 /**
+ * This class Validates and Executes the server commands.
  * Created by Baljit Singh Sarai on 03.03.16.
  * @author Baljit Singh Sarai
  */
@@ -8,11 +9,17 @@ public class CommandHandler {
 
     private final String[] COMMANDS = {"time","timeall","disconnect","stop","stopall"};
     private TrafficServer trafficServer;
-
     public CommandHandler(TrafficServer trafficServer){
         this.trafficServer = trafficServer;
     }
 
+
+    /**
+     * Validates the commands given in the parameters.
+     * @param command- The command.
+     * @param client- The client to whome this command is going to be send (if it is going to be send).
+     * @return <code>true</code> if the commands is valid in everyway, <code>false</code> otherwise.
+     */
     public  DataControl validateCommand(String command,Client client){
         boolean found = false;
         for(String co: this.COMMANDS){
@@ -51,7 +58,13 @@ public class CommandHandler {
         return DataControl.SUCCESS;
     }
 
-
+    /**
+     * Excecute the command.
+     * @param command- The command to be executed.
+     * @param client-The client {@link server.Client} the command is intended for.
+     * @param times- The times on the server widgets.
+     * @return- A User-friendly message as feedback for the user.
+     */
     public String command(String command,Client client,Double[] times){
         byte[] msg = new byte[trafficServer.MESSAGE_SIZE];
         msg[0] = 2;
