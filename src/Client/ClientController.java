@@ -4,7 +4,9 @@ import javafx.stage.Stage;
 import server.Terminal;
 
 /**
- * @author Adrian Siim Melsom, Anh Thu Pham Le
+ * Controller class
+ * @author Adrian Siim Melsom
+ * @author Anh Thu Pham Le
  */
 public class ClientController {
 
@@ -36,6 +38,9 @@ public class ClientController {
         }
     }
 
+    /**
+     * Changes a state variable which keeps track of if there is a connection or not.
+     */
     public void disconnect() {
         connected = false;
     }
@@ -50,6 +55,9 @@ public class ClientController {
         clientGUI.changeLightSequence(red, yellow, green);
     }
 
+    /**
+     * Sets the display mode on GUI to idle.
+     */
     public void setIdle() {
         clientGUI.idle();
     }
