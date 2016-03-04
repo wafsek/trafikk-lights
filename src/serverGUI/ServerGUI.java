@@ -50,24 +50,26 @@ public class ServerGUI extends Thread{
 
 
 
-        redslider = new Slider(2,100,50);
+        redslider = new Slider(2,100,2);
 
         redslider.setOnMouseDragged(e->redSliderAction());
+        redslider.setOnMouseReleased(e->redSliderAction());
         redslider.setPrefSize(900,0);
 
         redLabel = new Label(String.format("%.0f",redslider.getValue()));
         redLabel.setPrefSize(50,0);
 
-        yellowslider = new Slider(2,100,50);
+        yellowslider = new Slider(2,100,2);
 
         yellowslider.setOnMouseDragged(e->yellowSliderAction());
+        yellowslider.setOnMouseReleased(e->yellowSliderAction());
 
         yellowLabel = new Label(String.format("%.0f",redslider.getValue()));
 
-
-        greenslider = new Slider(2,100,50);
+        greenslider = new Slider(2,100,2);
 
         greenslider.setOnMouseDragged(e->greenSliderAction());
+        greenslider.setOnMouseReleased(e->greenSliderAction());
 
         greenLabel = new Label(String.format("%.0f",redslider.getValue()));
 
@@ -112,30 +114,14 @@ public class ServerGUI extends Thread{
         serverInput.setPromptText("SEND COMMANDS TO CLIENT");
         serverInput.setPrefSize(300,200);
         serverInput.setOnKeyPressed(e-> {
-
             if (e.getCode() == KeyCode.ENTER) {
                 this.trafficController.handleInput(serverInput.getText());
                 serverInput.clear();
                 this.refreshClientlist();
-                /*Client clienttest = clientlist.getSelectionModel().getSelectedItem();
-                String text = serverInput.getText();
-                if(clienttest != null){ //HVIS NOE ER TRUKKET PÅ
-                    trafficController.send(clienttest.getName(),text);
-                }
-                else if(!text.matches("(?m)^(/time)$")){ // HVIS IKKE NOE ER TRYKKET PÅ
-                    System.out.println("TIL ALLE");
-                    System.out.println(text);
-                    trafficController.broadcast(text); // broadcast message
-                }else{
-                                                    serverInput.setText("YOU CAN'T USE /time WITHOUT CHOOSING A CLIENT");
-                    System.out.println("DU HAR IKKE VALGT CLEINT");
-                }
-                // clear text
-                serverInput.clear();*/
-
             }
 
         });
+
         stop = new Button("STOP");
         stop.setOnAction(e-> shutdownServer());
         start = new Button("START");
@@ -208,21 +194,21 @@ public class ServerGUI extends Thread{
      * Method that updates the red label with the red sliders value
      */
     public void redSliderAction(){
-        redLabel.setText(String.format("%.0f",redslider.getValue()));
+        redLabel.setText(""+((int)(new Double(redslider.getValue()).byteValue())));
         //System.out.println(redslider.getValue());
     }
     /**
      * Method that updates the yellow label with the yellow sliders value
      */
     public void yellowSliderAction(){
-        yellowLabel.setText(String.format("%.0f",yellowslider.getValue()));
+        yellowLabel.setText(""+((int)(new Double(yellowslider.getValue()).byteValue())));
       // System.out.println(yellowslider.getValue());
     }
     /**
      * Method that updates the green label with the green sliders value
      */
     public void greenSliderAction(){
-        greenLabel.setText(String.format("%.0f",greenslider.getValue()));
+        greenLabel.setText(""+((int)(new Double(greenslider.getValue()).byteValue())));
         //System.out.println(greenslider.getValue());
     }
 
