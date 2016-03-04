@@ -45,6 +45,11 @@ public class CommandHandler {
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
                 }break;
+            }case "disconnectall": {
+                if (trafficServer.clientArrayList.isEmpty()) {
+                    return DataControl.EMPTY_CLIENT_LIST;
+                }
+                break;
             }case "stop":{
                 if(client == null){
                     return DataControl.NO_CLIENT_SELECTED;
@@ -94,7 +99,10 @@ public class CommandHandler {
                 break;
             }case "disconnect":{
                 trafficServer.disconnectClient(client);
-            }case "stop":{
+            }case "disconnectall":{
+                trafficServer.disconnectAall();
+            }
+            case "stop":{
                     msg[1] = 2;
                     msg[2] = 'S';
                     msg[3] = 'T';
