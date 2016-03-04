@@ -7,7 +7,12 @@ package server;
  */
 public class CommandHandler {
 
-    private final String[] COMMANDS = {"time","timeall","disconnect","stop","stopall"};
+    private final String[] COM_DESC = {CommandDescription.HELP.getDiscription(),
+            CommandDescription.COMMANDS.getDiscription(), CommandDescription.TIME.getDiscription(),
+            CommandDescription.TIMEALL.getDiscription(), CommandDescription.DISCONNECT.getDiscription(),
+            CommandDescription.DISCONNECTALL.getDiscription(), CommandDescription.STOP.getDiscription(),
+            CommandDescription.STOPALL.getDiscription()};
+    private final String[] COMMANDS = {"help","commands","time","timeall","disconnect","disconnectall","stop","stopall"};
     private TrafficServer trafficServer;
     public CommandHandler(TrafficServer trafficServer){
         this.trafficServer = trafficServer;
@@ -76,6 +81,19 @@ public class CommandHandler {
         msg[0] = 2;
         String result = "";
         switch (command){
+            case "help": {
+                result += "\n";
+                for(int i = 0; i < COMMANDS.length; i++){
+                    result += '/'+COMMANDS[i] + COM_DESC[i]+'\n';
+                }
+                break;
+            }case "commands": {
+                result += "\n";
+                for(int i = 0; i < COMMANDS.length; i++){
+                    result += '/'+COMMANDS[i] + COM_DESC[i]+'\n';
+                }
+                break;
+            }
             case "time":{
                 msg[1] = 5;
                 msg[2] = 'T';
@@ -99,8 +117,10 @@ public class CommandHandler {
                 break;
             }case "disconnect":{
                 trafficServer.disconnectClient(client);
+                break;
             }case "disconnectall":{
                 trafficServer.disconnectAall();
+                break;
             }
             case "stop":{
                     msg[1] = 2;

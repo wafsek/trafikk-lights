@@ -39,8 +39,6 @@ public class ClientSocket extends Thread{
     private final String expected = "secret";
     private boolean connected;
     private final int BUFFERSIZE = 20;
-    private CustomLogger logger = CustomLogger.getInstance();
-
 
     /**
      * Initializes the Client socket
@@ -268,6 +266,7 @@ public class ClientSocket extends Thread{
             socket.close();
             connected = false;
             clientController.disconnect();
+            clientController.setIdle();
         } catch (SocketException se) {
             System.out.println("Could not close the socket properly.");
         } catch (Exception e) {

@@ -32,11 +32,9 @@ public class ClientGUI {
     private SequentialTransition redSeq, yelSeq, greSeq, mainSequence;
     private Stage stage;
     private Scene scene;
-    private Button stop, connect;
+    private Button connect;
     private ClientController clientController;
     private TextField handshakeField, hostField, portField;
-    private boolean hasSequence;
-
 
     /**
      * Constructor. Constructs the ClientGUI with all relevant fields.
@@ -44,7 +42,6 @@ public class ClientGUI {
      * @param clientController ClientController
      */
     public ClientGUI(Stage stage, ClientController clientController) {
-        hasSequence = false;
         this.clientController = clientController;
         this.stage = stage;
 
@@ -129,6 +126,7 @@ public class ClientGUI {
      */
     public void idle() {
         mainSequence.stop();
+        setGray();
         mainSequence.getChildren().clear();
         mainSequence.getChildren().addAll(yelIdleDur, yelIdleTrans, grayIdleDur);
         mainSequence.play();
@@ -143,6 +141,7 @@ public class ClientGUI {
     private void animation(int red, int yellow, int green) {
 
         mainSequence.stop();
+        setGray();
         redDur.setDuration(Duration.millis(red/4));
         yelDur.setDuration(Duration.millis(yellow/2));
         greDur.setDuration(Duration.millis(green/4));
@@ -200,6 +199,15 @@ public class ClientGUI {
 
         }
         clearFields();
+    }
+
+    /**
+     * Sets all the circles fill to gray
+     */
+    private void setGray() {
+        redLight.setFill(Color.GRAY);
+        yellowLight.setFill(Color.GRAY);
+        greenLight.setFill(Color.GRAY);
     }
 
     /**
