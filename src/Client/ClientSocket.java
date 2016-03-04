@@ -1,13 +1,16 @@
 package Client;
 
 import javafx.scene.control.TextInputDialog;
+import logging.CustomLogger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.logging.Level;
 
 /**
  * This class is a socket for the light client to the server.
@@ -27,12 +30,17 @@ public class ClientSocket extends Thread{
     private int portNumber;
     private TextInputDialog tid;
     private ClientController clientController;
-    private static final String[] COMMANDS = {"CC", "TM", "ST"};
+    private static final String[] COMMANDS = {"CC", "TM", "ST", "DC"};
+    private final String ping = "CC";
+    private final String time = "TM";
+    private final String stop = "ST";
+    private final String disconnect = "DC";
     private static final byte[] PING = {0,2,67,67,0,0,0,0,0,0};
     private final int OFFSET = 2;
     private final String expected = "secret";
     private boolean connected;
     private final int BUFFERSIZE = 20;
+    private CustomLogger logger = CustomLogger.getInstance();
 
 
     /**
@@ -202,22 +210,38 @@ public class ClientSocket extends Thread{
      * @param content
      */
     private void readCommand(byte[] content) {
+
         String command = new String(new char[] {(char)content[0], (char)content[1]});
-        if(command.equals(COMMANDS[0])) {
-            try {
-                dos.write(PING);
-            } catch (IOException ioe) {
-                disconnectSocket();
+
+        switch (command) {
+            case ping: {
+                try {
+                    dos.write(PING);
+                } catch (IOException ioe) {
+                    disconnectSocket();
+                }
+            }case time: {
+                if((int)content[3] < 2) {
+                    setLightRoutine((int)content[2]*1000, 2000, (int)content[4]*1000);
+                } else {
+                    setLightRoutine((int)content[2]*1000, (int)content[3]*1000, (int)content[4]*1000);
+                }
+            }case stop: {
+                clientController.setIdle();
+            }case disconnect: {
+                try {
+                    dos.flush();
+                    dos.close();
+                    dis.close();
+                    socket.close();
+                } catch (SocketException se) {
+                    logger.log("Could not close the socket properly.", Level.WARNING);
+                } catch (Exception e) {
+                    logger.log("Issue encountered when closing the client socket.", Level.SEVERE);
+                }
+            }default: {
+                System.out.println("Unsupported command : ["+command+"]");
             }
-        }
-        else if(command.equals(COMMANDS[1])) {
-            if((int)content[3] < 2) {
-                setLightRoutine((int)content[2]*1000, 2000, (int)content[4]*1000);
-            } else {
-                setLightRoutine((int)content[2]*1000, (int)content[3]*1000, (int)content[4]*1000);
-            }
-        } else if(command.equals(COMMANDS[2])) {
-            clientController.setIdle();
         }
     }
 
