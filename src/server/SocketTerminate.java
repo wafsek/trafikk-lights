@@ -6,7 +6,7 @@ import java.util.logging.Level;
 
 /**
  * Tries to fix the socket.
- * If fails, deletes the client that the socket belongs to.
+ * If fails, deletes the Client that the socket belongs to.
  * Created by Baljit Singh Sarai on 17.02.16.
  * @author Baljit Singh Sarai
  */
@@ -23,7 +23,7 @@ public class SocketTerminate implements Runnable {
     /**
      * Creates a SocketTerminator with the following parameters.
      * @param trafficServer {@link server.TrafficServer}
-     * @param client- The client {@link server.Client} to be terminated and deleted.
+     * @param client- The Client {@link server.Client} to be terminated and deleted.
      * @param ioe- {@link IOException}
      * @param trafficController {@link server.TrafficController}
      */
@@ -46,7 +46,7 @@ public class SocketTerminate implements Runnable {
                 // anyway
             }
             finally {
-                //I am not sure about this but removing the whole client object anyway.
+                //I am not sure about this but removing the whole Client object anyway.
                 this.trafficServer.clientArrayList.remove(client);
                 this.trafficController.getServerGUI().refreshClientlist();
             }

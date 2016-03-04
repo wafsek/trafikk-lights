@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 
 /**
- * This class is a socket for the light client to the server.
+ * This class is a socket for the light Client to the server.
  * It's job is to establish connection, maintain it and listen
  * for inputs from the server itself. If something should happen
  * to the connection, it should also handle the situation
@@ -44,7 +44,7 @@ public class ClientSocket extends Thread{
 
 
     /**
-     * Initializes the client socket
+     * Initializes the Client socket
      */
     public ClientSocket(ClientController clientController) {
         this.clientController = clientController;
@@ -237,7 +237,7 @@ public class ClientSocket extends Thread{
                 } catch (SocketException se) {
                     logger.log("Could not close the socket properly.", Level.WARNING);
                 } catch (Exception e) {
-                    logger.log("Issue encountered when closing the client socket.", Level.SEVERE);
+                    logger.log("Issue encountered when closing the Client socket.", Level.SEVERE);
                 }
             }default: {
                 System.out.println("Unsupported command : ["+command+"]");

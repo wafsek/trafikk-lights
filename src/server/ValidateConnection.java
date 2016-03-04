@@ -76,9 +76,9 @@ public class ValidateConnection implements Runnable{
             }
 
             this.clearBuffer(msgRecieved);
-            this.logger.log("Trying to write back the handshake msg to the client ",Level.FINEST);
+            this.logger.log("Trying to write back the handshake msg to the Client ",Level.FINEST);
             out.write(this.handshakeMsg);
-            this.logger.log("written  the handshake feedback to the client",Level.FINEST);
+            this.logger.log("written  the handshake feedback to the Client",Level.FINEST);
             in.read(msgRecieved,0,20);
             if(this.checkHandshakeMsg(msgRecieved,1)){
                 count++;
@@ -86,11 +86,11 @@ public class ValidateConnection implements Runnable{
                 this.socket.close();
                 return;
             }
-            this.logger.log("Creating a new client object and adding it to the clientArratlist ",Level.FINER);
+            this.logger.log("Creating a new Client object and adding it to the clientArratlist ",Level.FINER);
             clientAdded =  TrafficServer.getInstance().clientArrayList.add(new Client(this.socket));
             this.trafficController.getServerGUI().refreshClientlist();
             if(clientAdded){
-                this.logger.log("New client Connected",Level.INFO);
+                this.logger.log("New Client Connected",Level.INFO);
             }
             this.logger.log("Status for added_new_client: "+clientAdded,Level.FINEST);
 
