@@ -17,12 +17,12 @@ How to use the software.
 	After staring the program you will see a gui.
 	The interface is pretty simple. There are five components in the interface.
 The client list, which is on the right side. It lets you see the address and port the client are connected from.
-On the top you will find the time widget with lets you send time sequence to the traffic lights. You simply drag the widgets (sets time). And send the appropriate command to have the client.
-Below the 'times widget' you will find a display that display simple message as to what command the server has sent to which client
+On the top you will find the time sliders with lets you send time sequence to the traffic lights. You simply drag the sliders (sets time). And send the appropriate command to have the client.
+Below the 'time sliders' you will find a display that display simple message as to what command the server has sent to which client
 Below the display you have the input area. This is where you type in your commands that you want to send to the client.
 --List of valid commands:
-		1. /time → This command sends a time sequence (the times on the times widgets) to selected client (you have to select a client from the list on the right side by clicking on it.)
-		2. /timeall → This command sends a time sequence the times on the times widgets)  to all the connected clients. 
+		1. /time → This command sends a time sequence (the times on the time sliders) to selected client (you have to select a client from the list on the right side by clicking on it.)
+		2. /timeall → This command sends a time sequence the times on the time sliders)  to all the connected clients.
 		3. /stop → This command sends a stop command to the client which stop the current time sequence on the client. 
 		4. /stopall → Same as stop but to all clients
 		5. /disconnect → Try to do a .clean disconnect on the selected client (you have to select a client from the list on the right side by clicking on it).
