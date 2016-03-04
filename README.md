@@ -26,7 +26,7 @@ Below the display you have the input area. This is where you type in your comman
 		3. /stop → This command sends a stop command to the client which stop the current time sequence on the client. 
 		4. /stopall → Same as stop but to all clients
 		5. /disconnect → Try to do a .clean disconnect on the selected client (you have to select a client from the list on the right side by clicking on it).
-
+        6. /commands → Show all the available commands that can be used at the command line.
 
 
 Below the input area you will find the console output area. This is where you see what really is happening in the software. The detail of this log can be increased and decreased by changing the log level. 
