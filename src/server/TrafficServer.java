@@ -1,10 +1,9 @@
 package server;
 import logging.CustomLogger;
 
-import java.awt.geom.Arc2D;
+
 import java.net.*;
 import java.io.*;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -162,7 +161,7 @@ public class TrafficServer extends Thread{
 
 
     /**
-     *
+     * Handles any incoming data from the client.
      * @param msg The message that is requested.
      * @param client The client to whome this message is intended.
      * @param times The current times on the server wigets.
@@ -235,7 +234,26 @@ public class TrafficServer extends Thread{
         }
     }//System.out.println("TACK");
 
+    /**
+     * Try to cleanly close the socket and remove the client.
+     * @param client The client to be removed.
+     */
     public void disconnectClient(Client client){
+        byte[] msg = new byte[MESSAGE_SIZE];
+        msg[0] = 2;
+        msg[1] = 5;
+        msg[2] = 'D';
+        msg[3] = 'C';
+        try{
+            client.getDataOutputStream().flush();
+            client.getDataOutputStream().close();
+            client.getDataInputStream().close();
+            client.getSocket().close();
+        }catch (SocketException se){
+            logger.log("Socket Exeception while trying to close the socket",Level.WARNING);
+        }catch (IOException ioe){
+            logger.log("IOExeception while trying to close the streams and socket",Level.WARNING);
+        }
         clientArrayList.remove(client);
         trafficController.getServerGUI().refreshClientlist();
     }
