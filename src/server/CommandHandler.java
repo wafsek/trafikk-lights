@@ -117,8 +117,10 @@ public class CommandHandler {
                 break;
             }case "disconnect":{
                 trafficServer.disconnectClient(client);
+                break;
             }case "disconnectall":{
                 trafficServer.disconnectAall();
+                break;
             }
             case "stop":{
                     msg[1] = 2;
