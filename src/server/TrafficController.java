@@ -44,7 +44,7 @@ public class TrafficController extends Application{
 
     /**
      * Returns serverGUI {@link serverGUI.ServerGUI}
-     * @return
+     * @return {@link serverGUI.ServerGUI}
      */
     public ServerGUI getServerGUI() {
         return serverGUI;

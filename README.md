@@ -56,21 +56,35 @@ Below the input area you will find the console output area. This is where you se
 	- Only the server can decide what state the traffic light is in (Idle or Running).
 	- Only the server can change the time intervals in the sequence of which the lights change.
 
-Description of the inner workings of the software and packages.
 
 
+3. copyright and licensing information.
 
 
-descriptions of all the project, and all sub-modules and libraries
+    Traffic lights simulator . A simple traffic lights simulation using sockets.
+    Copyright (C) 2016 Baljit Singh Sarai ,Adrian Siim Melsom, Kim Long Vu
 
-3.copyright and licensing information (or "Read LICENSE")
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 
 4.Instruction to grab the documentation
+    javadocs/index.html 
 
-
-Authors and contributors .
-
-Baljit Singh Sarai
-Adrian Siim Melsom
-Kim Long Vu
-Anh Thu Phan Le
+5.Authors and contributors .
+    
+    Baljit Singh Sarai
+    Adrian Siim Melsom
+    Kim Long Vu
+    Anh Thu Phan Le
