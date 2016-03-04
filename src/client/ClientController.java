@@ -2,6 +2,8 @@ package client;
 
 import javafx.stage.Stage;
 
+import java.net.Socket;
+
 /**
  * Controller class
  * @author Adrian Siim Melsom
@@ -20,7 +22,7 @@ public class ClientController {
     public ClientController(Stage primaryStage) {
         clientGUI = new ClientGUI(primaryStage, this);
         connected = false;
-        clientSocket = new ClientSocket(this);
+        clientSocket = null;
     }
 
     /**
@@ -31,9 +33,15 @@ public class ClientController {
      * @param portNumber
      */
     public void requestConnection(String handshake, String host, int portNumber) {
-        if(!connected && this.clientSocket instanceof ClientSocket){
+        if(!connected && clientSocket == null){
+            clientSocket = new ClientSocket(this);
             connected = ((ClientSocket)this.clientSocket).connect(host, portNumber, handshake);
-            if(connected) clientSocket.start();
+            System.out.println(connected);
+            if(connected) {
+                clientSocket.start();
+            } else {
+                clientSocket = null;
+            }
         }
     }
 
@@ -41,6 +49,7 @@ public class ClientController {
      * Changes a state variable which keeps track of if there is a connection or not.
      */
     public void disconnect() {
+        clientSocket = null;
         connected = false;
     }
 
