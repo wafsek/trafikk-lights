@@ -30,7 +30,6 @@ public class ClientSocket extends Thread{
     private int portNumber;
     private TextInputDialog tid;
     private ClientController clientController;
-    private static final String[] COMMANDS = {"CC", "TM", "ST", "DC"};
     private final String ping = "CC";
     private final String time = "TM";
     private final String stop = "ST";
@@ -220,25 +219,19 @@ public class ClientSocket extends Thread{
                 } catch (IOException ioe) {
                     disconnectSocket();
                 }
+                break;
             }case time: {
                 if((int)content[3] < 2) {
                     setLightRoutine((int)content[2]*1000, 2000, (int)content[4]*1000);
                 } else {
                     setLightRoutine((int)content[2]*1000, (int)content[3]*1000, (int)content[4]*1000);
                 }
+                break;
             }case stop: {
                 clientController.setIdle();
             }case disconnect: {
-                try {
-                    dos.flush();
-                    dos.close();
-                    dis.close();
-                    socket.close();
-                } catch (SocketException se) {
-                    logger.log("Could not close the socket properly.", Level.WARNING);
-                } catch (Exception e) {
-                    logger.log("Issue encountered when closing the Client socket.", Level.SEVERE);
-                }
+                disconnectSocket();
+                break;
             }default: {
                 System.out.println("Unsupported command : ["+command+"]");
             }
@@ -267,7 +260,16 @@ public class ClientSocket extends Thread{
      * Disconnects the socket
      */
     private void disconnectSocket() {
-        System.out.println("Could not establish connection, closing socket.");
-        connected = false;
+        try {
+            dos.flush();
+            dos.close();
+            dis.close();
+            socket.close();
+            connected = false;
+        } catch (SocketException se) {
+            logger.log("Could not close the socket properly.", Level.WARNING);
+        } catch (Exception e) {
+            logger.log("Issue encountered when closing the Client socket.", Level.SEVERE);
+        }
     }
 }
