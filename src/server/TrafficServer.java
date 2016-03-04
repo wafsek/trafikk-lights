@@ -112,6 +112,9 @@ public class TrafficServer extends Thread{
         clientHandler = null;
         this.logger.log("Stopping server...",Level.FINE);
         this.stopped = true;
+        for(Client client : clientArrayList){
+            disconnectClient(client);
+        }
         while(!this.hasStopped){
 
         }
