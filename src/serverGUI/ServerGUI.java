@@ -50,7 +50,7 @@ public class ServerGUI extends Thread{
 
 
 
-        redslider = new Slider(0,100,50);
+        redslider = new Slider(2,100,50);
 
         redslider.setOnMouseDragged(e->redSliderAction());
         redslider.setPrefSize(900,0);
@@ -58,14 +58,14 @@ public class ServerGUI extends Thread{
         redLabel = new Label(String.format("%.0f",redslider.getValue()));
         redLabel.setPrefSize(50,0);
 
-        yellowslider = new Slider(0,100,50);
+        yellowslider = new Slider(2,100,50);
 
         yellowslider.setOnMouseDragged(e->yellowSliderAction());
 
         yellowLabel = new Label(String.format("%.0f",redslider.getValue()));
 
 
-        greenslider = new Slider(0,100,50);
+        greenslider = new Slider(2,100,50);
 
         greenslider.setOnMouseDragged(e->greenSliderAction());
 
